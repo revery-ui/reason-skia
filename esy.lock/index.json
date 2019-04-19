@@ -1,5 +1,5 @@
 {
-  "checksum": "ce25afff05443fb860b29fcab903fae9",
+  "checksum": "5c2c38dcbef3625916fd0799a91fab8f",
   "root": "reason-skia@link-dev:./package.json",
   "node": {
     "refmterr@3.1.10@d41d8cd9": {
@@ -31,7 +31,7 @@
       "overrides": [],
       "dependencies": [
         "refmterr@3.1.10@d41d8cd9", "ocaml@4.6.10@d41d8cd9",
-        "esy-skia@0.1.6@d41d8cd9", "@opam/dune@opam:1.9.1@61bdaadf",
+        "esy-skia@0.1.7@d41d8cd9", "@opam/dune@opam:1.9.1@61bdaadf",
         "@esy-ocaml/reason@3.4.0@d41d8cd9"
       ],
       "devDependencies": [ "ocaml@4.6.10@d41d8cd9" ]
@@ -50,14 +50,14 @@
       "dependencies": [],
       "devDependencies": []
     },
-    "esy-skia@0.1.6@d41d8cd9": {
-      "id": "esy-skia@0.1.6@d41d8cd9",
+    "esy-skia@0.1.7@d41d8cd9": {
+      "id": "esy-skia@0.1.7@d41d8cd9",
       "name": "esy-skia",
-      "version": "0.1.6",
+      "version": "0.1.7",
       "source": {
         "type": "install",
         "source": [
-          "archive:https://registry.npmjs.org/esy-skia/-/esy-skia-0.1.6.tgz#sha1:bda83743a238ca08af3c7daa7e9e00491336ef56"
+          "archive:https://registry.npmjs.org/esy-skia/-/esy-skia-0.1.7.tgz#sha1:b9a7cdfb67c2e7b709058a26b8f26798f90541f1"
         ]
       },
       "overrides": [],

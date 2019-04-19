@@ -16,55 +16,88 @@
 #include "SkStream.h"
 #include "SkSurface.h"
 
-typedef wrapped<sk_sp<GLInterface>> wGLInterface;
+#define Val_none Val_int(0)
+
+CAMLprim value
+Val_some(value v)
+{
+    CAMLparam1(v);
+    CAMLlocal1(some);
+    some = caml_alloc_small(1, 0);
+    Field(some, 0) = v;
+    CAMLreturn(some);
+}
+
+#define Some_val(v) Field(v, 0)
+
+typedef wrapped<sk_sp<GrGLInterface>> wGrGLInterface;
 template <>
-char const *ml_name<wGLInterface::type>() { return "sk_sp<GLInterface>" }
+char const *ml_name<wGrGLInterface::type>() { return "sk_sp<GrGLInterface>"; }
 
 typedef wrapped<sk_sp<GrContext>> wGrContext;
 template <>
-char const *ml_name<wGrContext::type>() { return "sk_sp<GrContext>" }
+char const *ml_name<wGrContext::type>() { return "sk_sp<GrContext>"; }
 
 typedef wrapped<sk_sp<SkSurface>> wSkSurface;
 template <>
-char const *ml_name<wSkSurface::type>() { return "sk_sp<SkSurface>" }
+char const *ml_name<wSkSurface::type>() { return "sk_sp<SkSurface>"; }
 
 typedef wrapped<sk_sp<SkImage>> wSkImage;
 template <>
-char const *ml_name<wSkImage::type>() { return "sk_sp<SkImage>" }
+char const *ml_name<wSkImage::type>() { return "sk_sp<SkImage>"; }
 
 typedef wrapped<sk_sp<SkData>> wSkData;
 template <>
-char const *ml_name<wSkData::type>() { return "sk_sp<SkData>" }
+char const *ml_name<wSkData::type>() { return "sk_sp<SkData>"; }
+
+typedef wrapped<sk_sp<SkColorSpace>> wSkColorSpace;
+template <>
+char const *ml_name<wSkColorSpace::type>() { return "sk_sp<SkColorSpace>"; }
 
 struct custom_operations ImageInfoCustomOperations = {
-    identifier : "SkImageInfo",
-    finalize : custom_finalize_default,
-    compare : custom_compare_default,
-    compare_ext : custom_compare_ext_default,
-    hash : custom_hash_default,
-    serialize : custom_serialize_default,
-    deserialize : custom_deserialize_default,
+    .identifier = (char *)"SkImageInfo",
+    .finalize = custom_finalize_default,
+    .compare = custom_compare_default,
+    .compare_ext = custom_compare_ext_default,
+    .hash = custom_hash_default,
+    .serialize = custom_serialize_default,
+    .deserialize = custom_deserialize_default,
 };
 
 struct custom_operations PaintCustomOperations = {
-    identifier : "SkPaint",
-    finalize : custom_finalize_default,
-    compare : custom_compare_default,
-    compare_ext : custom_compare_ext_default,
-    hash : custom_hash_default,
-    serialize : custom_serialize_default,
-    deserialize : custom_deserialize_default,
+    .identifier = (char *)"SkPaint",
+    .finalize = custom_finalize_default,
+    .compare = custom_compare_default,
+    .compare_ext = custom_compare_ext_default,
+    .hash = custom_hash_default,
+    .serialize = custom_serialize_default,
+    .deserialize = custom_deserialize_default,
 };
 
 struct custom_operations ColorCustomOperations = {
-    identifier : "SkColor",
-    finalize : custom_finalize_default,
-    compare : custom_compare_default,
-    compare_ext : custom_compare_ext_default,
-    hash : custom_hash_default,
-    serialize : custom_serialize_default,
-    deserialize : custom_deserialize_default,
+    .identifier = (char *)"SkColor",
+    .finalize = custom_finalize_default,
+    .compare = custom_compare_default,
+    .compare_ext = custom_compare_ext_default,
+    .hash = custom_hash_default,
+    .serialize = custom_serialize_default,
+    .deserialize = custom_deserialize_default,
 };
+
+struct custom_operations FILEWStreamCustomOperations = {
+    .identifier = (char *)"FILEWStream",
+    .finalize = custom_finalize_default,
+    .compare = custom_compare_default,
+    .compare_ext = custom_compare_ext_default,
+    .hash = custom_hash_default,
+    .serialize = custom_serialize_default,
+    .deserialize = custom_deserialize_default,
+};
+
+void warn(const char *message)
+{
+    printf("[WARNING]: %s\n", message);
+}
 
 extern "C"
 {
@@ -74,7 +107,7 @@ extern "C"
         CAMLparam4(vAlpha, vRed, vGreen, vBlue);
         CAMLlocal1(vColor);
         vColor = caml_alloc_custom(&ColorCustomOperations, sizeof(SkColor), 0, 1);
-        *vColor = SkColorSetARGB(Int_val(vAlpha), Int_val(vRed), Int_val(vGreen), Int_val(vBlue));
+        *(SkColor *)vColor = SkColorSetARGB(Int_val(vAlpha), Int_val(vRed), Int_val(vGreen), Int_val(vBlue));
         CAMLreturn(vColor);
     }
 
@@ -84,7 +117,7 @@ extern "C"
         CAMLparam1(vUnit);
         CAMLlocal1(vPaint);
         vPaint = caml_alloc_custom(&PaintCustomOperations, sizeof(SkPaint), 0, 1);
-        *vPaint = SkPaint();
+        new ((SkPaint *)vPaint) SkPaint();
         CAMLreturn(vPaint);
     }
 
@@ -95,6 +128,7 @@ extern "C"
         SkPaint *pPaint = (SkPaint *)Data_custom_val(vPaint);
         SkColor *pColor = (SkColor *)Data_custom_val(vColor);
         pPaint->setColor(*pColor);
+        CAMLreturn(Val_unit);
     }
 
     SkBudgeted variantToBudgeted(value vBudgeted)
@@ -107,7 +141,7 @@ extern "C"
             return SkBudgeted::kYes;
         default:
             warn("Unexpected option for budgeted");
-            return 0;
+            return SkBudgeted::kNo;
         }
     }
 
@@ -145,17 +179,35 @@ extern "C"
             return kN32_SkColorType;
         default:
             warn("Unexpected option for colorType");
-            return 0;
+            return kUnknown_SkColorType;
+        }
+    }
+
+    SkAlphaType variantToAlphaType(value vAlphaType)
+    {
+        switch (Int_val(vAlphaType))
+        {
+        case 0:
+            return kUnknown_SkAlphaType;
+        case 1:
+            return kOpaque_SkAlphaType;
+        case 2:
+            return kPremul_SkAlphaType;
+        case 3:
+            return kUnpremul_SkAlphaType;
+        default:
+            warn("Unexpected option for colorType");
+            return kUnknown_SkAlphaType;
         }
     }
 
     CAMLprim value
-    caml_GrContext_MakeGL(value vGLInterfaceOption)
+    caml_GrContext_MakeGL(value vGrGLInterfaceOption)
     {
-        CAMLparam1(vGlInterfaceOption);
-        sk_sp<GrContext> context = vGLInterfaceOption == Val_none
+        CAMLparam1(vGrGLInterfaceOption);
+        sk_sp<GrContext> context = vGrGLInterfaceOption == Val_none
                                        ? GrContext::MakeGL(nullptr)
-                                       : GrContext::MakeGL(wGLInterface::get(Val_some(vGLInterface)));
+                                       : GrContext::MakeGL(wGrGLInterface::get(Val_some(vGrGLInterfaceOption)));
         CAMLreturn(wGrContext::alloc(context));
     }
 
@@ -166,7 +218,7 @@ extern "C"
         CAMLlocal1(vImageInfo);
         vImageInfo = caml_alloc_custom(&ImageInfoCustomOperations, sizeof(SkImageInfo), 0, 1);
         SkImageInfo *pImageInfo = (SkImageInfo *)Data_custom_val(vImageInfo);
-        *pImageInfo = vSkColorSpaceOption == Val_none
+        *pImageInfo = vColorSpaceOption == Val_none
                           ? SkImageInfo::Make(
                                 Int_val(vWidth),
                                 Int_val(vHeight),
@@ -177,18 +229,18 @@ extern "C"
                                 Int_val(vHeight),
                                 variantToColorType(vColorType),
                                 variantToAlphaType(vAlphaType),
-                                wColorSpace::get(Val_some(vColorSpaceOption)));
+                                wSkColorSpace::get(Val_some(vColorSpaceOption)));
         CAMLreturn(vImageInfo);
     }
 
     CAMLprim value
     caml_SkSurface_MakeRenderTarget(value vContext, value vBudgeted, value vImageInfo)
     {
-        CAMLparam3(vContext, vBudgeted, vImageinfo);
+        CAMLparam3(vContext, vBudgeted, vImageInfo);
         sk_sp<GrContext> context = wGrContext::get(vContext);
         SkBudgeted budgeted = variantToBudgeted(vBudgeted);
-        SkImageInfo pImageInfo = (SkImageInfo *)Data_custom_val(vImageInfo);
-        sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(context, budgeted, *pImageInfo);
+        SkImageInfo *pImageInfo = (SkImageInfo *)Data_custom_val(vImageInfo);
+        sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(context.get(), budgeted, *pImageInfo);
         CAMLreturn(wSkSurface::alloc(surface));
     }
 
@@ -214,7 +266,7 @@ extern "C"
     caml_SkCanvas_drawPaint(value vCanvas, value vPaint)
     {
         CAMLparam2(vCanvas, vPaint);
-        Canvas *pCanvas = (SkCanvas *)vCanvas;
+        SkCanvas *pCanvas = (SkCanvas *)vCanvas;
         SkPaint *pPaint = (SkPaint *)Data_custom_val(vPaint);
         pCanvas->drawPaint(*pPaint);
         CAMLreturn(Val_unit);
@@ -224,9 +276,9 @@ extern "C"
     caml_SkImage_encodeToData(value vImage)
     {
         CAMLparam1(vImage);
-        sk_sp<SkImage> image = wImage::get(vImage);
+        sk_sp<SkImage> image = wSkImage::get(vImage);
         sk_sp<SkData> data = image->encodeToData();
-        CAMLreturn(wData::alloc(data));
+        CAMLreturn(wSkData::alloc(data));
     }
 
     CAMLprim value
@@ -235,8 +287,8 @@ extern "C"
         CAMLparam1(vPath);
         CAMLlocal1(vFILEWStream);
         vFILEWStream = caml_alloc_custom(&FILEWStreamCustomOperations, sizeof(SkFILEWStream), 0, 1);
-        *vFILEWStream = SkFILEWStream(String_val(vPath));
-        CAMLreturn(vFILEWSream);
+        new ((SkFILEWStream *)vFILEWStream) SkFILEWStream(String_val(vPath));
+        CAMLreturn(vFILEWStream);
     }
 
     CAMLprim value
@@ -244,7 +296,8 @@ extern "C"
     {
         CAMLparam2(vFILEWStream, vData);
         SkFILEWStream *fileWStream = (SkFILEWStream *)Data_custom_val(vFILEWStream);
-        sk_sp<SkData> data = wData::get(vData);
+        sk_sp<SkData> data = wSkData::get(vData);
         fileWStream->write(data->data(), data->size());
+        CAMLreturn(Val_unit);
     }
 }

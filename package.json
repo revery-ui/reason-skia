@@ -20,13 +20,10 @@
     "ocaml": "~4.6.0"
   },
   "dependencies": {
-    "@opam/dune": "*",
     "@esy-ocaml/reason": "^3.3.7",
-    "refmterr": "^3.1.0",
-    "esy-cmake": "^0.3.4"
-  },
-  "resolutions": {
-    "@opam/cmdliner": "1.0.2"
+    "@opam/dune": "*",
+    "esy-skia": "^0.1.6",
+    "refmterr": "^3.1.0"
   },
   "devDependencies": {
     "ocaml": "~4.6.0"

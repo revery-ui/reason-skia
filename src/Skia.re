@@ -6,7 +6,7 @@ module Gr = {
   module Context = {
     type t;
 
-    external makeGL: GLInterface.t => t = "caml_GrContext_MakeGL";
+    external makeGL: option(GLInterface.t) => t = "caml_GrContext_MakeGL";
   };
 };
 
@@ -23,22 +23,20 @@ module Sk = {
     external make: (int, int, int, int) => t = "caml_SkColor_make";
   };
 
-
   module Matrix = {
     type t;
   };
 
   module Path = {
     type t;
-
-    external create: unit => t = "caml_SkPath_create";
-    external copy: t => t = "caml_SkPath_copy";
+    // external create: unit => t = "caml_SkPath_create";
+    // external copy: t => t = "caml_SkPath_copy";
   };
 
   module Rect = {
     type t;
-
-    external makeXYWH: (scalar, scalar, scalar, scalar) => t = "caml_SkRect_MakeXYWH";
+    // external makeXYWH: (scalar, scalar, scalar, scalar) => t =
+    //   "caml_SkRect_MakeXYWH";
   };
 
   module Shader = {
@@ -80,22 +78,24 @@ module Sk = {
       | StrokeAndFill;
 
     external make: unit => t = "caml_SkPaint_make";
-    external shallowCopy: t => t = "caml_SkPaint_shallowCopy";
-    external reset: t => unit = "caml_SkPaint_reset";
+    // external shallowCopy: t => t = "caml_SkPaint_shallowCopy";
+    // external reset: t => unit = "caml_SkPaint_reset";
 
-    external getColor: t => Color.t = "caml_SkPaint_getColor";
+    // external getColor: t => Color.t = "caml_SkPaint_getColor";
     external setColor: (t, Color.t) => unit = "caml_SkPaint_setColor";
   };
 
   module Canvas = {
     type t;
 
-    external save: t => unit = "caml_SkCanvas_save";
-    external translate: (t, scalar, scalar) => unit = "caml_SkCanvas_translate";
-    external rotate: (t, scalar, scalar, scalar) => unit = "caml_SkCanvas_rotate";
+    // external save: t => unit = "caml_SkCanvas_save";
+    // external translate: (t, scalar, scalar) => unit =
+    //   "caml_SkCanvas_translate";
+    // external rotate: (t, scalar, scalar, scalar) => unit =
+    //   "caml_SkCanvas_rotate";
     external drawPaint: (t, Paint.t) => unit = "caml_SkCanvas_drawPaint";
-    external drawRect: (t, Rect.t, Paint.t) => unit = "caml_SkCanvas_drawRect";
-    external restore: t => unit = "caml_SkCanvas_restore";
+    // external drawRect: (t, Rect.t, Paint.t) => unit = "caml_SkCanvas_drawRect";
+    // external restore: t => unit = "caml_SkCanvas_restore";
   };
 
   module Size = {
@@ -134,7 +134,8 @@ module Sk = {
   module ImageInfo = {
     type t;
 
-    external make: (int, int, colorType, alphaType, option(ColorSpace.t)) => t = "caml_SkImageInfo_Make";
+    external make: (int, int, colorType, alphaType, option(ColorSpace.t)) => t =
+      "caml_SkImageInfo_Make";
   };
 
   module Data = {
@@ -145,7 +146,7 @@ module Sk = {
     type t;
 
     external make: string => t = "caml_SkFILEWStream_make";
-    external write: Data.t => unit = "caml_SkFILEWStream_write"; // TODO proper typing and binding
+    external write: (t, Data.t) => unit = "caml_SkFILEWStream_write"; // TODO proper typing and binding
   };
 
   module Image = {
@@ -159,6 +160,8 @@ module Sk = {
 
     external makeRenderTarget: (Gr.Context.t, budgeted, ImageInfo.t) => t =
       "caml_SkSurface_MakeRenderTarget";
+
+    external makeRaster: ImageInfo.t => t = "caml_SkSurface_MakeRaster"; // TODO this should accept an optional SurfaceProps parameter
 
     external getCanvas: t => Canvas.t = "caml_SkSurface_getCanvas";
 

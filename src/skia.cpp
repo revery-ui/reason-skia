@@ -240,7 +240,18 @@ extern "C"
         sk_sp<GrContext> context = wGrContext::get(vContext);
         SkBudgeted budgeted = variantToBudgeted(vBudgeted);
         SkImageInfo *pImageInfo = (SkImageInfo *)Data_custom_val(vImageInfo);
+        // TODO this can also return null and should probably be an option
         sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(context.get(), budgeted, *pImageInfo);
+        CAMLreturn(wSkSurface::alloc(surface));
+    }
+
+    CAMLprim value
+    caml_SkSurface_MakeRaster(value vImageInfo)
+    {
+        CAMLparam1(vImageInfo);
+        SkImageInfo *pImageInfo = (SkImageInfo *)Data_custom_val(vImageInfo);
+        // TODO this can also return null and should probably be an option
+        sk_sp<SkSurface> surface = SkSurface::MakeRaster(*pImageInfo);
         CAMLreturn(wSkSurface::alloc(surface));
     }
 

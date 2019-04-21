@@ -107,7 +107,8 @@ extern "C"
         CAMLparam4(vAlpha, vRed, vGreen, vBlue);
         CAMLlocal1(vColor);
         vColor = caml_alloc_custom(&ColorCustomOperations, sizeof(SkColor), 0, 1);
-        *(SkColor *)vColor = SkColorSetARGB(Int_val(vAlpha), Int_val(vRed), Int_val(vGreen), Int_val(vBlue));
+        auto pColor = static_cast<SkColor*>(Data_custom_val(vColor));
+        *pColor = SkColorSetARGB(Int_val(vAlpha), Int_val(vRed), Int_val(vGreen), Int_val(vBlue));
         CAMLreturn(vColor);
     }
 
@@ -117,7 +118,8 @@ extern "C"
         CAMLparam1(vUnit);
         CAMLlocal1(vPaint);
         vPaint = caml_alloc_custom(&PaintCustomOperations, sizeof(SkPaint), 0, 1);
-        new ((SkPaint *)vPaint) SkPaint();
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        new (pPaint) SkPaint();
         CAMLreturn(vPaint);
     }
 
@@ -217,7 +219,7 @@ extern "C"
         CAMLparam5(vWidth, vHeight, vColorType, vAlphaType, vColorSpaceOption);
         CAMLlocal1(vImageInfo);
         vImageInfo = caml_alloc_custom(&ImageInfoCustomOperations, sizeof(SkImageInfo), 0, 1);
-        SkImageInfo *pImageInfo = (SkImageInfo *)Data_custom_val(vImageInfo);
+        auto pImageInfo = static_cast<SkImageInfo *>(Data_custom_val(vImageInfo));
         *pImageInfo = vColorSpaceOption == Val_none
                           ? SkImageInfo::Make(
                                 Int_val(vWidth),
@@ -289,6 +291,10 @@ extern "C"
         CAMLparam1(vImage);
         sk_sp<SkImage> image = wSkImage::get(vImage);
         sk_sp<SkData> data = image->encodeToData();
+        if (data.get() == nullptr || data == nullptr)
+        {
+            warn("nullptr was returned!");
+        }
         CAMLreturn(wSkData::alloc(data));
     }
 
@@ -298,7 +304,8 @@ extern "C"
         CAMLparam1(vPath);
         CAMLlocal1(vFILEWStream);
         vFILEWStream = caml_alloc_custom(&FILEWStreamCustomOperations, sizeof(SkFILEWStream), 0, 1);
-        new ((SkFILEWStream *)vFILEWStream) SkFILEWStream(String_val(vPath));
+        auto pFILEWStream = static_cast<SkFILEWStream *>(Data_custom_val(vFILEWStream));
+        new (pFILEWStream) SkFILEWStream(String_val(vPath));
         CAMLreturn(vFILEWStream);
     }
 

@@ -55,7 +55,17 @@ template <>
 char const *ml_name<wSkColorSpace::type>() { return "sk_sp<SkColorSpace>"; }
 
 struct custom_operations ImageInfoCustomOperations = {
-    .identifier = (char *)"SkImageInfo",
+    .identifier = const_cast<char *>("SkImageInfo"),
+    .finalize = custom_finalize_default,
+    .compare = custom_compare_default,
+    .compare_ext = custom_compare_ext_default,
+    .hash = custom_hash_default,
+    .serialize = custom_serialize_default,
+    .deserialize = custom_deserialize_default,
+};
+
+struct custom_operations RectCustomOperations = {
+    .identifier = const_cast<char *>("SkRect"),
     .finalize = custom_finalize_default,
     .compare = custom_compare_default,
     .compare_ext = custom_compare_ext_default,
@@ -65,7 +75,7 @@ struct custom_operations ImageInfoCustomOperations = {
 };
 
 struct custom_operations PaintCustomOperations = {
-    .identifier = (char *)"SkPaint",
+    .identifier = const_cast<char *>("SkPaint"),
     .finalize = custom_finalize_default,
     .compare = custom_compare_default,
     .compare_ext = custom_compare_ext_default,
@@ -75,7 +85,7 @@ struct custom_operations PaintCustomOperations = {
 };
 
 struct custom_operations ColorCustomOperations = {
-    .identifier = (char *)"SkColor",
+    .identifier = const_cast<char *>("SkColor"),
     .finalize = custom_finalize_default,
     .compare = custom_compare_default,
     .compare_ext = custom_compare_ext_default,
@@ -85,7 +95,7 @@ struct custom_operations ColorCustomOperations = {
 };
 
 struct custom_operations FILEWStreamCustomOperations = {
-    .identifier = (char *)"FILEWStream",
+    .identifier = const_cast<char *>("FILEWStream"),
     .finalize = custom_finalize_default,
     .compare = custom_compare_default,
     .compare_ext = custom_compare_ext_default,
@@ -107,7 +117,7 @@ extern "C"
         CAMLparam4(vAlpha, vRed, vGreen, vBlue);
         CAMLlocal1(vColor);
         vColor = caml_alloc_custom(&ColorCustomOperations, sizeof(SkColor), 0, 1);
-        auto pColor = static_cast<SkColor*>(Data_custom_val(vColor));
+        auto pColor = static_cast<SkColor *>(Data_custom_val(vColor));
         *pColor = SkColorSetARGB(Int_val(vAlpha), Int_val(vRed), Int_val(vGreen), Int_val(vBlue));
         CAMLreturn(vColor);
     }
@@ -127,8 +137,8 @@ extern "C"
     caml_SkPaint_setColor(value vPaint, value vColor)
     {
         CAMLparam2(vPaint, vColor);
-        SkPaint *pPaint = (SkPaint *)Data_custom_val(vPaint);
-        SkColor *pColor = (SkColor *)Data_custom_val(vColor);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        auto pColor = static_cast<SkColor *>(Data_custom_val(vColor));
         pPaint->setColor(*pColor);
         CAMLreturn(Val_unit);
     }
@@ -214,6 +224,36 @@ extern "C"
     }
 
     CAMLprim value
+    caml_SkRect_MakeLTRB(value vL, value vT, value vR, value vB)
+    {
+        CAMLparam4(vL, vT, vR, vB);
+        CAMLlocal1(vRect);
+        vRect = caml_alloc_custom(&RectCustomOperations, sizeof(SkRect), 0, 1);
+        auto pRect = static_cast<SkRect *>(Data_custom_val(vRect));
+        *pRect = SkRect::MakeLTRB(
+            static_cast<float>(Double_val(vL)),
+            static_cast<float>(Double_val(vT)),
+            static_cast<float>(Double_val(vR)),
+            static_cast<float>(Double_val(vB)));
+        CAMLreturn(vRect);
+    }
+
+    CAMLprim value
+    caml_SkRect_MakeXYWH(value vX, value vY, value vW, value vH)
+    {
+        CAMLparam4(vX, vY, vW, vH);
+        CAMLlocal1(vRect);
+        vRect = caml_alloc_custom(&RectCustomOperations, sizeof(SkRect), 0, 1);
+        auto pRect = static_cast<SkRect *>(Data_custom_val(vRect));
+        *pRect = SkRect::MakeLTRB(
+            static_cast<float>(Double_val(vX)),
+            static_cast<float>(Double_val(vY)),
+            static_cast<float>(Double_val(vW)),
+            static_cast<float>(Double_val(vH)));
+        CAMLreturn(vRect);
+    }
+
+    CAMLprim value
     caml_SkImageInfo_Make(value vWidth, value vHeight, value vColorType, value vAlphaType, value vColorSpaceOption)
     {
         CAMLparam5(vWidth, vHeight, vColorType, vAlphaType, vColorSpaceOption);
@@ -239,11 +279,11 @@ extern "C"
     caml_SkSurface_MakeRenderTarget(value vContext, value vBudgeted, value vImageInfo)
     {
         CAMLparam3(vContext, vBudgeted, vImageInfo);
-        sk_sp<GrContext> context = wGrContext::get(vContext);
-        SkBudgeted budgeted = variantToBudgeted(vBudgeted);
-        SkImageInfo *pImageInfo = (SkImageInfo *)Data_custom_val(vImageInfo);
+        auto context = wGrContext::get(vContext);
+        auto budgeted = variantToBudgeted(vBudgeted);
+        auto pImageInfo = static_cast<SkImageInfo *>(Data_custom_val(vImageInfo));
         // TODO this can also return null and should probably be an option
-        sk_sp<SkSurface> surface = SkSurface::MakeRenderTarget(context.get(), budgeted, *pImageInfo);
+        auto surface = SkSurface::MakeRenderTarget(context.get(), budgeted, *pImageInfo);
         CAMLreturn(wSkSurface::alloc(surface));
     }
 
@@ -251,9 +291,9 @@ extern "C"
     caml_SkSurface_MakeRaster(value vImageInfo)
     {
         CAMLparam1(vImageInfo);
-        SkImageInfo *pImageInfo = (SkImageInfo *)Data_custom_val(vImageInfo);
+        auto pImageInfo = static_cast<SkImageInfo *>(Data_custom_val(vImageInfo));
         // TODO this can also return null and should probably be an option
-        sk_sp<SkSurface> surface = SkSurface::MakeRaster(*pImageInfo);
+        auto surface = SkSurface::MakeRaster(*pImageInfo);
         CAMLreturn(wSkSurface::alloc(surface));
     }
 
@@ -261,7 +301,7 @@ extern "C"
     caml_SkSurface_getCanvas(value vSurface)
     {
         CAMLparam1(vSurface);
-        sk_sp<SkSurface> surface = wSkSurface::get(vSurface);
+        auto surface = wSkSurface::get(vSurface);
         SkCanvas *pCanvas = surface->getCanvas();
         CAMLreturn((value)pCanvas);
     }
@@ -270,7 +310,7 @@ extern "C"
     caml_SkSurface_makeImageSnapshot(value vSurface)
     {
         CAMLparam1(vSurface);
-        sk_sp<SkSurface> surface = wSkSurface::get(vSurface);
+        auto surface = wSkSurface::get(vSurface);
         sk_sp<SkImage> image = surface->makeImageSnapshot();
         CAMLreturn(wSkImage::alloc(image));
     }
@@ -279,9 +319,20 @@ extern "C"
     caml_SkCanvas_drawPaint(value vCanvas, value vPaint)
     {
         CAMLparam2(vCanvas, vPaint);
-        SkCanvas *pCanvas = (SkCanvas *)vCanvas;
-        SkPaint *pPaint = (SkPaint *)Data_custom_val(vPaint);
+        auto pCanvas = reinterpret_cast<SkCanvas *>(vCanvas);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
         pCanvas->drawPaint(*pPaint);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_SkCanvas_drawRect(value vCanvas, value vRect, value vPaint)
+    {
+        CAMLparam3(vCanvas, vRect, vPaint);
+        auto pCanvas = reinterpret_cast<SkCanvas *>(vCanvas);
+        auto pRect = static_cast<SkRect *>(Data_custom_val(vRect));
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        pCanvas->drawRect(*pRect, *pPaint);
         CAMLreturn(Val_unit);
     }
 
@@ -289,8 +340,8 @@ extern "C"
     caml_SkImage_encodeToData(value vImage)
     {
         CAMLparam1(vImage);
-        sk_sp<SkImage> image = wSkImage::get(vImage);
-        sk_sp<SkData> data = image->encodeToData();
+        auto image = wSkImage::get(vImage);
+        auto data = image->encodeToData();
         if (data.get() == nullptr || data == nullptr)
         {
             warn("nullptr was returned!");
@@ -313,8 +364,8 @@ extern "C"
     caml_SkFILEWStream_write(value vFILEWStream, value vData)
     {
         CAMLparam2(vFILEWStream, vData);
-        SkFILEWStream *fileWStream = (SkFILEWStream *)Data_custom_val(vFILEWStream);
-        sk_sp<SkData> data = wSkData::get(vData);
+        auto fileWStream = static_cast<SkFILEWStream *>(Data_custom_val(vFILEWStream));
+        auto data = wSkData::get(vData);
         fileWStream->write(data->data(), data->size());
         CAMLreturn(Val_unit);
     }

@@ -33,12 +33,6 @@ module Sk = {
     // external copy: t => t = "caml_SkPath_copy";
   };
 
-  module Rect = {
-    type t;
-    // external makeXYWH: (scalar, scalar, scalar, scalar) => t =
-    //   "caml_SkRect_MakeXYWH";
-  };
-
   module Shader = {
     type t;
 
@@ -85,6 +79,15 @@ module Sk = {
     external setColor: (t, Color.t) => unit = "caml_SkPaint_setColor";
   };
 
+  module Rect = {
+    type t;
+
+    external makeLTRB: (scalar, scalar, scalar, scalar) => t =
+      "caml_SkRect_MakeLTRB";
+    external makeXYWH: (scalar, scalar, scalar, scalar) => t =
+      "caml_SkRect_MakeXYWH";
+  };
+
   module Canvas = {
     type t;
 
@@ -94,7 +97,7 @@ module Sk = {
     // external rotate: (t, scalar, scalar, scalar) => unit =
     //   "caml_SkCanvas_rotate";
     external drawPaint: (t, Paint.t) => unit = "caml_SkCanvas_drawPaint";
-    // external drawRect: (t, Rect.t, Paint.t) => unit = "caml_SkCanvas_drawRect";
+    external drawRect: (t, Rect.t, Paint.t) => unit = "caml_SkCanvas_drawRect";
     // external restore: t => unit = "caml_SkCanvas_restore";
   };
 

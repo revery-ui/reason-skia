@@ -74,6 +74,16 @@ struct custom_operations RectCustomOperations = {
     .deserialize = custom_deserialize_default,
 };
 
+struct custom_operations RRectCustomOperations = {
+    .identifier = const_cast<char *>("SkRRect"),
+    .finalize = custom_finalize_default,
+    .compare = custom_compare_default,
+    .compare_ext = custom_compare_ext_default,
+    .hash = custom_hash_default,
+    .serialize = custom_serialize_default,
+    .deserialize = custom_deserialize_default,
+};
+
 struct custom_operations PaintCustomOperations = {
     .identifier = const_cast<char *>("SkPaint"),
     .finalize = custom_finalize_default,
@@ -245,12 +255,78 @@ extern "C"
         CAMLlocal1(vRect);
         vRect = caml_alloc_custom(&RectCustomOperations, sizeof(SkRect), 0, 1);
         auto pRect = static_cast<SkRect *>(Data_custom_val(vRect));
-        *pRect = SkRect::MakeLTRB(
+        *pRect = SkRect::MakeXYWH(
             static_cast<float>(Double_val(vX)),
             static_cast<float>(Double_val(vY)),
             static_cast<float>(Double_val(vW)),
             static_cast<float>(Double_val(vH)));
         CAMLreturn(vRect);
+    }
+
+    CAMLprim value
+    caml_SkRRect_MakeRect(value vRect)
+    {
+        CAMLparam1(vRect);
+        CAMLlocal1(vRRect);
+        auto pRect = static_cast<SkRect *>(Data_custom_val(vRect));
+        vRRect = caml_alloc_custom(&RRectCustomOperations, sizeof(SkRRect), 0, 1);
+        auto pRRect = static_cast<SkRRect *>(Data_custom_val(vRRect));
+        *pRRect = SkRRect::MakeRect(*pRect);
+        CAMLreturn(vRRect);
+    }
+
+    CAMLprim value
+    caml_SkRRect_MakeOval(value vRect)
+    {
+        CAMLparam1(vRect);
+        CAMLlocal1(vRRect);
+        auto pRect = static_cast<SkRect *>(Data_custom_val(vRect));
+        vRRect = caml_alloc_custom(&RRectCustomOperations, sizeof(SkRRect), 0, 1);
+        auto pRRect = static_cast<SkRRect *>(Data_custom_val(vRRect));
+        *pRRect = SkRRect::MakeOval(*pRect);
+        CAMLreturn(vRRect);
+    }
+
+    CAMLprim value
+    caml_SkRRect_MakeRectXY(value vRect, value vX, value vY)
+    {
+        CAMLparam3(vRect, vX, vY);
+        CAMLlocal1(vRRect);
+        auto pRect = static_cast<SkRect *>(Data_custom_val(vRect));
+        vRRect = caml_alloc_custom(&RRectCustomOperations, sizeof(SkRRect), 0, 1);
+        auto pRRect = static_cast<SkRRect *>(Data_custom_val(vRRect));
+        *pRRect = SkRRect::MakeRectXY(
+            *pRect,
+            static_cast<float>(Double_val(vX)),
+            static_cast<float>(Double_val(vY)));
+        CAMLreturn(vRRect);
+    }
+
+    CAMLprim value
+    caml_SkRRect_setRectRadii(value vRRect, value vRect, value vRadii)
+    {
+        CAMLparam3(vRRect, vRect, vRadii);
+        CAMLlocal4(vTopLeftRadii, vTopRightRadii, vBottomRightRadii, vBottomLeftRadii);
+        auto pRRect = static_cast<SkRRect *>(Data_custom_val(vRRect));
+        auto pRect = static_cast<SkRect *>(Data_custom_val(vRect));
+        vTopLeftRadii = Field(vRadii, 0);
+        vTopRightRadii = Field(vRadii, 1);
+        vBottomRightRadii = Field(vRadii, 2);
+        vBottomLeftRadii = Field(vRadii, 3);
+        struct Radii
+        {
+            SkVector vectors[4];
+        };
+        Radii radii = {{
+            {static_cast<float>(Double_val(Field(vTopLeftRadii, 0))), static_cast<float>(Double_val(Field(vTopLeftRadii, 1)))},
+            {static_cast<float>(Double_val(Field(vTopRightRadii, 0))), static_cast<float>(Double_val(Field(vTopRightRadii, 1)))},
+            {static_cast<float>(Double_val(Field(vBottomRightRadii, 0))), static_cast<float>(Double_val(Field(vBottomRightRadii, 1)))},
+            {static_cast<float>(Double_val(Field(vBottomLeftRadii, 0))), static_cast<float>(Double_val(Field(vBottomLeftRadii, 1)))},
+        }};
+        pRRect->setRectRadii(
+            *pRect,
+            radii.vectors);
+        CAMLreturn(Val_unit);
     }
 
     CAMLprim value
@@ -333,6 +409,17 @@ extern "C"
         auto pRect = static_cast<SkRect *>(Data_custom_val(vRect));
         auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
         pCanvas->drawRect(*pRect, *pPaint);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_SkCanvas_drawRRect(value vCanvas, value vRRect, value vPaint)
+    {
+        CAMLparam3(vCanvas, vRRect, vPaint);
+        auto pCanvas = reinterpret_cast<SkCanvas *>(vCanvas);
+        auto pRRect = static_cast<SkRRect *>(Data_custom_val(vRRect));
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        pCanvas->drawRRect(*pRRect, *pPaint);
         CAMLreturn(Val_unit);
     }
 

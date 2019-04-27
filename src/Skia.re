@@ -13,6 +13,9 @@ module Gr = {
 module Sk = {
   type scalar = float;
 
+  type point = (scalar, scalar);
+  type vector = point;
+
   type budgeted =
     | No
     | Yes;
@@ -88,6 +91,26 @@ module Sk = {
       "caml_SkRect_MakeXYWH";
   };
 
+  module RRect = {
+    type t;
+
+    type rRectType =
+      | Empty
+      | Rect
+      | Oval
+      | Simple
+      | NinePatch
+      | Complex;
+
+    external makeRect: Rect.t => t = "caml_SkRRect_MakeRect";
+    external makeOval: Rect.t => t = "caml_SkRRect_MakeOval";
+    external makeRectXY: (Rect.t, scalar, scalar) => t =
+      "caml_SkRRect_MakeRectXY";
+    external setRectRadii:
+      (t, Rect.t, (vector, vector, vector, vector)) => unit =
+      "caml_SkRRect_setRectRadii";
+  };
+
   module Canvas = {
     type t;
 
@@ -98,6 +121,8 @@ module Sk = {
     //   "caml_SkCanvas_rotate";
     external drawPaint: (t, Paint.t) => unit = "caml_SkCanvas_drawPaint";
     external drawRect: (t, Rect.t, Paint.t) => unit = "caml_SkCanvas_drawRect";
+    external drawRRect: (t, RRect.t, Paint.t) => unit =
+      "caml_SkCanvas_drawRRect";
     // external restore: t => unit = "caml_SkCanvas_restore";
   };
 

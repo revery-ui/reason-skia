@@ -78,8 +78,42 @@ module Sk = {
     // external shallowCopy: t => t = "caml_SkPaint_shallowCopy";
     // external reset: t => unit = "caml_SkPaint_reset";
 
-    // external getColor: t => Color.t = "caml_SkPaint_getColor";
     external setColor: (t, Color.t) => unit = "caml_SkPaint_setColor";
+    external getColor: t => Color.t = "caml_SkPaint_getColor";
+    external setAntiAlias: (t, bool) => unit = "caml_SkPaint_setAntiAlias";
+    external isAntiAlias: t => bool = "caml_SkPaint_isAntiAlias";
+  };
+
+  module Typeface = {
+    type t;
+
+    external makeDefault: unit => t = "caml_SkTypeface_MakeDefault";
+  };
+
+  module Font = {
+    type t;
+
+    external make: (Typeface.t, scalar, scalar, scalar) => t =
+      "caml_SkFont_Make";
+  };
+
+  type textEncoding =
+    | UTF8
+    | UTF16
+    | UTF32
+    | GlyphID;
+
+  type fontHinting =
+    | None
+    | Slight
+    | Normal
+    | Full;
+
+  module TextBlob = {
+    type t;
+
+    external makeFromString: (string, Font.t, option(textEncoding)) => t =
+      "caml_SkTextBlob_MakeFromString";
   };
 
   module Rect = {
@@ -123,6 +157,8 @@ module Sk = {
     external drawRect: (t, Rect.t, Paint.t) => unit = "caml_SkCanvas_drawRect";
     external drawRRect: (t, RRect.t, Paint.t) => unit =
       "caml_SkCanvas_drawRRect";
+    external drawTextBlob: (t, TextBlob.t, scalar, scalar, Paint.t) => unit =
+      "caml_SkCanvas_drawTextBlob";
     // external restore: t => unit = "caml_SkCanvas_restore";
   };
 

@@ -33,6 +33,7 @@ Sk.Canvas.drawRRect(canvas, roundedBoxRRect, roundedBoxPaint);
 
 let complexRoundedThingColor = Sk.Color.make(255, 255, 255, 255);
 let complexRoundedThingPaint = Sk.Paint.make();
+Sk.Paint.setAntiAlias(complexRoundedThingPaint, true);
 Sk.Paint.setColor(complexRoundedThingPaint, complexRoundedThingColor);
 let complexRoundedThingRect = Sk.Rect.makeXYWH(120., 300., 200., 200.);
 let complexRoundedThingRRect = Sk.RRect.makeRect(complexRoundedThingRect);
@@ -44,6 +45,17 @@ Sk.RRect.setRectRadii(
 Sk.Canvas.drawRRect(
   canvas,
   complexRoundedThingRRect,
+  complexRoundedThingPaint,
+);
+
+let typeface = Sk.Typeface.makeDefault();
+let font = Sk.Font.make(typeface, 35., 1., 0.);
+let textBlob = Sk.TextBlob.makeFromString("Hello, reason-skia!", font, None);
+Sk.Canvas.drawTextBlob(
+  canvas,
+  textBlob,
+  100.,
+  100.,
   complexRoundedThingPaint,
 );
 

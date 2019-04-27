@@ -15,6 +15,9 @@
 #include "SkImage.h"
 #include "SkStream.h"
 #include "SkSurface.h"
+#include "SkTypeface.h"
+#include "SkFont.h"
+#include "SkTextBlob.h"
 
 #define Val_none Val_int(0)
 
@@ -54,65 +57,27 @@ typedef wrapped<sk_sp<SkColorSpace>> wSkColorSpace;
 template <>
 char const *ml_name<wSkColorSpace::type>() { return "sk_sp<SkColorSpace>"; }
 
-struct custom_operations ImageInfoCustomOperations = {
-    .identifier = const_cast<char *>("SkImageInfo"),
-    .finalize = custom_finalize_default,
-    .compare = custom_compare_default,
-    .compare_ext = custom_compare_ext_default,
-    .hash = custom_hash_default,
-    .serialize = custom_serialize_default,
-    .deserialize = custom_deserialize_default,
-};
+typedef wrapped<sk_sp<SkTypeface>> wSkTypeface;
+template <>
+char const *ml_name<wSkTypeface::type>() { return "sk_sp<SkTypeface>"; }
 
-struct custom_operations RectCustomOperations = {
-    .identifier = const_cast<char *>("SkRect"),
-    .finalize = custom_finalize_default,
-    .compare = custom_compare_default,
-    .compare_ext = custom_compare_ext_default,
-    .hash = custom_hash_default,
-    .serialize = custom_serialize_default,
-    .deserialize = custom_deserialize_default,
-};
+typedef wrapped<sk_sp<SkTextBlob>> wSkTextBlob;
+template <>
+char const *ml_name<wSkTextBlob::type>() { return "sk_sp<SkTextBlob>"; }
 
-struct custom_operations RRectCustomOperations = {
-    .identifier = const_cast<char *>("SkRRect"),
-    .finalize = custom_finalize_default,
-    .compare = custom_compare_default,
-    .compare_ext = custom_compare_ext_default,
-    .hash = custom_hash_default,
-    .serialize = custom_serialize_default,
-    .deserialize = custom_deserialize_default,
-};
+struct custom_operations ImageInfoCustomOperations = {.identifier = const_cast<char *>("SkImageInfo")};
 
-struct custom_operations PaintCustomOperations = {
-    .identifier = const_cast<char *>("SkPaint"),
-    .finalize = custom_finalize_default,
-    .compare = custom_compare_default,
-    .compare_ext = custom_compare_ext_default,
-    .hash = custom_hash_default,
-    .serialize = custom_serialize_default,
-    .deserialize = custom_deserialize_default,
-};
+struct custom_operations RectCustomOperations = {.identifier = const_cast<char *>("SkRect")};
 
-struct custom_operations ColorCustomOperations = {
-    .identifier = const_cast<char *>("SkColor"),
-    .finalize = custom_finalize_default,
-    .compare = custom_compare_default,
-    .compare_ext = custom_compare_ext_default,
-    .hash = custom_hash_default,
-    .serialize = custom_serialize_default,
-    .deserialize = custom_deserialize_default,
-};
+struct custom_operations RRectCustomOperations = {.identifier = const_cast<char *>("SkRRect")};
 
-struct custom_operations FILEWStreamCustomOperations = {
-    .identifier = const_cast<char *>("FILEWStream"),
-    .finalize = custom_finalize_default,
-    .compare = custom_compare_default,
-    .compare_ext = custom_compare_ext_default,
-    .hash = custom_hash_default,
-    .serialize = custom_serialize_default,
-    .deserialize = custom_deserialize_default,
-};
+struct custom_operations FontCustomOperations = {.identifier = const_cast<char *>("SkFont")};
+
+struct custom_operations PaintCustomOperations = {.identifier = const_cast<char *>("SkPaint")};
+
+struct custom_operations ColorCustomOperations = {.identifier = const_cast<char *>("SkColor")};
+
+struct custom_operations FILEWStreamCustomOperations = {.identifier = const_cast<char *>("FILEWStream")};
 
 void warn(const char *message)
 {
@@ -151,6 +116,89 @@ extern "C"
         auto pColor = static_cast<SkColor *>(Data_custom_val(vColor));
         pPaint->setColor(*pColor);
         CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_SkPaint_getColor(value vPaint)
+    {
+        CAMLparam1(vPaint);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        auto vColor = caml_alloc_custom(&ColorCustomOperations, sizeof(SkColor), 0, 1);
+        auto pColor = static_cast<SkColor *>(Data_custom_val(vColor));
+        *pColor = pPaint->getColor();
+        CAMLreturn(vColor);
+    }
+
+    CAMLprim value
+    caml_SkPaint_setAntiAlias(value vPaint, value vShouldBeEnabled)
+    {
+        CAMLparam2(vPaint, vShouldBeEnabled);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        auto shouldBeEnabled = Bool_val(vShouldBeEnabled);
+        pPaint->setAntiAlias(shouldBeEnabled);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_SkPaint_isAntiAlias(value vPaint)
+    {
+        CAMLparam1(vPaint);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        auto isEnabled = pPaint->isAntiAlias();
+        CAMLreturn(Val_bool(isEnabled));
+    }
+
+    CAMLprim value
+    caml_SkTypeface_MakeDefault(value vUnit)
+    {
+        CAMLparam1(vUnit);
+        auto typeface = SkTypeface::MakeDefault();
+        CAMLreturn(wSkTypeface::alloc(typeface));
+    }
+
+    CAMLprim value
+    caml_SkFont_Make(value vTypeface, value vSize, value vScaleX, value vSkewX)
+    {
+        CAMLparam4(vTypeface, vSize, vScaleX, vSkewX);
+        CAMLlocal1(vFont);
+        auto typeface = wSkTypeface::get(vTypeface);
+        auto size = static_cast<float>(Double_val(vSize));
+        auto scaleX = static_cast<float>(Double_val(vScaleX));
+        auto skewX = static_cast<float>(Double_val(vSkewX));
+        vFont = caml_alloc_custom(&FontCustomOperations, sizeof(SkFont), 0, 1);
+        auto pFont = static_cast<SkPaint *>(Data_custom_val(vFont));
+        new (pFont) SkFont(typeface, size, scaleX, skewX);
+        CAMLreturn(vFont);
+    }
+
+    SkTextEncoding variantToTextEncoding(value vEncoding)
+    {
+        switch (Int_val(vEncoding))
+        {
+        case 0:
+            return SkTextEncoding::kUTF8;
+        case 1:
+            return SkTextEncoding::kUTF16;
+        case 2:
+            return SkTextEncoding::kUTF32;
+        case 3:
+            return SkTextEncoding::kGlyphID;
+        default:
+            warn("Unexpected option for encoding");
+            return SkTextEncoding::kUTF8;
+        }
+    }
+
+    CAMLprim value
+    caml_SkTextBlob_MakeFromString(value vString, value vFont, value vEncodingOption)
+    {
+        CAMLparam3(vString, vFont, vEncodingOption);
+        auto string = String_val(vString);
+        auto pFont = static_cast<SkFont *>(Data_custom_val(vFont));
+        auto textBlob = vEncodingOption == Val_none
+                            ? SkTextBlob::MakeFromString(string, *pFont)
+                            : SkTextBlob::MakeFromString(string, *pFont, variantToTextEncoding(Some_val(vEncodingOption)));
+        CAMLreturn(wSkTextBlob::alloc(textBlob));
     }
 
     SkBudgeted variantToBudgeted(value vBudgeted)
@@ -227,9 +275,9 @@ extern "C"
     caml_GrContext_MakeGL(value vGrGLInterfaceOption)
     {
         CAMLparam1(vGrGLInterfaceOption);
-        sk_sp<GrContext> context = vGrGLInterfaceOption == Val_none
-                                       ? GrContext::MakeGL(nullptr)
-                                       : GrContext::MakeGL(wGrGLInterface::get(Val_some(vGrGLInterfaceOption)));
+        auto context = vGrGLInterfaceOption == Val_none
+                           ? GrContext::MakeGL(nullptr)
+                           : GrContext::MakeGL(wGrGLInterface::get(Val_some(vGrGLInterfaceOption)));
         CAMLreturn(wGrContext::alloc(context));
     }
 
@@ -387,7 +435,7 @@ extern "C"
     {
         CAMLparam1(vSurface);
         auto surface = wSkSurface::get(vSurface);
-        sk_sp<SkImage> image = surface->makeImageSnapshot();
+        auto image = surface->makeImageSnapshot();
         CAMLreturn(wSkImage::alloc(image));
     }
 
@@ -420,6 +468,19 @@ extern "C"
         auto pRRect = static_cast<SkRRect *>(Data_custom_val(vRRect));
         auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
         pCanvas->drawRRect(*pRRect, *pPaint);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_SkCanvas_drawTextBlob(value vCanvas, value vTextBlob, value vX, value vY, value vPaint)
+    {
+        CAMLparam5(vCanvas, vTextBlob, vX, vY, vPaint);
+        auto pCanvas = reinterpret_cast<SkCanvas *>(vCanvas);
+        auto textBlob = wSkTextBlob::get(vTextBlob);
+        auto x = static_cast<float>(Double_val(vX));
+        auto y = static_cast<float>(Double_val(vY));
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        pCanvas->drawTextBlob(textBlob, x, y, *pPaint);
         CAMLreturn(Val_unit);
     }
 

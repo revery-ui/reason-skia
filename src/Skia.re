@@ -93,8 +93,18 @@ module Sk = {
   module Font = {
     type t;
 
+    type edging =
+      | Alias
+      | AntiAlias
+      | SubpixelAntiAlias;
+
     external make: (Typeface.t, scalar, scalar, scalar) => t =
       "caml_SkFont_Make";
+
+    external setSubpixel: (t, bool) => unit = "caml_SkFont_setSubpixel";
+    external isSubpixel: t => bool = "caml_SkFont_isSubpixel";
+    external setEdging: (t, edging) => unit = "caml_SkFont_setEdging";
+    external getEdging: t => edging = "caml_SkFont_getEdging";
   };
 
   type textEncoding =
@@ -219,13 +229,27 @@ module Sk = {
     external encodeToData: t => Data.t = "caml_SkImage_encodeToData";
   };
 
+  type pixelGeometry =
+    | Unknown
+    | RGBH
+    | BGRH
+    | RGBV
+    | BGRV;
+
+  module SurfaceProps = {
+    type t;
+
+    external make: pixelGeometry => t = "caml_SkSurfaceProps_Make";
+  };
+
   module Surface = {
     type t;
 
     external makeRenderTarget: (Gr.Context.t, budgeted, ImageInfo.t) => t =
       "caml_SkSurface_MakeRenderTarget";
 
-    external makeRaster: ImageInfo.t => t = "caml_SkSurface_MakeRaster"; // TODO this should accept an optional SurfaceProps parameter
+    external makeRaster: (ImageInfo.t, SurfaceProps.t) => t =
+      "caml_SkSurface_MakeRaster"; // TODO this should accept an optional SurfaceProps parameter
 
     external getCanvas: t => Canvas.t = "caml_SkSurface_getCanvas";
 

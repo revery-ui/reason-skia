@@ -67,6 +67,8 @@ char const *ml_name<wSkTextBlob::type>() { return "sk_sp<SkTextBlob>"; }
 
 struct custom_operations ImageInfoCustomOperations = {.identifier = const_cast<char *>("SkImageInfo")};
 
+struct custom_operations SurfacePropsCustomOperations = {.identifier = const_cast<char *>("SkSurfaceProps")};
+
 struct custom_operations RectCustomOperations = {.identifier = const_cast<char *>("SkRect")};
 
 struct custom_operations RRectCustomOperations = {.identifier = const_cast<char *>("SkRRect")};
@@ -166,9 +168,82 @@ extern "C"
         auto scaleX = static_cast<float>(Double_val(vScaleX));
         auto skewX = static_cast<float>(Double_val(vSkewX));
         vFont = caml_alloc_custom(&FontCustomOperations, sizeof(SkFont), 0, 1);
-        auto pFont = static_cast<SkPaint *>(Data_custom_val(vFont));
+        auto pFont = static_cast<SkFont *>(Data_custom_val(vFont));
         new (pFont) SkFont(typeface, size, scaleX, skewX);
         CAMLreturn(vFont);
+    }
+
+    CAMLprim value
+    caml_SkFont_setSubpixel(value vFont, value vShouldBeEnabled)
+    {
+        CAMLparam2(vFont, vSubpixel);
+        auto pFont = static_cast<SkFont *>(Data_custom_val(vFont));
+        auto shouldBeEnabled = Bool_val(vShouldBeEnabled);
+        pFont->setSubpixel(shouldBeEnabled);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_SkFont_isSubpixel(value vFont)
+    {
+        CAMLparam1(vFont);
+        auto pFont = static_cast<SkFont *>(Data_custom_val(vFont));
+        auto isEnabled = pFont->isSubpixel();
+        CAMLreturn(Val_bool(isEnabled));
+    }
+
+    CAMLprim value
+    edgingToVariant(SkFont::Edging edging)
+    {
+        switch (edging)
+        {
+        case SkFont::Edging::kAlias:
+            return Val_int(0);
+        case SkFont::Edging::kAntiAlias:
+            return Val_int(1);
+        case SkFont::Edging::kSubpixelAntiAlias:
+            return Val_int(2);
+        default:
+            warn("Unexpected option for edging");
+            return Val_int(0);
+        }
+    }
+
+    SkFont::Edging variantToEdging(value vEdging)
+    {
+        switch (Int_val(vEdging))
+        {
+        case 0:
+            return SkFont::Edging::kAlias;
+        case 1:
+            return SkFont::Edging::kAntiAlias;
+        case 2:
+            return SkFont::Edging::kSubpixelAntiAlias;
+        default:
+            warn("Unexpected option for edging");
+            return SkFont::Edging::kAlias;
+        }
+    }
+
+    CAMLprim value
+    caml_SkFont_setEdging(value vFont, value vEdging)
+    {
+        CAMLparam2(vFont, vEdging);
+        auto pFont = static_cast<SkFont *>(Data_custom_val(vFont));
+        auto edging = variantToEdging(vEdging);
+        pFont->setEdging(edging);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_SkFont_getEdging(value vFont)
+    {
+        CAMLparam1(vFont);
+        CAMLlocal1(vEdging);
+        auto pFont = static_cast<SkFont *>(Data_custom_val(vFont));
+        auto edging = pFont->getEdging();
+        vEdging = edgingToVariant(edging);
+        CAMLreturn(vEdging);
     }
 
     SkTextEncoding variantToTextEncoding(value vEncoding)
@@ -399,6 +474,38 @@ extern "C"
         CAMLreturn(vImageInfo);
     }
 
+    SkPixelGeometry variantToPixelGeometry(value vPixelGeometry)
+    {
+        switch (Int_val(vPixelGeometry))
+        {
+        case 0:
+            return kUnknown_SkPixelGeometry;
+        case 1:
+            return kRGB_H_SkPixelGeometry;
+        case 2:
+            return kBGR_H_SkPixelGeometry;
+        case 3:
+            return kRGB_V_SkPixelGeometry;
+        case 4:
+            return kBGR_V_SkPixelGeometry;
+        default:
+            warn("Unexpected option for pixelGeometry");
+            return kUnknown_SkPixelGeometry;
+        }
+    }
+
+    CAMLprim value
+    caml_SkSurfaceProps_Make(value vPixelGeometry)
+    {
+        CAMLparam1(vPixelGeometry);
+        CAMLlocal1(vSurfaceProps);
+        auto pixelGeometry = variantToPixelGeometry(vPixelGeometry);
+        vSurfaceProps = caml_alloc_custom(&SurfacePropsCustomOperations, sizeof(SkSurfaceProps), 0, 1);
+        auto pSurfaceProps = Data_custom_val(vSurfaceProps);
+        new (pSurfaceProps) SkSurfaceProps(0, pixelGeometry);
+        CAMLreturn(vSurfaceProps);
+    }
+
     CAMLprim value
     caml_SkSurface_MakeRenderTarget(value vContext, value vBudgeted, value vImageInfo)
     {
@@ -412,12 +519,13 @@ extern "C"
     }
 
     CAMLprim value
-    caml_SkSurface_MakeRaster(value vImageInfo)
+    caml_SkSurface_MakeRaster(value vImageInfo, value vSurfaceProps)
     {
-        CAMLparam1(vImageInfo);
+        CAMLparam2(vImageInfo, vSurfaceProps);
         auto pImageInfo = static_cast<SkImageInfo *>(Data_custom_val(vImageInfo));
+        auto pSurfaceProps = static_cast<SkSurfaceProps *>(Data_custom_val(vSurfaceProps));
         // TODO this can also return null and should probably be an option
-        auto surface = SkSurface::MakeRaster(*pImageInfo);
+        auto surface = SkSurface::MakeRaster(*pImageInfo, pSurfaceProps);
         CAMLreturn(wSkSurface::alloc(surface));
     }
 

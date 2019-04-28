@@ -4,7 +4,7 @@ let getExecutingDirectory = () =>
   Filename.dirname(Sys.argv[0]) ++ Filename.dir_sep;
 
 let imageInfo = Sk.ImageInfo.make(800, 600, N32, Premul, None);
-let surface = Sk.Surface.makeRaster(imageInfo);
+let surface = Sk.Surface.makeRaster(imageInfo, surfaceProps);
 let canvas = Sk.Surface.getCanvas(surface);
 
 let bgColor = Sk.Color.make(255, 100, 0, 200);
@@ -50,6 +50,8 @@ Sk.Canvas.drawRRect(
 
 let typeface = Sk.Typeface.makeDefault();
 let font = Sk.Font.make(typeface, 35., 1., 0.);
+Sk.Font.setSubpixel(font, true);
+Sk.Font.setEdging(font, SubpixelAntiAlias);
 let textBlob = Sk.TextBlob.makeFromString("Hello, reason-skia!", font, None);
 Sk.Canvas.drawTextBlob(
   canvas,

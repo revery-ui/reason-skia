@@ -248,7 +248,7 @@ module Sk = {
     external makeRenderTarget: (Gr.Context.t, budgeted, ImageInfo.t) => t =
       "caml_SkSurface_MakeRenderTarget";
 
-    external makeRaster: (ImageInfo.t, SurfaceProps.t) => t =
+    external makeRaster: (ImageInfo.t, option(SurfaceProps.t)) => t =
       "caml_SkSurface_MakeRaster"; // TODO this should accept an optional SurfaceProps parameter
 
     external getCanvas: t => Canvas.t = "caml_SkSurface_getCanvas";

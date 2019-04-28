@@ -4,7 +4,9 @@ let getExecutingDirectory = () =>
   Filename.dirname(Sys.argv[0]) ++ Filename.dir_sep;
 
 let imageInfo = Sk.ImageInfo.make(800, 600, N32, Premul, None);
-let surface = Sk.Surface.makeRaster(imageInfo, surfaceProps);
+// let surfaceProps = Sk.SurfaceProps.make(BGRH);
+// let surface = Sk.Surface.makeRaster(imageInfo, Some(surfaceProps));
+let surface = Sk.Surface.makeRaster(imageInfo, None);
 let canvas = Sk.Surface.getCanvas(surface);
 
 let bgColor = Sk.Color.make(255, 100, 0, 200);

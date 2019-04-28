@@ -124,8 +124,9 @@ extern "C"
     caml_SkPaint_getColor(value vPaint)
     {
         CAMLparam1(vPaint);
+        CAMLlocal1(vColor);
         auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
-        auto vColor = caml_alloc_custom(&ColorCustomOperations, sizeof(SkColor), 0, 1);
+        vColor = caml_alloc_custom(&ColorCustomOperations, sizeof(SkColor), 0, 1);
         auto pColor = static_cast<SkColor *>(Data_custom_val(vColor));
         *pColor = pPaint->getColor();
         CAMLreturn(vColor);
@@ -176,7 +177,7 @@ extern "C"
     CAMLprim value
     caml_SkFont_setSubpixel(value vFont, value vShouldBeEnabled)
     {
-        CAMLparam2(vFont, vSubpixel);
+        CAMLparam2(vFont, vShouldBeEnabled);
         auto pFont = static_cast<SkFont *>(Data_custom_val(vFont));
         auto shouldBeEnabled = Bool_val(vShouldBeEnabled);
         pFont->setSubpixel(shouldBeEnabled);
@@ -519,13 +520,14 @@ extern "C"
     }
 
     CAMLprim value
-    caml_SkSurface_MakeRaster(value vImageInfo, value vSurfaceProps)
+    caml_SkSurface_MakeRaster(value vImageInfo, value vSurfacePropsOption)
     {
-        CAMLparam2(vImageInfo, vSurfaceProps);
+        CAMLparam2(vImageInfo, vSurfacePropsOption);
         auto pImageInfo = static_cast<SkImageInfo *>(Data_custom_val(vImageInfo));
-        auto pSurfaceProps = static_cast<SkSurfaceProps *>(Data_custom_val(vSurfaceProps));
         // TODO this can also return null and should probably be an option
-        auto surface = SkSurface::MakeRaster(*pImageInfo, pSurfaceProps);
+        auto surface = vSurfacePropsOption == Val_none
+                           ? SkSurface::MakeRaster(*pImageInfo)
+                           : SkSurface::MakeRaster(*pImageInfo, static_cast<SkSurfaceProps *>(Data_custom_val(vSurfacePropsOption)));
         CAMLreturn(wSkSurface::alloc(surface));
     }
 

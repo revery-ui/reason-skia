@@ -167,6 +167,195 @@ extern "C"
     }
 
     CAMLprim value
+    caml_SkPaint_setStrokeWidth(value vPaint, value vStrokeWidth)
+    {
+        CAMLparam2(vPaint, vStrokeWidth);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        auto strokeWidth = static_cast<SkScalar>(Double_val(vStrokeWidth));
+        pPaint->setStrokeWidth(strokeWidth);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_SkPaint_getStrokeWidth(value vPaint)
+    {
+        CAMLparam1(vPaint);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        CAMLreturn(caml_copy_double(static_cast<double>(pPaint->getStrokeWidth())));
+    }
+
+    CAMLprim value
+    strokeCapToVariant(SkPaint::Cap strokeCap)
+    {
+        switch (strokeCap)
+        {
+        case SkPaint::Cap::kButt_Cap:
+            return Val_int(0);
+        case SkPaint::Cap::kRound_Cap:
+            return Val_int(1);
+        case SkPaint::Cap::kSquare_Cap:
+            return Val_int(2);
+        default:
+            warn("Unexpected option for strokeCap");
+            return Val_int(0);
+        }
+    }
+
+    SkPaint::Cap variantToStrokeCap(value vStrokeCap)
+    {
+        switch (Int_val(vStrokeCap))
+        {
+        case 0:
+            return SkPaint::Cap::kButt_Cap;
+        case 1:
+            return SkPaint::Cap::kRound_Cap;
+        case 2:
+            return SkPaint::Cap::kSquare_Cap;
+        default:
+            warn("Unexpected option for strokeCap");
+            return SkPaint::Cap::kDefault_Cap;
+        }
+    }
+
+    CAMLprim value
+    caml_SkPaint_setStrokeCap(value vPaint, value vStrokeCap)
+    {
+        CAMLparam2(vPaint, vStrokeCap);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        auto strokeCap = variantToStrokeCap(vStrokeCap);
+        pPaint->setStrokeCap(strokeCap);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_SkPaint_getStrokeCap(value vPaint)
+    {
+        CAMLparam1(vPaint);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        CAMLreturn(strokeCapToVariant(pPaint->getStrokeCap()));
+    }
+
+    CAMLprim value
+    strokeJoinToVariant(SkPaint::Join strokeJoin)
+    {
+        switch (strokeJoin)
+        {
+        case SkPaint::Join::kMiter_Join:
+            return Val_int(0);
+        case SkPaint::Join::kRound_Join:
+            return Val_int(1);
+        case SkPaint::Join::kBevel_Join:
+            return Val_int(2);
+        default:
+            warn("Unexpected option for strokeJoin");
+            return Val_int(0);
+        }
+    }
+
+    SkPaint::Join variantToStrokeJoin(value vStrokeJoin)
+    {
+        switch (Int_val(vStrokeJoin))
+        {
+        case 0:
+            return SkPaint::Join::kMiter_Join;
+        case 1:
+            return SkPaint::Join::kRound_Join;
+        case 2:
+            return SkPaint::Join::kBevel_Join;
+        default:
+            warn("Unexpected option for strokeJoin");
+            return SkPaint::Join::kDefault_Join;
+        }
+    }
+
+    CAMLprim value
+    caml_SkPaint_setStrokeJoin(value vPaint, value vStrokeJoin)
+    {
+        CAMLparam2(vPaint, vStrokeJoin);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        auto strokeJoin = variantToStrokeJoin(vStrokeJoin);
+        pPaint->setStrokeJoin(strokeJoin);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_SkPaint_getStrokeJoin(value vPaint)
+    {
+        CAMLparam1(vPaint);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        CAMLreturn(strokeJoinToVariant(pPaint->getStrokeJoin()));
+    }
+
+    CAMLprim value
+    caml_SkPaint_setStrokeMiter(value vPaint, value vStrokeMiter)
+    {
+        CAMLparam2(vPaint, vStrokeMiter);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        auto strokeMiter = static_cast<SkScalar>(Double_val(vStrokeMiter));
+        pPaint->setStrokeMiter(strokeMiter);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_SkPaint_getStrokeMiter(value vPaint)
+    {
+        CAMLparam1(vPaint);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        CAMLreturn(caml_copy_double(static_cast<double>(pPaint->getStrokeMiter())));
+    }
+
+    CAMLprim value
+    styleToVariant(SkPaint::Style style)
+    {
+        switch (style)
+        {
+        case SkPaint::Style::kFill_Style:
+            return Val_int(0);
+        case SkPaint::Style::kStroke_Style:
+            return Val_int(1);
+        case SkPaint::Style::kStrokeAndFill_Style:
+            return Val_int(2);
+        default:
+            warn("Unexpected option for style");
+            return Val_int(0);
+        }
+    }
+
+    SkPaint::Style variantToStyle(value vStyle)
+    {
+        switch (Int_val(vStyle))
+        {
+        case 0:
+            return SkPaint::Style::kFill_Style;
+        case 1:
+            return SkPaint::Style::kStroke_Style;
+        case 2:
+            return SkPaint::Style::kStrokeAndFill_Style;
+        default:
+            warn("Unexpected option for style");
+            return SkPaint::Style::kFill_Style;
+        }
+    }
+
+    CAMLprim value
+    caml_SkPaint_setStyle(value vPaint, value vStyle)
+    {
+        CAMLparam2(vPaint, vStyle);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        auto style = variantToStyle(vStyle);
+        pPaint->setStyle(style);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_SkPaint_getStyle(value vPaint)
+    {
+        CAMLparam1(vPaint);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        CAMLreturn(styleToVariant(pPaint->getStyle()));
+    }
+
+    CAMLprim value
     caml_SkPaint_setAntiAlias(value vPaint, value vShouldBeEnabled)
     {
         CAMLparam2(vPaint, vShouldBeEnabled);

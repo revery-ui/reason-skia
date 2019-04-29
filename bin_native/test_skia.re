@@ -53,6 +53,19 @@ Sk.Canvas.drawRRect(
   complexRoundedThingRRect,
   complexRoundedThingPaint,
 );
+let complexRoundedThingOutlinePaint = Sk.Paint.make();
+Sk.Paint.setColor(
+  complexRoundedThingOutlinePaint,
+  Sk.Color.make(255, 50, 50, 50),
+);
+Sk.Paint.setStyle(complexRoundedThingOutlinePaint, Stroke);
+Sk.Paint.setStrokeWidth(complexRoundedThingOutlinePaint, 3.);
+Sk.Paint.setAntiAlias(complexRoundedThingOutlinePaint, true);
+Sk.Canvas.drawRRect(
+  canvas,
+  complexRoundedThingRRect,
+  complexRoundedThingOutlinePaint,
+);
 
 let typeface = Sk.Typeface.makeDefault();
 let font = Sk.Font.make(typeface, 35., 1., 0.);

@@ -83,14 +83,12 @@ module Sk = {
     type cap =
       | Butt
       | Round
-      | Square
-      | Default;
+      | Square;
 
     type join =
       | Miter
       | Round
-      | Bevel
-      | Default;
+      | Bevel;
 
     type style =
       | Fill
@@ -103,6 +101,18 @@ module Sk = {
 
     external setColor: (t, Color.t) => unit = "caml_SkPaint_setColor";
     external getColor: t => Color.t = "caml_SkPaint_getColor";
+    external setStyle: (t, style) => unit = "caml_SkPaint_setStyle";
+    external getStyle: t => style = "caml_SkPaint_getStyle";
+    external setStrokeWidth: (t, scalar) => unit =
+      "caml_SkPaint_setStrokeWidth";
+    external getStrokeWidth: t => scalar = "caml_SkPaint_getStrokeWidth";
+    external setStrokeCap: (t, cap) => unit = "caml_SkPaint_setStrokeCap";
+    external getStrokeCap: t => cap = "caml_SkPaint_getStrokeCap";
+    external setStrokeJoin: (t, join) => unit = "caml_SkPaint_setStrokeJoin";
+    external getStrokeJoin: t => join = "caml_SkPaint_getStrokeJoin";
+    external setStrokeMiter: (t, scalar) => unit =
+      "caml_SkPaint_setStrokeMiter";
+    external getStrokeMiter: t => scalar = "caml_SkPaint_getStrokeMiter";
     external setAntiAlias: (t, bool) => unit = "caml_SkPaint_setAntiAlias";
     external isAntiAlias: t => bool = "caml_SkPaint_isAntiAlias";
     external setMaskFilter: (t, MaskFilter.t) => unit =

@@ -36,6 +36,29 @@ module Sk = {
     // external copy: t => t = "caml_SkPath_copy";
   };
 
+  type flattenableType =
+    | ColorFilter
+    | Drawable
+    | DrawLooper
+    | ImageFilter
+    | MaskFilter
+    | PathEffect
+    | PixelRef
+    | ShaderBase
+    | NormalSource;
+
+  type blurStyle =
+    | Normal
+    | Solid
+    | Outer
+    | Inner;
+
+  module MaskFilter = {
+    type t;
+
+    external makeBlur: (blurStyle, scalar) => t = "caml_SkMaskFilter_MakeBlur";
+  };
+
   module Shader = {
     type t;
 
@@ -82,6 +105,9 @@ module Sk = {
     external getColor: t => Color.t = "caml_SkPaint_getColor";
     external setAntiAlias: (t, bool) => unit = "caml_SkPaint_setAntiAlias";
     external isAntiAlias: t => bool = "caml_SkPaint_isAntiAlias";
+    external setMaskFilter: (t, MaskFilter.t) => unit =
+      "caml_SkPaint_setMaskFilter";
+    external getMaskFilter: t => MaskFilter.t = "caml_SkPaint_getMaskFilter";
   };
 
   module Typeface = {

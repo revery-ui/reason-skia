@@ -18,6 +18,8 @@
 #include "SkTypeface.h"
 #include "SkFont.h"
 #include "SkTextBlob.h"
+#include "SkBlurTypes.h"
+#include "SkMaskFilter.h"
 
 #define Val_none Val_int(0)
 
@@ -65,6 +67,10 @@ typedef wrapped<sk_sp<SkTextBlob>> wSkTextBlob;
 template <>
 char const *ml_name<wSkTextBlob::type>() { return "sk_sp<SkTextBlob>"; }
 
+typedef wrapped<sk_sp<SkMaskFilter>> wSkMaskFilter;
+template <>
+char const *ml_name<wSkMaskFilter::type>() { return "sk_sp<SkMaskFilter>"; }
+
 struct custom_operations ImageInfoCustomOperations = {.identifier = const_cast<char *>("SkImageInfo")};
 
 struct custom_operations SurfacePropsCustomOperations = {.identifier = const_cast<char *>("SkSurfaceProps")};
@@ -97,6 +103,34 @@ extern "C"
         auto pColor = static_cast<SkColor *>(Data_custom_val(vColor));
         *pColor = SkColorSetARGB(Int_val(vAlpha), Int_val(vRed), Int_val(vGreen), Int_val(vBlue));
         CAMLreturn(vColor);
+    }
+
+    SkBlurStyle variantToBlurType(value vBlurType)
+    {
+        switch (Int_val(vBlurType))
+        {
+        case 0:
+            return SkBlurStyle::kNormal_SkBlurStyle;
+        case 1:
+            return SkBlurStyle::kSolid_SkBlurStyle;
+        case 2:
+            return SkBlurStyle::kOuter_SkBlurStyle;
+        case 3:
+            return SkBlurStyle::kInner_SkBlurStyle;
+        default:
+            warn("Unexpected option for blurType");
+            return SkBlurStyle::kNormal_SkBlurStyle;
+        }
+    }
+
+    CAMLprim value
+    caml_SkMaskFilter_MakeBlur(value vBlurType, value vSigma)
+    {
+        CAMLparam2(vBlurType, vSigma);
+        auto blurType = variantToBlurType(vBlurType);
+        auto sigma = static_cast<SkScalar>(Double_val(vSigma));
+        auto maskFilter = SkMaskFilter::MakeBlur(blurType, sigma);
+        CAMLreturn(wSkMaskFilter::alloc(maskFilter));
     }
 
     CAMLprim value
@@ -152,6 +186,25 @@ extern "C"
     }
 
     CAMLprim value
+    caml_SkPaint_setMaskFilter(value vPaint, value vMaskFilter)
+    {
+        CAMLparam2(vPaint, vMaskFilter);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        auto maskFilter = wSkMaskFilter::get(vMaskFilter);
+        pPaint->setMaskFilter(maskFilter);
+        CAMLreturn(Val_unit);
+    }
+
+    CAMLprim value
+    caml_SkPaint_getMaskFilter(value vPaint)
+    {
+        CAMLparam1(vPaint);
+        auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
+        auto maskFilter = pPaint->getMaskFilter();
+        CAMLreturn(wSkMaskFilter::alloc(maskFilter));
+    }
+
+    CAMLprim value
     caml_SkTypeface_MakeDefault(value vUnit)
     {
         CAMLparam1(vUnit);
@@ -165,9 +218,9 @@ extern "C"
         CAMLparam4(vTypeface, vSize, vScaleX, vSkewX);
         CAMLlocal1(vFont);
         auto typeface = wSkTypeface::get(vTypeface);
-        auto size = static_cast<float>(Double_val(vSize));
-        auto scaleX = static_cast<float>(Double_val(vScaleX));
-        auto skewX = static_cast<float>(Double_val(vSkewX));
+        auto size = static_cast<SkScalar>(Double_val(vSize));
+        auto scaleX = static_cast<SkScalar>(Double_val(vScaleX));
+        auto skewX = static_cast<SkScalar>(Double_val(vSkewX));
         vFont = caml_alloc_custom(&FontCustomOperations, sizeof(SkFont), 0, 1);
         auto pFont = static_cast<SkFont *>(Data_custom_val(vFont));
         new (pFont) SkFont(typeface, size, scaleX, skewX);
@@ -365,10 +418,10 @@ extern "C"
         vRect = caml_alloc_custom(&RectCustomOperations, sizeof(SkRect), 0, 1);
         auto pRect = static_cast<SkRect *>(Data_custom_val(vRect));
         *pRect = SkRect::MakeLTRB(
-            static_cast<float>(Double_val(vL)),
-            static_cast<float>(Double_val(vT)),
-            static_cast<float>(Double_val(vR)),
-            static_cast<float>(Double_val(vB)));
+            static_cast<SkScalar>(Double_val(vL)),
+            static_cast<SkScalar>(Double_val(vT)),
+            static_cast<SkScalar>(Double_val(vR)),
+            static_cast<SkScalar>(Double_val(vB)));
         CAMLreturn(vRect);
     }
 
@@ -380,10 +433,10 @@ extern "C"
         vRect = caml_alloc_custom(&RectCustomOperations, sizeof(SkRect), 0, 1);
         auto pRect = static_cast<SkRect *>(Data_custom_val(vRect));
         *pRect = SkRect::MakeXYWH(
-            static_cast<float>(Double_val(vX)),
-            static_cast<float>(Double_val(vY)),
-            static_cast<float>(Double_val(vW)),
-            static_cast<float>(Double_val(vH)));
+            static_cast<SkScalar>(Double_val(vX)),
+            static_cast<SkScalar>(Double_val(vY)),
+            static_cast<SkScalar>(Double_val(vW)),
+            static_cast<SkScalar>(Double_val(vH)));
         CAMLreturn(vRect);
     }
 
@@ -421,8 +474,8 @@ extern "C"
         auto pRRect = static_cast<SkRRect *>(Data_custom_val(vRRect));
         *pRRect = SkRRect::MakeRectXY(
             *pRect,
-            static_cast<float>(Double_val(vX)),
-            static_cast<float>(Double_val(vY)));
+            static_cast<SkScalar>(Double_val(vX)),
+            static_cast<SkScalar>(Double_val(vY)));
         CAMLreturn(vRRect);
     }
 
@@ -442,10 +495,10 @@ extern "C"
             SkVector vectors[4];
         };
         Radii radii = {{
-            {static_cast<float>(Double_val(Field(vTopLeftRadii, 0))), static_cast<float>(Double_val(Field(vTopLeftRadii, 1)))},
-            {static_cast<float>(Double_val(Field(vTopRightRadii, 0))), static_cast<float>(Double_val(Field(vTopRightRadii, 1)))},
-            {static_cast<float>(Double_val(Field(vBottomRightRadii, 0))), static_cast<float>(Double_val(Field(vBottomRightRadii, 1)))},
-            {static_cast<float>(Double_val(Field(vBottomLeftRadii, 0))), static_cast<float>(Double_val(Field(vBottomLeftRadii, 1)))},
+            {static_cast<SkScalar>(Double_val(Field(vTopLeftRadii, 0))), static_cast<SkScalar>(Double_val(Field(vTopLeftRadii, 1)))},
+            {static_cast<SkScalar>(Double_val(Field(vTopRightRadii, 0))), static_cast<SkScalar>(Double_val(Field(vTopRightRadii, 1)))},
+            {static_cast<SkScalar>(Double_val(Field(vBottomRightRadii, 0))), static_cast<SkScalar>(Double_val(Field(vBottomRightRadii, 1)))},
+            {static_cast<SkScalar>(Double_val(Field(vBottomLeftRadii, 0))), static_cast<SkScalar>(Double_val(Field(vBottomLeftRadii, 1)))},
         }};
         pRRect->setRectRadii(
             *pRect,
@@ -587,8 +640,8 @@ extern "C"
         CAMLparam5(vCanvas, vTextBlob, vX, vY, vPaint);
         auto pCanvas = reinterpret_cast<SkCanvas *>(vCanvas);
         auto textBlob = wSkTextBlob::get(vTextBlob);
-        auto x = static_cast<float>(Double_val(vX));
-        auto y = static_cast<float>(Double_val(vY));
+        auto x = static_cast<SkScalar>(Double_val(vX));
+        auto y = static_cast<SkScalar>(Double_val(vY));
         auto pPaint = static_cast<SkPaint *>(Data_custom_val(vPaint));
         pCanvas->drawTextBlob(textBlob, x, y, *pPaint);
         CAMLreturn(Val_unit);

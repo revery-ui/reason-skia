@@ -14,10 +14,14 @@ let bgPaint = Sk.Paint.make();
 Sk.Paint.setColor(bgPaint, bgColor);
 Sk.Canvas.drawPaint(canvas, bgPaint);
 
+let boxRect = Sk.Rect.makeXYWH(230., 170., 440., 280.);
+let boxShadowPaint = Sk.Paint.make();
+Sk.Paint.setColor(boxShadowPaint, Sk.Color.make(255, 0, 0, 0));
+Sk.Paint.setMaskFilter(boxShadowPaint, Sk.MaskFilter.makeBlur(Normal, 5.));
+Sk.Canvas.drawRect(canvas, boxRect, boxShadowPaint);
 let boxColor = Sk.Color.make(255, 30, 220, 80);
 let boxPaint = Sk.Paint.make();
 Sk.Paint.setColor(boxPaint, boxColor);
-let boxRect = Sk.Rect.makeXYWH(230., 170., 440., 280.);
 Sk.Canvas.drawRect(canvas, boxRect, boxPaint);
 
 let ovalColor = Sk.Color.make(60, 130, 0, 80);

@@ -1,0 +1,4 @@
+(executable
+ (name TestApp)
+ (public_name TestApp.exe)
+ (libraries skia))

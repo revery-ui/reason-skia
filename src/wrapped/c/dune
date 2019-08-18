@@ -1,6 +1,6 @@
 (rule
  (targets c_flags.txt c_library_flags.txt)
- (deps    (:discover ../config/discover.exe))
+ (deps    (:discover ../../config/discover.exe))
  (action  (run %{discover})))
 
 (library

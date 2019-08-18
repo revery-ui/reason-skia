@@ -1,0 +1,4 @@
+(library
+ (name SkiaWrappedBindings)
+ (public_name skia.wrapped.bindings)
+ (libraries skia.wrapped.bindings.types ctypes.stubs ctypes))

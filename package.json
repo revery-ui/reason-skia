@@ -3,15 +3,38 @@
   "version": "0.1.0",
   "description": "Reason bindings for the Skia 2D graphics library",
   "esy": {
-    "build": [ [ "refmterr", "dune", "build", "--root", "." ] ],
-    "install": [ "esy-installer" ]
+    "build": [
+      [
+        "refmterr",
+        "dune",
+        "build",
+        "--root",
+        "."
+      ]
+    ],
+    "install": [
+      "esy-installer"
+    ]
   },
-  "peerDependencies": { "ocaml": "~4.6.0" },
+  "peerDependencies": {
+    "ocaml": "~4.6.0"
+  },
   "dependencies": {
-    "@esy-ocaml/reason": "^3.3.7",
+    "@esy-ocaml/reason": "*",
+    "@opam/ctypes": "0.14.0",
+    "@opam/ctypes-foreign": "0.4.0",
     "@opam/dune": "*",
-    "esy-skia": "^0.1.7",
-    "refmterr": "^3.1.0"
+    "@opam/lambda-term": "*",
+    "esy-skia": "manuhornung/esy-skia#4599a0618944bfef885b22bc07bd4b868a5a57fa",
+    "@opam/lwt": "*",
+    "refmterr": "*"
   },
-  "devDependencies": { "ocaml": "~4.6.0" }
+  "devDependencies": {
+    "@esy-ocaml/merlin": "*",
+    "ocaml": "~4.6.0"
+  },
+  "resolutions": {
+    "@opam/ocaml-migrate-parsetree": "1.1.0",
+    "@esy-ocaml/libffi": "esy-ocaml/libffi#599bc3567ecf839240977b6d9aaf0b80f983b5aa"
+  }
 }

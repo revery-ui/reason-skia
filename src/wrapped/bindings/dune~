@@ -1,0 +1,5 @@
+(library
+ (name ges_bindings)
+ (synopsis "Ctypes bindings that describe the GES FFI")
+ (public_name ges.bindings)
+ (libraries ges.binding.types ctypes.stubs ctypes))

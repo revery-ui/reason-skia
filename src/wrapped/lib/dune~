@@ -1,0 +1,21 @@
+(rule
+ (targets types_stub.ml)
+ (deps ../stubgen/ml_types_stubgen.exe)
+ (action (with-stdout-to %{targets} (run %{deps}))))
+
+(rule
+ (targets skia_wrapped_generated_stubs.ml)
+ (deps ../stubgen/stubgen.exe)
+ (action (with-stdout-to %{targets} (run %{deps} -ml))))
+
+(rule
+ (targets skia_wrapped_generated_stubs.c)
+ (deps (:stubgen ../stubgen/stubgen.exe))
+ (action (with-stdout-to %{targets} (run %{stubgen} -c))))
+
+(library
+  (name skia_wrapped)
+  (flags (-w -40 -w +26))
+  (public_name skia.wrapped)
+  (libraries skia.wrapped.bindings.types skia.wrapped.bindings ctypes ctypes.foreign skia.wrapped.c)
+  (c_names skia_wrapped_generated_stubs))

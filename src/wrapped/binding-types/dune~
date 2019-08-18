@@ -1,0 +1,4 @@
+(library
+ (name ges_binding_types)
+ (public_name ges.binding.types)
+ (libraries ctypes ctypes.foreign))

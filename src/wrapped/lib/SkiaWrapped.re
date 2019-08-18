@@ -1,0 +1,3 @@
+include SkiaWrappedBindings.M(Skia_wrapped_generated_stubs);
+include SkiaWrappedBindingsTypes;
+include SkiaWrappedBindingsTypes.M(Skia_wrapped_generated_type_stubs);

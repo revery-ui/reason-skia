@@ -1,0 +1,30 @@
+(library
+ (name ges_c)
+ (public_name ges.c)
+ (preprocess no_preprocessing)
+ (self_build_stubs_archive (ges_c)))
+
+(rule
+ (targets libges_c_stubs.a)
+ (deps foo.o bar.o)
+ (action (run ar rcs %{targets} %{deps})))
+
+(rule
+ (targets dllges_c_stubs.dll)
+ (deps   foo.o bar.o)
+ (action (run %{cc} -shared -o %{targets} %{deps})))
+
+(rule
+ (targets dllges_c_stubs.so)
+ (deps   foo.o bar.o)
+ (action (run %{cc} -shared -o %{targets} %{deps})))
+
+(rule
+ (targets foo.o)
+ (deps (:c foo.c) headers.h foo.h)
+ (action (run %{cc} -I. -c %{c})))
+
+(rule
+ (targets bar.o)
+ (deps (:c bar.c) headers.h bar.h)
+ (action (run %{cc} -I. -c %{c})))

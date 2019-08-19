@@ -27,7 +27,8 @@
     "@opam/lambda-term": "*",
     "esy-skia": "manuhornung/esy-skia#4599a0618944bfef885b22bc07bd4b868a5a57fa",
     "@opam/lwt": "*",
-    "refmterr": "*"
+    "refmterr": "*",
+    "yarn-pkg-config": "*"
   },
   "devDependencies": {
     "@esy-ocaml/merlin": "*",
@@ -35,6 +36,7 @@
   },
   "resolutions": {
     "@opam/ocaml-migrate-parsetree": "1.1.0",
+    "yarn-pkg-config": "esy-ocaml/yarn-pkg-config#34947ac97f898c8a94b1731df45aea16f8fc7b3c",
     "@esy-ocaml/libffi": "esy-ocaml/libffi#599bc3567ecf839240977b6d9aaf0b80f983b5aa"
   }
 }

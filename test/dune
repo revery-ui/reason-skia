@@ -1,4 +1,10 @@
+(rule
+    (targets cclib_c_library_flags.sexp)
+    (deps (:discover ../src/config/discover.exe))
+    (action (run %{discover})))
+
 (executable
  (name TestApp)
  (public_name TestApp.exe)
+ (flags -cclib (:include c_library_flags.sexp))
  (libraries skia))

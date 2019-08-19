@@ -22,5 +22,6 @@ let () =
 
     write_txt("c_flags.txt", conf.cflags);
     write_sexp("c_library_flags.sexp", conf.libs);
+    write_sexp("cclib_c_library_flags.sexp", conf.libs |> List.map(o => ["-cclib", o]) |> List.flatten);
     write_txt("c_library_flags.txt", conf.libs);
   });

@@ -6,5 +6,5 @@
 (executable
  (name TestApp)
  (public_name TestApp.exe)
- (flags -cclib (:include c_library_flags.sexp))
+ (flags (:include cclib_c_library_flags.sexp))
  (libraries skia))

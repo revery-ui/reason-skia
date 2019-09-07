@@ -5,19 +5,20 @@
  * found in the LICENSE file.
  */
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "include/c/sk_canvas.h"
 #include "include/c/sk_data.h"
 #include "include/c/sk_image.h"
-#include "include/c/sk_imageinfo.h"
 #include "include/c/sk_paint.h"
 #include "include/c/sk_path.h"
 #include "include/c/sk_surface.h"
 
 static sk_surface_t* make_surface(int32_t w, int32_t h) {
-    sk_imageinfo_t* info = sk_imageinfo_new(w, h, RGBA_8888_SK_COLORTYPE,
-                                            PREMUL_SK_ALPHATYPE, NULL);
-    return sk_surface_new_raster(info, NULL);
+    sk_imageinfo_t* info = malloc(sizeof(sk_imageinfo_t));
+    *info = (sk_imageinfo_t){ .width = w, .height = h, .colorType = RGBA_8888_SK_COLORTYPE,
+                                            .alphaType = PREMUL_SK_ALPHATYPE, .colorspace = NULL };
+    return sk_surface_new_raster(info, 0, NULL);
 }
 
 static void emit_png(const char* path, sk_surface_t* surface) {
@@ -46,7 +47,7 @@ void draw(sk_canvas_t* canvas) {
     sk_paint_t* stroke = sk_paint_new();
     sk_paint_set_color(stroke, sk_color_set_argb(0xFF, 0xFF, 0x00, 0x00));
     sk_paint_set_antialias(stroke, true);
-    sk_paint_set_stroke(stroke, true);
+    sk_paint_set_style(stroke, STROKE_SK_PAINT_STYLE);
     sk_paint_set_stroke_width(stroke, 5.0f);
     sk_path_t* path = sk_path_new();
 

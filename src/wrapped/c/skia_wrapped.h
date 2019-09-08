@@ -1,5 +1,6 @@
 #include "foo.h"
 #include "bar.h"
+#include "draw_main.h"
 #ifndef _SKIA_WRAPPED_HEADERS_H
 #define _SKIA_WRAPPED_HEADERS_H
 #define FOO_CONST 42

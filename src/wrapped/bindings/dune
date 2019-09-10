@@ -1,3 +1,8 @@
+(rule
+ (targets skia_wrapped_generated_type_stubs.ml)
+ (deps ../stubgen/ml_types_stubgen.exe)
+ (action (with-stdout-to %{targets} (run %{deps}))))
+
 (library
  (name SkiaWrappedBindings)
  (public_name skia.wrapped.bindings)

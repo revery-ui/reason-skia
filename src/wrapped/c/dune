@@ -11,30 +11,20 @@
 
 (rule
  (targets libskia_wrapped_c_stubs.a)
- (deps foo.o bar.o draw_main.o)
+ (deps c_stubs.o)
  (action (run ar rcs %{targets} %{deps})))
 
 (rule
  (targets dllskia_wrapped_c_stubs.dll)
- (deps   foo.o bar.o draw_main.o)
+ (deps   c_stubs.o)
  (action (run %{cc} -shared -o %{targets} %{deps} %{read-lines:c_library_flags.txt})))
 
 (rule
  (targets dllskia_wrapped_c_stubs.so)
- (deps   foo.o bar.o draw_main.o)
+ (deps   c_stubs.o)
  (action (run %{cc} %{read-lines:c_library_flags.txt} -shared -o %{targets} %{deps})))
 
 (rule
- (targets draw_main.o)
- (deps (:c draw_main.c) c_flags.txt)
+ (targets c_stubs.o)
+ (deps (:c c_stubs.c) c_flags.txt)
  (action (run %{cc} -I. %{read-lines:c_flags.txt} -c %{c})))
-
-(rule
- (targets foo.o)
- (deps (:c foo.c) skia_wrapped.h foo.h)
- (action (run %{cc} -I. -c %{c})))
-
-(rule
- (targets bar.o)
- (deps (:c bar.c) skia_wrapped.h bar.h)
- (action (run %{cc} -I. -c %{c})))

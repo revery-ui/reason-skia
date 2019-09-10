@@ -1,1 +1,0 @@
-int draw_main(void);

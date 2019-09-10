@@ -7,6 +7,7 @@
 (executable
  (name types_stubgen)
  (modules types_stubgen)
+ (public_name types_stubgen.exe)
  (libraries skia.wrapped.bindings.types ctypes.stubs ctypes))
 
 (rule

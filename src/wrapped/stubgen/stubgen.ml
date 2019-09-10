@@ -1,8 +1,12 @@
 let prefix = "skia_wrapped_stub"
 
 let prologue = "
-//headers
-#include \"skia_wrapped.h\"
+// #include \"sk_canvas.h\"
+// #include \"sk_data.h\"
+// #include \"sk_image.h\"
+// #include \"sk_paint.h\"
+// #include \"sk_path.h\"
+// #include \"sk_surface.h\"
 "
 
 let () =

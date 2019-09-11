@@ -12,7 +12,8 @@ module M = (T: TYPE) => {
 
   module Paint = {
     type t;
-    let t: typ(structure(t)) = structure("sk_paint_t");
+    let t: typ(structure(t)) = structure("anonymous_sk_paint_t");
+    let t = typedef(t, "sk_paint_t");
  
     type style =
       | Fill
@@ -30,22 +31,25 @@ module M = (T: TYPE) => {
 
   module Rect = {
     type t;
-    let t: typ(structure(t)) = structure("sk_rect_t");
+    let t: typ(structure(t)) = structure("anonymous_sk_rect_t");
     let left = field(t, "left", float);
     let top = field(t, "top", float);
     let right = field(t, "right", float);
     let bottom = field(t, "bottom", float);
     seal(t);
+    let t = typedef(t, "sk_rect_t");
   };
 
   module Path = {
     type t;
-    let t: typ(structure(t)) = structure("sk_path_t");
+    let t: typ(structure(t)) = structure("anonymous_sk_path_t");
+    let t = typedef(t, "sk_path_t");
   };
   
   module Colorspace = {
     type t;
-    let t: typ(structure(t)) = structure("sk_colorspace_t");
+    let t: typ(structure(t)) = structure("anonymous_sk_colorspace_t");
+    let t = typedef(t, "sk_colorspace_t");
   };
 
   type colorType =
@@ -95,37 +99,43 @@ module M = (T: TYPE) => {
 
   module Data = {
     type t;
-    let t: typ(structure(t)) = structure("sk_data_t");
+    let t: typ(structure(t)) = structure("anonymous_sk_data_t");
+    let t = typedef(t, "sk_data_t");
   };
 
   module Imageinfo = {
     type t;
-    let t: typ(structure(t)) = structure("sk_imageinfo_t");
+    let t: typ(structure(t)) = structure("anonymous_sk_imageinfo_t");
     let colorspace = field(t, "colorspace", ptr(Colorspace.t));
     let width = field(t, "width", int32_t);
     let height = field(t, "height", int32_t);
     let colorType = field(t, "colorType", colorType);
     let alphaType = field(t, "alphaType", alphaType);
     seal(t);
+    let t = typedef(t, "sk_imageinfo_t");
   };
 
   module Image = {
     type t;
-    let t: typ(structure(t)) = structure("sk_image_t");
+    let t: typ(structure(t)) = structure("anonymous_sk_image_t");
+    let t = typedef(t, "sk_image_t");
   };
 
   module Canvas = {
     type t;
-    let t: typ(structure(t)) = structure("sk_canvas_t");
+    let t: typ(structure(t)) = structure("anonymous_sk_canvas_t");
+    let t = typedef(t, "sk_canvas_t");
   };
 
   module SurfaceProps = {
     type t;
-    let t: typ(structure(t)) = structure("sk_surfaceprops_t");
+    let t: typ(structure(t)) = structure("anonymous_sk_surfaceprops_t");
+    let t = typedef(t, "sk_surfaceprops_t");
   };
 
   module Surface = {
     type t;
-    let t: typ(structure(t)) = structure("sk_surface_t");
+    let t: typ(structure(t)) = structure("anonymous_sk_surface_t");
+    let t = typedef(t, "sk_surface_t");
   };
 };

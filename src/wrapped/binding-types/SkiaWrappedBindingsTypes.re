@@ -5,14 +5,14 @@ module M = (T: TYPE) => {
 
   let skiaCEnum = (name, mapping) => enum(
     name,
+    ~typedef=true,
     List.map(((constructor, constantName)) => (constructor, constant(constantName, int64_t)), mapping),
     ~unexpected = i => invalid_arg(Printf.sprintf("Unsupported %s enum: %Ld", name, i)),
-    ~typedef = true,
   );
 
   module Paint = {
     type t;
-    let t: typ(structure(t)) = structure("anonymous_sk_paint_t");
+    let t: typ(structure(t)) = structure("sk_paint_t");
     let t = typedef(t, "sk_paint_t");
  
     type style =
@@ -31,7 +31,7 @@ module M = (T: TYPE) => {
 
   module Rect = {
     type t;
-    let t: typ(structure(t)) = structure("anonymous_sk_rect_t");
+    let t: typ(structure(t)) = structure("sk_rect_t");
     let left = field(t, "left", float);
     let top = field(t, "top", float);
     let right = field(t, "right", float);
@@ -42,13 +42,13 @@ module M = (T: TYPE) => {
 
   module Path = {
     type t;
-    let t: typ(structure(t)) = structure("anonymous_sk_path_t");
+    let t: typ(structure(t)) = structure("sk_path_t");
     let t = typedef(t, "sk_path_t");
   };
   
   module Colorspace = {
     type t;
-    let t: typ(structure(t)) = structure("anonymous_sk_colorspace_t");
+    let t: typ(structure(t)) = structure("sk_colorspace_t");
     let t = typedef(t, "sk_colorspace_t");
   };
 
@@ -64,21 +64,23 @@ module M = (T: TYPE) => {
     | Rgb101010x
     | Gray8
     | RgbaF16;
-  let colorType = skiaCEnum(
+  let colorType = enum(
     "sk_colortype_t",
+    ~typedef=true,
     [
-      (Unknown, "UNKNOWN_SK_COLORTYPE"),
-      (Alpha8, "ALPHA_8_SK_COLORTYPE"),
-      (Rgb565, "RGB565_SK_COLORTYPE"),
-      (Argb4444, "ARGB_4444_SK_COLORTYPE"),
-      (Rgba8888, "RGBA_8888_SK_COLORTYPE"),
-      (Rgb888x, "RGB_888X_SK_COLORTYPE"),
-      (Bgra8888, "BGRA_8888_SK_COLORTYPE"),
-      (Rgba1010102, "RGBA_1010102_SK_COLORTYPE"),
-      (Rgb101010x, "RGB_101010X_SK_COLORTYPE"),
-      (Gray8, "GRAY_8_SK_COLORTYPE"),
-      (RgbaF16, "RGBA_F16_SK_COLORTYPE"),
+      (Unknown, constant("UNKNOWN_SK_COLORTYPE", int64_t)),
+      (Alpha8, constant("ALPHA_8_SK_COLORTYPE", int64_t)),
+      (Rgb565, constant("RGB_565_SK_COLORTYPE", int64_t)),
+      (Argb4444, constant("ARGB_4444_SK_COLORTYPE", int64_t)),
+      (Rgba8888, constant("RGBA_8888_SK_COLORTYPE", int64_t)),
+      (Rgb888x, constant("RGB_888X_SK_COLORTYPE", int64_t)),
+      (Bgra8888, constant("BGRA_8888_SK_COLORTYPE", int64_t)),
+      (Rgba1010102, constant("RGBA_1010102_SK_COLORTYPE", int64_t)),
+      (Rgb101010x, constant("RGB_101010X_SK_COLORTYPE", int64_t)),
+      (Gray8, constant("GRAY_8_SK_COLORTYPE", int64_t)),
+      (RgbaF16, constant("RGBA_F16_SK_COLORTYPE", int64_t)),
     ],
+    ~unexpected = i => invalid_arg(Printf.sprintf("Unsupported colortype enum: %Ld", i)),
   );
 
   type alphaType =
@@ -88,25 +90,26 @@ module M = (T: TYPE) => {
     | Unpremul;
   let alphaType = enum(
     "sk_alphatype_t",
+    ~typedef=true,
     [
       (Unknown, constant("UNKNOWN_SK_ALPHATYPE", int64_t)),
-      (Opaque, constant("OPAQUE_8_SK_ALPHATYPE", int64_t)),
+      (Opaque, constant("OPAQUE_SK_ALPHATYPE", int64_t)),
       (Premul, constant("PREMUL_SK_ALPHATYPE", int64_t)),
-      (Unpremul, constant("UNPREMUL_4444_SK_ALPHATYPE", int64_t)),
+      (Unpremul, constant("UNPREMUL_SK_ALPHATYPE", int64_t)),
     ],
     ~unexpected = i => invalid_arg(Printf.sprintf("Unsupported alphatype enum: %Ld", i)),
   );
 
   module Data = {
     type t;
-    let t: typ(structure(t)) = structure("anonymous_sk_data_t");
+    let t: typ(structure(t)) = structure("sk_data_t");
     let t = typedef(t, "sk_data_t");
   };
 
   module Imageinfo = {
     type t;
-    let t: typ(structure(t)) = structure("anonymous_sk_imageinfo_t");
-    let colorspace = field(t, "colorspace", ptr(Colorspace.t));
+    let t: typ(structure(t)) = structure("sk_imageinfo_t");
+    let colorspace = field(t, "colorspace", ptr_opt(Colorspace.t));
     let width = field(t, "width", int32_t);
     let height = field(t, "height", int32_t);
     let colorType = field(t, "colorType", colorType);
@@ -117,25 +120,25 @@ module M = (T: TYPE) => {
 
   module Image = {
     type t;
-    let t: typ(structure(t)) = structure("anonymous_sk_image_t");
+    let t: typ(structure(t)) = structure("sk_image_t");
     let t = typedef(t, "sk_image_t");
   };
 
   module Canvas = {
     type t;
-    let t: typ(structure(t)) = structure("anonymous_sk_canvas_t");
+    let t: typ(structure(t)) = structure("sk_canvas_t");
     let t = typedef(t, "sk_canvas_t");
   };
 
   module SurfaceProps = {
     type t;
-    let t: typ(structure(t)) = structure("anonymous_sk_surfaceprops_t");
+    let t: typ(structure(t)) = structure("sk_surfaceprops_t");
     let t = typedef(t, "sk_surfaceprops_t");
   };
 
   module Surface = {
     type t;
-    let t: typ(structure(t)) = structure("anonymous_sk_surface_t");
+    let t: typ(structure(t)) = structure("sk_surface_t");
     let t = typedef(t, "sk_surface_t");
   };
 };

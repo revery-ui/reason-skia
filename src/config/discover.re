@@ -17,11 +17,9 @@ let () =
         }
       };
 
-    let write_sexp = (fn, eles) => write_sexp(fn, eles);
-    let write_txt = (fn, eles) => write_lines(fn, eles);
-
-    write_txt("c_flags.txt", conf.cflags);
+    write_lines("c_flags.txt", conf.cflags);
+    write_sexp("c_flags.sexp", conf.cflags);
     write_sexp("c_library_flags.sexp", conf.libs);
+    write_lines("c_library_flags.txt", conf.libs);
     write_sexp("cclib_c_library_flags.sexp", conf.libs |> List.map(o => ["-cclib", o]) |> List.flatten);
-    write_txt("c_library_flags.txt", conf.libs);
   });

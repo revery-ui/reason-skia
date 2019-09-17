@@ -8,19 +8,20 @@ homepage: "https://github.com/ocamllabs/ocaml-integers"
 bug-reports: "https://github.com/ocamllabs/ocaml-integers/issues"
 dev-repo: "git+https://github.com/ocamllabs/ocaml-integers.git"
 license: "MIT"
-build:
-[[ "ocaml" "pkg/pkg.ml" "build"
-           "--pinned" "%{pinned}%"]]
+
+build: [
+  ["dune" "subst"] {pinned}
+  ["dune" "build" "-p" name "-j" jobs]
+  ["dune" "runtest" "-p" name "-j" jobs] {with-test}
+]
+
 depends: [
-  "ocaml"
-  "ocamlbuild" {build}
-  "ocamlfind" {build}
-  "topkg" {build}
+  "ocaml" {>= "4.02"}
+  "dune"
 ]
 doc: "http://ocamllabs.github.io/ocaml-integers/api.docdir/"
 synopsis: "Various signed and unsigned integer types for OCaml"
 url {
-  src:
-    "https://github.com/ocamllabs/ocaml-integers/releases/download/v0.2.2/integers-0.2.2.tbz"
-  checksum: "md5=ae226532930965fe0b43c02f2469cadc"
+  src: "https://github.com/ocamllabs/ocaml-integers/archive/0.3.0.tar.gz"
+  checksum: "md5=28715567848f07aa688a09496041731b"
 }

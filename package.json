@@ -21,11 +21,11 @@
   },
   "dependencies": {
     "@esy-ocaml/reason": "*",
-    "@opam/ctypes": "0.14.0",
+    "@opam/ctypes": "0.15.1",
     "@opam/ctypes-foreign": "0.4.0",
     "@opam/dune": "*",
     "@opam/lambda-term": "*",
-    "esy-skia": "0.3.1",
+    "esy-skia": "0.4.0",
     "@opam/lwt": "*",
     "refmterr": "*",
     "yarn-pkg-config": "*"

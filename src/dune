@@ -1,8 +1,7 @@
 (rule
-    (targets c_library_flags.sexp)
+    (targets c_library_flags.sexp c_flags.sexp)
     (deps (:discover config/discover.exe))
     (action (run %{discover})))
-
 
 (library
     (name skia)

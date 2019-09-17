@@ -12,6 +12,7 @@ module M = (F: FOREIGN) => {
 
   module Color = {
     type t;
+    let t = uint32_t;
 
     let makeArgb = foreign(
       "reason_skia_stub_sk_color_set_argb",
@@ -21,15 +22,12 @@ module M = (F: FOREIGN) => {
 
   module Paint = {
     type t = ptr(SkiaTypes.Paint.t);
+    let t = ptr(SkiaTypes.Paint.t);
     type style = SkiaTypes.Paint.style;
+    let style = SkiaTypes.Paint.style;
 
-    let make = () => {
-      let allocatePaint = foreign("sk_paint_new", void @-> returning(t));
-      let freePaint = foreign("sk_paint_delete", t @-> returning(void));
-      let paint = allocatePaint();
-      Gc.finalise(paint, freePaint);
-      paint;
-    };
+    let allocate = foreign("sk_paint_new", void @-> returning(t));
+    let delete = foreign("sk_paint_delete", t @-> returning(void));
 
     let setColor =
       foreign("sk_paint_set_color", t @-> Color.t @-> returning(void));
@@ -43,35 +41,32 @@ module M = (F: FOREIGN) => {
 
   module Rect = {
     type t = ptr(SkiaTypes.Rect.t);
+    let t = ptr(SkiaTypes.Rect.t);
 
     let makeEmpty = () => {
       let rect = allocate_n(SkiaTypes.Rect.t, 1);
-      setf(rect, SkiaTypes.Rect.left, 0.);
-      setf(rect, SkiaTypes.Rect.top, 0.);
-      setf(rect, SkiaTypes.Rect.right, 0.);
-      setf(rect, SkiaTypes.Rect.bottom, 0.);
+      setf(!@rect, SkiaTypes.Rect.left, 0.);
+      setf(!@rect, SkiaTypes.Rect.top, 0.);
+      setf(!@rect, SkiaTypes.Rect.right, 0.);
+      setf(!@rect, SkiaTypes.Rect.bottom, 0.);
       rect;
     };
     let makeLtrb = (left, top, right, bottom) => {
       let rect = allocate_n(SkiaTypes.Rect.t, 1);
-      setf(rect, SkiaTypes.Rect.left, left);
-      setf(rect, SkiaTypes.Rect.top, top);
-      setf(rect, SkiaTypes.Rect.right, right);
-      setf(rect, SkiaTypes.Rect.bottom, bottom);
+      setf(!@rect, SkiaTypes.Rect.left, left);
+      setf(!@rect, SkiaTypes.Rect.top, top);
+      setf(!@rect, SkiaTypes.Rect.right, right);
+      setf(!@rect, SkiaTypes.Rect.bottom, bottom);
       rect;
     };
   };
 
   module Path = {
     type t = ptr(SkiaTypes.Path.t);
+    let t = ptr(SkiaTypes.Path.t);
 
-    let make = () => {
-      let allocatePath = foreign("sk_path_new", void @-> returning(t));
-      let freePath = foreign("sk_path_delete", t @-> returning(void));
-      let path = allocatePath();
-      Gc.finalise(path, freePath);
-      path;
-    };
+    let allocate = foreign("sk_path_new", void @-> returning(t));
+    let delete = foreign("sk_path_delete", t @-> returning(void));
 
     let moveTo =
       foreign("sk_path_move_to", t @-> float @-> float @-> returning(void));
@@ -93,42 +88,41 @@ module M = (F: FOREIGN) => {
 
   module Data = {
     type t = ptr(SkiaTypes.Data.t);
+    let t = ptr(SkiaTypes.Data.t);
 
-    let makeString = (data) => {
-      let getData = foreign("sk_data_get_data", t @-> returning(ptr(void)));
-      let getSize = foreign("sk_data_get_size", t @-> returning(size_t));
-      string_from_ptr(from_voidp(getData(data)), getSize(data));
-    };
+    let delete = foreign("sk_data_unref", t @-> returning(void));
+
+    let getData = foreign("sk_data_get_data", t @-> returning(ptr(void)));
+    let getSize = foreign("sk_data_get_size", t @-> returning(size_t));
   };
 
   module Imageinfo = {
     type t = ptr(SkiaTypes.Imageinfo.t);
+    let t = ptr(SkiaTypes.Imageinfo.t);
     
     let make = (width, height, colorType, alphaType, colorspace) => {
       let imageinfo = allocate_n(SkiaTypes.Imageinfo.t, 1);
-      setf(imageinfo, SkiaTypes.Imageinfo.width, width);
-      setf(imageinfo, SkiaTypes.Imageinfo.height, height);
-      setf(imageinfo, SkiaTypes.Imageinfo.colorType, colorType);
-      setf(imageinfo, SkiaTypes.Imageinfo.alphaType, alphaType);
-      setf(imageinfo, SkiaTypes.Imageinfo.colorspace, colorspace);
+      setf(!@imageinfo, SkiaTypes.Imageinfo.width, width);
+      setf(!@imageinfo, SkiaTypes.Imageinfo.height, height);
+      setf(!@imageinfo, SkiaTypes.Imageinfo.colorType, colorType);
+      setf(!@imageinfo, SkiaTypes.Imageinfo.alphaType, alphaType);
+      setf(!@imageinfo, SkiaTypes.Imageinfo.colorspace, colorspace);
       imageinfo;
     };
   };
 
   module Image = {
     type t = ptr(SkiaTypes.Image.t);
+    let t = ptr(SkiaTypes.Image.t);
 
-    let encodeToData = (image) => {
-      let encodeImage = foreign("sk_image_encode", t @-> returning(Data.t));
-      let freeData = foreign("sk_data_unref", Data.t @-> returning(void));
-      let data = encodeImage(image);
-      Gc.finalise(data, freeData);
-      data;
-    };
+    let delete = foreign("sk_image_unref", t @-> returning(void));
+
+    let encode = foreign("sk_image_encode", t @-> returning(Data.t));
   };
 
   module Canvas = {
     type t = ptr(SkiaTypes.Canvas.t);
+    let t = ptr(SkiaTypes.Canvas.t);
 
     let drawPaint =
       foreign("sk_canvas_draw_paint", t @-> Paint.t @-> returning(void));
@@ -151,31 +145,26 @@ module M = (F: FOREIGN) => {
 
   module SurfaceProps = {
     type t = ptr(SkiaTypes.SurfaceProps.t);
+    let t = ptr(SkiaTypes.SurfaceProps.t);
   };
 
   module Surface = {
     type t = ptr(SkiaTypes.Surface.t);
+    let t = ptr(SkiaTypes.Surface.t);
       
-    let makeRaster = (imageinfo, rowBytes, surfaceProps) => {
-      let allocateRasterSurface =
-        foreign(
-          "sk_surface_new_raster",
-          Imageinfo.t @-> size_t @-> ptr_opt(SkiaTypes.SurfaceProps.t) @-> returning(t),
-        );
-      let freeSurface = foreign("sk_surface_unref", t @-> returning(void));
-      let surface = allocateRasterSurface(imageInfo, rowBytes, surfaceProps);
-      Gc.finalise(surface, freeSurface);
-      surface;
-    };
+    let allocateRaster =
+      foreign(
+        "sk_surface_new_raster",
+        Imageinfo.t @-> size_t @-> ptr_opt(SkiaTypes.SurfaceProps.t) @-> returning(t),
+      );
+    let delete = foreign("sk_surface_unref", t @-> returning(void));
 
     let getCanvas =
       foreign("sk_surface_get_canvas", t @-> returning(Canvas.t));
-    let makeImageSnapshot = (surface) => {
-      let allocateImageSnapshot = foreign("sk_surface_new_image_snapshot", t @-> returning(Image.t));
-      let freeImage = foreign("sk_image_unref", Image.t @-> returning(void));
-      let image = allocateImageSnapshot(surface);
-      Gc.finalise(image, freeImage);
-      image;
-    }
+    let allocateImageSnapshot =
+      foreign(
+        "sk_surface_new_image_snapshot",
+        t @-> returning(Image.t),
+      );
   };
 };

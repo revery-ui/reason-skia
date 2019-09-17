@@ -1,7 +1,7 @@
 let prefix = "skia_wrapped_stub"
 
 let prologue = "
-// #include \"sk_types.h\"
+#include \"sk_types.h\"
 "
 
 let () =

@@ -1,15 +1,16 @@
 open Skia;
 
 let makeSurface = (width, height) => {
-    let imageinfo = ImageInfo.make(width, height, Rgba8888, None);
-    Surface.newRaster(imageinfo, 0, None);
+    let imageinfo = Imageinfo.make(width, height, Rgba8888, Premul, None);
+    Surface.makeRaster(imageinfo, 0, None);
 };
 
 let emitPng = (path, surface) => {
     let image = Surface.makeImageSnapshot(surface);
     let data = Image.encodeToData(image);
-    let fileOutputChannel = open_out(path);
-    output_string(fileOutputChannel, data);
+    let dataString = Data.makeString(data);
+    let fileOutputChannel = open_out_bin(path);
+    output_string(fileOutputChannel, dataString);
     close_out(fileOutputChannel);
 };
 
@@ -40,10 +41,7 @@ let draw = (canvas) => {
     Canvas.drawOval(canvas, rect2, fill);
 };
 
-let drawMain = () => {
-    let surface = Surface.make(640, 480);
-    let canvas = Surface.getCanvas(surface);
-    draw(canvas);
-    emitPng("skia-c-example.png", surface);
-    0;
-}
+let surface = makeSurface(640l, 480l);
+let canvas = Surface.getCanvas(surface);
+draw(canvas);
+emitPng("skia-c-example.png", surface);

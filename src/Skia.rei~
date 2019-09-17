@@ -8,10 +8,11 @@ module Color: {
 };
 
 module Paint: {
-    type t;
+    type t = SkiaWrapped.Paint.t;
     type style = SkiaWrapped.Paint.style;
 
-    let make: unit => t;
+    let make: unit =>  
+             Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Paint.t));
     
     let setColor: (t, Color.t) => unit;
     let setAntiAlias: (t, bool) => unit;

@@ -54,7 +54,7 @@ module Data = {
     let makeString = data => {
         let dataPtr = Ctypes.from_voidp(Ctypes.char, SkiaWrapped.Data.getData(data));
         let dataSize = Unsigned.Size_t.to_int(SkiaWrapped.Data.getSize(data));
-        Ctypes.string_from_ptr(dataPtr, dataSize);
+        Ctypes.string_from_ptr(dataPtr, ~length=dataSize);
     };
 };
 

@@ -2,7 +2,7 @@
  * Use this file for building any C-layer functionality that we want to keep out of Reason
  */
 
-#include "sk_types.h"
+#include "c_stubs.h"
 
 sk_color_t reason_skia_stub_sk_color_set_argb(int alpha, int red, int green, int blue)
 {

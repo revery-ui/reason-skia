@@ -8,7 +8,7 @@
  (name types_stubgen)
  (modules types_stubgen)
  (public_name types_stubgen.exe)
- (libraries skia.wrapped.bindings.types ctypes.stubs ctypes))
+ (libraries skia.wrapped.types ctypes.stubs ctypes))
 
 (rule
  (targets ml_types_stubgen.c)

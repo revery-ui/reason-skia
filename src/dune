@@ -4,7 +4,7 @@
     (action (run %{discover})))
 
 (library
-    (name skia)
-    (public_name skia)
-    (c_library_flags (:include c_library_flags.sexp))
-    (libraries skia.wrapped))
+  (name skia)
+  (public_name skia)
+  (c_library_flags (:include c_library_flags.sexp))
+  (libraries skia.wrapped))

@@ -1,17 +1,15 @@
 open Ctypes;
 
-module SkiaTypes = SkiaWrappedBindingsTypes.M(Skia_wrapped_generated_type_stubs);
+module SkiaTypes = SkiaWrappedTypes.M(Skia_generated_type_stubs);
 
-// TODO Would it make sense to make all nullable parameters ptr_opt?
-// This might become beneficial if we decide to make all the structs completely
-// abstract instead of being a pointer to an abstract type
-// It would also be consistent with the fact that we already hide memory mgmt
-// TODO add a module interface for each module
 module M = (F: FOREIGN) => {
   open F;
 
+  type colorType = SkiaTypes.colorType;
+  type alphaType = SkiaTypes.alphaType;
+
   module Color = {
-    type t;
+    type t = Unsigned.uint32;
     let t = uint32_t;
 
     let makeArgb = foreign(
@@ -86,6 +84,11 @@ module M = (F: FOREIGN) => {
       );
   };
 
+  module Colorspace = {
+    type t = ptr(SkiaTypes.Colorspace.t);
+    let t = ptr(SkiaTypes.Colorspace.t);
+  };
+  
   module Data = {
     type t = ptr(SkiaTypes.Data.t);
     let t = ptr(SkiaTypes.Data.t);

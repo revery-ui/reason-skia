@@ -1,10 +1,10 @@
 (rule
- (targets skia_wrapped_generated_stubs.ml)
+ (targets skia_generated_stubs.ml)
  (deps ../stubgen/stubgen.exe)
  (action (with-stdout-to %{targets} (run %{deps} -ml))))
 
 (rule
- (targets skia_wrapped_generated_stubs.c)
+ (targets skia_generated_stubs.c)
  (deps (:stubgen ../stubgen/stubgen.exe))
  (action (with-stdout-to %{targets} (run %{stubgen} -c))))
 
@@ -12,7 +12,7 @@
   (name SkiaWrapped)
   (flags (-w -40 -w +26))
   (public_name skia.wrapped)
-  (libraries skia.wrapped.bindings.types skia.wrapped.bindings ctypes ctypes.foreign skia.wrapped.c)
-  (c_names skia_wrapped_generated_stubs)
+  (libraries skia.wrapped.types skia.wrapped.bindings ctypes ctypes.foreign)
+  (c_names skia_generated_stubs)
   (c_flags (:include ../../c_flags.sexp))
   (c_library_flags (:include ../../c_library_flags.sexp)))

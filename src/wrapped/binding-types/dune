@@ -1,4 +1,0 @@
-(library
- (name SkiaWrappedBindingsTypes)
- (public_name skia.wrapped.bindings.types)
- (libraries ctypes ctypes.foreign))

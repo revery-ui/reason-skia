@@ -64,23 +64,21 @@ module M = (T: TYPE) => {
     | Rgb101010x
     | Gray8
     | RgbaF16;
-  let colorType = enum(
+  let colorType = skiaCEnum(
     "sk_colortype_t",
-    ~typedef=true,
     [
-      (Unknown, constant("UNKNOWN_SK_COLORTYPE", int64_t)),
-      (Alpha8, constant("ALPHA_8_SK_COLORTYPE", int64_t)),
-      (Rgb565, constant("RGB_565_SK_COLORTYPE", int64_t)),
-      (Argb4444, constant("ARGB_4444_SK_COLORTYPE", int64_t)),
-      (Rgba8888, constant("RGBA_8888_SK_COLORTYPE", int64_t)),
-      (Rgb888x, constant("RGB_888X_SK_COLORTYPE", int64_t)),
-      (Bgra8888, constant("BGRA_8888_SK_COLORTYPE", int64_t)),
-      (Rgba1010102, constant("RGBA_1010102_SK_COLORTYPE", int64_t)),
-      (Rgb101010x, constant("RGB_101010X_SK_COLORTYPE", int64_t)),
-      (Gray8, constant("GRAY_8_SK_COLORTYPE", int64_t)),
-      (RgbaF16, constant("RGBA_F16_SK_COLORTYPE", int64_t)),
+      (Unknown, "UNKNOWN_SK_COLORTYPE"),
+      (Alpha8, "ALPHA_8_SK_COLORTYPE"),
+      (Rgb565, "RGB_565_SK_COLORTYPE"),
+      (Argb4444, "ARGB_4444_SK_COLORTYPE"),
+      (Rgba8888, "RGBA_8888_SK_COLORTYPE"),
+      (Rgb888x, "RGB_888X_SK_COLORTYPE"),
+      (Bgra8888, "BGRA_8888_SK_COLORTYPE"),
+      (Rgba1010102, "RGBA_1010102_SK_COLORTYPE"),
+      (Rgb101010x, "RGB_101010X_SK_COLORTYPE"),
+      (Gray8, "GRAY_8_SK_COLORTYPE"),
+      (RgbaF16, "RGBA_F16_SK_COLORTYPE"),
     ],
-    ~unexpected = i => invalid_arg(Printf.sprintf("Unsupported colortype enum: %Ld", i)),
   );
 
   type alphaType =
@@ -88,16 +86,14 @@ module M = (T: TYPE) => {
     | Opaque
     | Premul
     | Unpremul;
-  let alphaType = enum(
+  let alphaType = skiaCEnum(
     "sk_alphatype_t",
-    ~typedef=true,
     [
-      (Unknown, constant("UNKNOWN_SK_ALPHATYPE", int64_t)),
-      (Opaque, constant("OPAQUE_SK_ALPHATYPE", int64_t)),
-      (Premul, constant("PREMUL_SK_ALPHATYPE", int64_t)),
-      (Unpremul, constant("UNPREMUL_SK_ALPHATYPE", int64_t)),
+      (Unknown, "UNKNOWN_SK_ALPHATYPE"),
+      (Opaque, "OPAQUE_SK_ALPHATYPE"),
+      (Premul, "PREMUL_SK_ALPHATYPE"),
+      (Unpremul, "UNPREMUL_SK_ALPHATYPE"),
     ],
-    ~unexpected = i => invalid_arg(Printf.sprintf("Unsupported alphatype enum: %Ld", i)),
   );
 
   module Data = {

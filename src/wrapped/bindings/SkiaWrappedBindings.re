@@ -6,7 +6,9 @@ module M = (F: FOREIGN) => {
   open F;
 
   type colorType = SkiaTypes.colorType;
+  let colorType = SkiaTypes.colorType;
   type alphaType = SkiaTypes.alphaType;
+  let alphaType = SkiaTypes.alphaType;
 
   module Color = {
     type t = Unsigned.uint32;
@@ -123,6 +125,47 @@ module M = (F: FOREIGN) => {
     let encode = foreign("sk_image_encode", t @-> returning(Data.t));
   };
 
+  type pixelGeometry = SkiaTypes.pixelGeometry;
+  let pixelGeometry = SkiaTypes.pixelGeometry;
+
+  module Gr = {
+    type surfaceOrigin = SkiaTypes.Gr.surfaceOrigin;
+    let surfaceOrigin = SkiaTypes.Gr.surfaceOrigin;
+
+    module Gl = {
+      module Interface = {
+        type t = ptr(SkiaTypes.Gr.Gl.Interface.t);
+        let t = ptr(SkiaTypes.Gr.Gl.Interface.t);
+      };
+
+      module FramebufferInfo = {
+        type t = ptr(SkiaTypes.Gr.Gl.FramebufferInfo.t);
+        let t = ptr(SkiaTypes.Gr.Gl.FramebufferInfo.t);
+
+        let make = (framebufferObjectId, format) => {
+          let framebufferInfo = allocate_n(SkiaTypes.Gr.Gl.FramebufferInfo.t, 1);
+          setf(!@framebufferInfo, SkiaTypes.Gr.Gl.FramebufferInfo.framebufferObjectId, framebufferObjectId);
+          setf(!@framebufferInfo, SkiaTypes.Gr.Gl.FramebufferInfo.format, format);
+          framebufferInfo;
+        };
+      };
+    };
+
+    module Context = {
+      type t = ptr(SkiaTypes.Gr.Context.t);
+      let t = ptr(SkiaTypes.Gr.Context.t);
+
+      let makeGl = foreign("gr_context_make_gl", ptr_opt(SkiaTypes.Gr.Gl.Interface.t) @-> returning(t));
+    };
+
+    module BackendRenderTarget = {
+      type t = ptr(SkiaTypes.Gr.BackendRenderTarget.t);
+      let t = ptr(SkiaTypes.Gr.BackendRenderTarget.t);
+
+      let makeGl = foreign("gr_backendrendertarget_new_gl", int @-> int @-> int @-> int @-> ptr(SkiaTypes.Gr.Gl.FramebufferInfo.t) @-> returning(t));
+    };
+  };
+
   module Canvas = {
     type t = ptr(SkiaTypes.Canvas.t);
     let t = ptr(SkiaTypes.Canvas.t);
@@ -149,6 +192,8 @@ module M = (F: FOREIGN) => {
   module SurfaceProps = {
     type t = ptr(SkiaTypes.SurfaceProps.t);
     let t = ptr(SkiaTypes.SurfaceProps.t);
+
+    let make = foreign("sk_surfaceprops_new", uint32_t @-> pixelGeometry @-> returning(t));
   };
 
   module Surface = {
@@ -159,6 +204,31 @@ module M = (F: FOREIGN) => {
       foreign(
         "sk_surface_new_raster",
         Imageinfo.t @-> size_t @-> ptr_opt(SkiaTypes.SurfaceProps.t) @-> returning(t),
+      );
+    let allocateWithRenderTarget =
+      foreign(
+        "sk_surface_new_render_target", 
+        // TODO clarify which parameters are optional here
+        Gr.Context.t @->
+        bool @->
+        Imageinfo.t @->
+        int @->
+        Gr.surfaceOrigin @->
+        SurfaceProps.t @->
+        bool @->
+        returning(t),
+      );
+    let allocateWithBackendRenderTarget =
+      foreign(
+        "sk_surface_new_backend_render_target", 
+        // TODO clarify which parameters are optional here
+        Gr.Context.t @->
+        Gr.BackendRenderTarget.t @->
+        Gr.surfaceOrigin @->
+        colorType @->
+        ptr_opt(SkiaTypes.Colorspace.t) @->
+        ptr_opt(SkiaTypes.SurfaceProps.t) @->
+        returning(t),
       );
     let delete = foreign("sk_surface_unref", t @-> returning(void));
 

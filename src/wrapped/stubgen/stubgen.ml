@@ -1,6 +1,7 @@
 let prefix = "skia_wrapped_stub"
 
 let prologue = "
+#include \"gr_context.h\"
 #include \"sk_canvas.h\"
 #include \"sk_data.h\"
 #include \"sk_image.h\"

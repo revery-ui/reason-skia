@@ -120,6 +120,66 @@ module M = (T: TYPE) => {
     let t = typedef(t, "sk_image_t");
   };
 
+  type pixelGeometry =
+    | Unknown
+    | RgbH
+    | BgrH
+    | RgbV
+    | BgrV;
+  let pixelGeometry = skiaCEnum(
+    "sk_pixelgeometry_t",
+    [
+      (Unknown, "UNKNOWN_SK_PIXELGEOMETRY"),
+      (RgbH, "RGB_H_SK_PIXELGEOMETRY"),
+      (BgrH, "BGR_H_SK_PIXELGEOMETRY"),
+      (RgbV, "RGB_V_SK_PIXELGEOMETRY"),
+      (BgrV, "RGB_V_SK_PIXELGEOMETRY"),
+    ],
+  );
+
+  module Gr = {
+    type surfaceOrigin =
+      | TopLeft
+      | BottomLeft;
+    let surfaceOrigin = skiaCEnum(
+      "gr_surfaceorigin_t",
+      [
+        (TopLeft, "TOP_LEFT_GR_SURFACE_ORIGIN"),
+        (BottomLeft, "BOTTOM_LEFT_GR_SURFACE_ORIGIN"),
+      ],
+    );
+        
+    module Gl = {
+      module Interface = {
+        type t;
+        let t: typ(structure(t)) = structure("gr_glinterface_t");
+        let t = typedef(t, "gr_glinterface_t");
+      };
+
+      module FramebufferInfo = {
+        type t;
+        let t: typ(structure(t)) = structure("gr_gl_framebufferinfo_t");
+        let framebufferObjectId = field(t, "fFBOID", uint);
+        let format = field(t, "fFormat", uint); // TODO this could also be an enum?
+        seal(t);
+        let t = typedef(t, "gr_gl_framebufferinfo_t");
+      };
+    };
+
+    module Context = {
+      type t;
+      let t: typ(structure(t)) = structure("gr_context_t");
+      let t = typedef(t, "gr_context_t");
+    };
+
+    module BackendRenderTarget = {
+      type t;
+      let t: typ(structure(t)) = structure("gr_backendrendertarget_t");
+      let t = typedef(t, "gr_backendrendertarget_t");
+    };
+
+  };
+
   module Canvas = {
     type t;
     let t: typ(structure(t)) = structure("sk_canvas_t");

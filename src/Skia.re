@@ -74,6 +74,37 @@ module Image = {
     };
 };
 
+type pixelGeometry = SkiaWrapped.pixelGeometry;
+
+module Gr = {
+    type surfaceOrigin = SkiaWrapped.Gr.surfaceOrigin;
+
+    module Gl = {
+        module Interface = {
+            type t = SkiaWrapped.Gr.Gl.Interface.t;
+        };
+
+        module FramebufferInfo = {
+            type t = SkiaWrapped.Gr.Gl.FramebufferInfo.t;
+
+            let make = SkiaWrapped.Gr.Gl.FramebufferInfo.make;
+        };
+    };
+
+    module Context = {
+        type t = SkiaWrapped.Gr.Context.t;
+
+        let makeGl = SkiaWrapped.Gr.Context.makeGl;
+    };
+
+    module BackendRenderTarget = {
+        type t = SkiaWrapped.Gr.BackendRenderTarget.t;
+
+        let makeGl = SkiaWrapped.Gr.BackendRenderTarget.makeGl;
+    };
+};
+        
+
 module Canvas = {
     type t = SkiaWrapped.Canvas.t;
 
@@ -85,6 +116,8 @@ module Canvas = {
 
 module SurfaceProps = {
     type t = SkiaWrapped.SurfaceProps.t;
+
+    let make = SkiaWrapped.SurfaceProps.make;
 };
 
 module Surface = {
@@ -96,6 +129,33 @@ module Surface = {
             Unsigned.Size_t.of_int(rowBytes),
             surfaceProps,
         );
+        Gc.finalise(SkiaWrapped.Surface.delete, surface);
+        surface;
+    };
+    let makeWithRenderTarget = (grContext, shouldBeBudgeted, imageinfo, sampleCount, colorType, colorspace, surfaceProps) => {
+        let surface =
+            SkiaWrapped.Surface.allocateWithRenderTarget(
+                grContext,
+                shouldBeBudgeted,
+                imageinfo,
+                sampleCount,
+                colorType,
+                colorspace,
+                surfaceProps
+            );
+        Gc.finalise(SkiaWrapped.Surface.delete, surface);
+        surface;
+    };
+    let makeWithBackendRenderTarget = (grContext, backendRenderTarget, surfaceOrigin, colorType, colorspace, surfaceProps) => {
+        let surface =
+            SkiaWrapped.Surface.allocateWithBackendRenderTarget(
+                grContext,
+                backendRenderTarget,
+                surfaceOrigin,
+                colorType,
+                colorspace,
+                surfaceProps
+            );
         Gc.finalise(SkiaWrapped.Surface.delete, surface);
         surface;
     };

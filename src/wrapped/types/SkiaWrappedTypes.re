@@ -46,7 +46,7 @@ module M = (T: TYPE) => {
     let t = typedef(t, "sk_path_t");
   };
   
-  module Colorspace = {
+  module ColorSpace = {
     type t;
     let t: typ(structure(t)) = structure("sk_colorspace_t");
     let t = typedef(t, "sk_colorspace_t");
@@ -105,7 +105,7 @@ module M = (T: TYPE) => {
   module Imageinfo = {
     type t;
     let t: typ(structure(t)) = structure("sk_imageinfo_t");
-    let colorspace = field(t, "colorspace", ptr_opt(Colorspace.t));
+    let colorSpace = field(t, "colorspace", ptr_opt(ColorSpace.t));
     let width = field(t, "width", int32_t);
     let height = field(t, "height", int32_t);
     let colorType = field(t, "colorType", colorType);

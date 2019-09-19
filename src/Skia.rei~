@@ -27,7 +27,7 @@ module Rect: {
     let makeLtrb: (float, float, float, float) => t;
 };
 
-module Colorspace: {
+module ColorSpace: {
     type t;
 };
 
@@ -50,7 +50,7 @@ module Data: {
 module Imageinfo: {
     type t;
 
-    let make: (int32, int32, colorType, alphaType, option(Colorspace.t)) => t;
+    let make: (int32, int32, colorType, alphaType, option(ColorSpace.t)) => t;
 };
 
 module Image: {

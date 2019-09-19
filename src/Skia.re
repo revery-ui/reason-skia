@@ -44,8 +44,8 @@ module Path = {
     let cubicTo = SkiaWrapped.Path.cubicTo;
 };
 
-module Colorspace = {
-    type t = SkiaWrapped.Colorspace.t;
+module ColorSpace = {
+    type t = SkiaWrapped.ColorSpace.t;
 };
 
 module Data = {
@@ -132,32 +132,42 @@ module Surface = {
         Gc.finalise(SkiaWrapped.Surface.delete, surface);
         surface;
     };
-    let makeWithRenderTarget = (grContext, shouldBeBudgeted, imageinfo, sampleCount, colorType, colorspace, surfaceProps) => {
-        let surface =
-            SkiaWrapped.Surface.allocateWithRenderTarget(
-                grContext,
+    let makeRenderTarget = (context, shouldBeBudgeted, imageinfo, sampleCount, colorType, colorSpace, surfaceProps) => {
+        let surfaceOption =
+            SkiaWrapped.Surface.allocateRenderTarget(
+                context,
                 shouldBeBudgeted,
                 imageinfo,
                 sampleCount,
                 colorType,
-                colorspace,
+                colorSpace,
                 surfaceProps
             );
-        Gc.finalise(SkiaWrapped.Surface.delete, surface);
-        surface;
+        switch (surfaceOption) {
+        | Some(surface) => {
+            Gc.finalise(SkiaWrapped.Surface.delete, surface);
+            Some(surface);
+        }
+        | None => None;
+        };
     };
-    let makeWithBackendRenderTarget = (grContext, backendRenderTarget, surfaceOrigin, colorType, colorspace, surfaceProps) => {
-        let surface =
-            SkiaWrapped.Surface.allocateWithBackendRenderTarget(
-                grContext,
+    let makeFromBackendRenderTarget = (context, backendRenderTarget, surfaceOrigin, colorType, colorSpace, surfaceProps) => {
+        let surfaceOption =
+            SkiaWrapped.Surface.allocateFromBackendRenderTarget(
+                context,
                 backendRenderTarget,
                 surfaceOrigin,
                 colorType,
-                colorspace,
+                colorSpace,
                 surfaceProps
             );
-        Gc.finalise(SkiaWrapped.Surface.delete, surface);
-        surface;
+        switch (surfaceOption) {
+        | Some(surface) => {
+            Gc.finalise(SkiaWrapped.Surface.delete, surface);
+            Some(surface);
+        }
+        | None => None;
+        };
     };
 
     let getCanvas = SkiaWrapped.Surface.getCanvas;

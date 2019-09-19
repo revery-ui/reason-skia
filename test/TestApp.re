@@ -11,7 +11,7 @@ let makeGpuSurface = (width, height) => {
     let framebufferInfo = Gr.Gl.FramebufferInfo.make(Unsigned.UInt.of_int(0), Unsigned.UInt.of_int(0x8058)); // GR_GL_RGBA8
     let backendRenderTarget = Gr.BackendRenderTarget.makeGl(width, height, 0, 8, framebufferInfo);
     let surfaceProps = SurfaceProps.make(Unsigned.UInt32.of_int(0), Unknown);
-    Surface.makeWithBackendRenderTarget(glContext, backendRenderTarget, TopLeft, Rgba8888, None, Some(surfaceProps));
+    Surface.makeFromBackendRenderTarget(glContext, backendRenderTarget, TopLeft, Rgba8888, None, Some(surfaceProps));
 };
 
 let emitPng = (path, surface) => {
@@ -55,7 +55,12 @@ let canvas = Surface.getCanvas(surface);
 draw(canvas);
 emitPng("skia-c-example.png", surface);
 
-let surface = makeGpuSurface(640, 480);
-let canvas = Surface.getCanvas(surface);
-draw(canvas);
-emitPng("skia-gpu-c-example.png", surface);
+let surfaceOption = makeGpuSurface(640, 480);
+switch (surfaceOption) {
+| Some(surface) => {
+    let canvas = Surface.getCanvas(surface);
+    draw(canvas);
+    emitPng("skia-gpu-c-example.png", surface);
+}
+| None => print_endline("No Surface could be created!")
+};

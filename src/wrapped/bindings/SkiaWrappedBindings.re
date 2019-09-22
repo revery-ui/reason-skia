@@ -60,6 +60,9 @@ module M = (F: FOREIGN) => {
 
     let setLcdRenderText =
       foreign("sk_paint_set_lcd_render_text", t @-> bool @-> returning(void));
+
+    let setTextSize =
+      foreign("sk_paint_set_textsize", t @-> float @-> returning(void));
   };
 
   module Rect = {

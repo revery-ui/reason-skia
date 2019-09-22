@@ -21,8 +21,9 @@ module Paint = {
     let setAntiAlias = SkiaWrapped.Paint.setAntiAlias;
     let setStyle = SkiaWrapped.Paint.setStyle;
     let setStrokeWidth = SkiaWrapped.Paint.setStrokeWidth;
-    let setTypeFace = SkiaWrapped.Paint.setTypeFace;
     let setLcdRenderText = SkiaWrapped.Paint.setLcdRenderText;
+    let setTextSize = SkiaWrapped.Paint.setTextSize;
+    let setTypeFace = SkiaWrapped.Paint.setTypeFace;
 };
 
 module Rect = {

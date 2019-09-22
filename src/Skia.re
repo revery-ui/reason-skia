@@ -21,6 +21,8 @@ module Paint = {
     let setAntiAlias = SkiaWrapped.Paint.setAntiAlias;
     let setStyle = SkiaWrapped.Paint.setStyle;
     let setStrokeWidth = SkiaWrapped.Paint.setStrokeWidth;
+    let setTypeFace = SkiaWrapped.Paint.setTypeFace;
+    let setLcdRenderText = SkiaWrapped.Paint.setLcdRenderText;
 };
 
 module Rect = {
@@ -28,6 +30,18 @@ module Rect = {
 
     let makeEmpty = SkiaWrapped.Rect.makeEmpty;
     let makeLtrb = SkiaWrapped.Rect.makeLtrb;
+};
+
+module FontStyle = {
+    type t = SkiaWrapped.FontStyle.t;
+    
+    let newFontStyle = SkiaWrapped.FontStyle.newFontStyle;
+};
+
+module TypeFace = {
+    type t = SkiaWrapped.TypeFace.t;
+
+    let createFromNameWithFontStyle = SkiaWrapped.TypeFace.createFromNameWithFontStyle;
 };
 
 module Path = {
@@ -112,6 +126,11 @@ module Canvas = {
     let drawRect = SkiaWrapped.Canvas.drawRect;
     let drawOval = SkiaWrapped.Canvas.drawOval;
     let drawPath = SkiaWrapped.Canvas.drawPath;
+
+    let drawText = (canvas, text, x, y, paint) => {
+        SkiaWrapped.Canvas.drawText(canvas, text, String.length(text), x, y, paint);
+    };
+    let flush = SkiaWrapped.Canvas.flush;
 };   
 
 module SurfaceProps = {

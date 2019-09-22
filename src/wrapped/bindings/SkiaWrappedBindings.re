@@ -20,6 +20,23 @@ module M = (F: FOREIGN) => {
     );
   };
 
+  module FontStyle = {
+    type t = ptr(SkiaTypes.FontStyle.t);
+    let t = ptr(SkiaTypes.FontStyle.t);
+
+    let newFontStyle = 
+      foreign("sk_fontstyle_new", int @-> int @-> SkiaTypes.FontStyle.slant @-> returning(t));
+  };
+
+  module TypeFace = {
+
+    type t = ptr(SkiaTypes.TypeFace.t);
+    let t = ptr(SkiaTypes.TypeFace.t);
+
+    let createFromNameWithFontStyle =
+      foreign("sk_typeface_create_from_name_with_font_style", string @-> FontStyle.t @-> returning(t));
+  };
+
   module Paint = {
     type t = ptr(SkiaTypes.Paint.t);
     let t = ptr(SkiaTypes.Paint.t);
@@ -37,6 +54,12 @@ module M = (F: FOREIGN) => {
       foreign("sk_paint_set_style", t @-> style @-> returning(void));
     let setStrokeWidth = 
       foreign("sk_paint_set_stroke_width", t @-> float @-> returning(void));
+
+    let setTypeFace =
+      foreign("sk_paint_set_typeface", t @-> TypeFace.t @-> returning(void));
+
+    let setLcdRenderText =
+      foreign("sk_paint_set_lcd_render_text", t @-> bool @-> returning(void));
   };
 
   module Rect = {
@@ -186,6 +209,17 @@ module M = (F: FOREIGN) => {
       foreign(
         "sk_canvas_draw_path",
         t @-> Path.t @-> Paint.t @-> returning(void),
+      );
+
+    let drawText =
+      foreign(
+        "sk_canvas_draw_text",
+        t @-> string @-> int @-> float @-> float @-> Paint.t @-> returning(void));
+
+    let flush =
+      foreign(
+        "sk_canvas_flush",
+        t @-> returning(void),
       );
   };
 

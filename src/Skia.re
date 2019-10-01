@@ -40,9 +40,10 @@ module FontStyle = {
 };
 
 module TypeFace = {
-    type t = SkiaWrapped.TypeFace.t;
+    type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.TypeFace.t));
 
     let createFromNameWithFontStyle = SkiaWrapped.TypeFace.createFromNameWithFontStyle;
+    let createFromFile = SkiaWrapped.TypeFace.createFromFile;
 };
 
 module Path = {
@@ -121,7 +122,7 @@ module Gr = {
         
 
 module Canvas = {
-    type t = SkiaWrapped.Canvas.t;
+    type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Canvas.t));
 
     let drawPaint = SkiaWrapped.Canvas.drawPaint;
     let drawRect = SkiaWrapped.Canvas.drawRect;
@@ -132,6 +133,8 @@ module Canvas = {
         SkiaWrapped.Canvas.drawText(canvas, text, String.length(text), x, y, paint);
     };
     let flush = SkiaWrapped.Canvas.flush;
+    let restore = SkiaWrapped.Canvas.restore;
+    let save = SkiaWrapped.Canvas.save;
 };   
 
 module SurfaceProps = {
@@ -141,7 +144,7 @@ module SurfaceProps = {
 };
 
 module Surface = {
-    type t = SkiaWrapped.Surface.t;
+    type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Surface.t));
 
     let makeRaster = (imageinfo, rowBytes, surfaceProps) => {
         let surface = SkiaWrapped.Surface.allocateRaster(

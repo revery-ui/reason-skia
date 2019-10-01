@@ -35,6 +35,9 @@ module M = (F: FOREIGN) => {
 
     let createFromNameWithFontStyle =
       foreign("sk_typeface_create_from_name_with_font_style", string @-> FontStyle.t @-> returning(t));
+
+    let createFromFile =
+      foreign("sk_typeface_create_from_file", string @-> int @-> returning(t));
   };
 
   module Paint = {
@@ -222,6 +225,18 @@ module M = (F: FOREIGN) => {
     let flush =
       foreign(
         "sk_canvas_flush",
+        t @-> returning(void),
+      );
+    
+    let restore =
+      foreign(
+        "sk_canvas_restore",
+        t @-> returning(void),
+      );
+
+    let save =
+      foreign(
+        "sk_canvas_save",
         t @-> returning(void),
       );
   };

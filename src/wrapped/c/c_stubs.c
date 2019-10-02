@@ -4,6 +4,9 @@
 
 #include "c_stubs.h"
 
+#include <stdlib.h>
+
+
 sk_color_t reason_skia_stub_sk_color_set_argb(int alpha, int red, int green, int blue)
 {
     return sk_color_set_argb(alpha, red, green, blue);
@@ -34,4 +37,13 @@ sk_image_t* reason_skia_stub_sk_image_new_from_encoded(const sk_data_t *encoded)
     sk_image_t* ret = sk_image_new_from_encoded(encoded, NULL);
     printf("RET: %d\n", ret);
     return ret;
+};
+
+sk_matrix_t* reason_skia_sk_matrix_new() {
+    sk_matrix_t* ret = (sk_matrix_t*)malloc(sizeof(float) * 9);
+    return ret;
+};
+
+void reason_skia_sk_matrix_destroy(sk_matrix_t* mat) {
+    free(mat);
 };

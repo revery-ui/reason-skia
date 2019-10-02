@@ -27,9 +27,24 @@ module M = (F: FOREIGN) => {
     let newFontStyle = 
       foreign("sk_fontstyle_new", int @-> int @-> SkiaTypes.FontStyle.slant @-> returning(t));
   };
+  
+  module Matrix = {
+   type t = ptr(SkiaTypes.Matrix.t); 
+   let t = ptr(SkiaTypes.Matrix.t);
+
+   let make = foreign("reason_skia_sk_matrix_new", void @-> returning(t));
+   let destroy = foreign("reason_skia_sk_matrix_destroy", t @-> returning(void));
+  };
 
   module Matrix44 = {
-    
+   type t = ptr(SkiaTypes.Matrix44.t); 
+   let t = ptr(SkiaTypes.Matrix44.t);
+
+   let make = foreign("sk_matrix44_new", void @-> returning(t));
+   let destroy = foreign("sk_matrix44_destroy", t @-> returning(void));
+
+   let get = foreign("sk_matrix44_get", t @-> int @-> int @-> returning(float));
+   let set = foreign("sk_matrix44_set", t @-> int @-> int @-> float @-> returning(void));
   };
 
   module TypeFace = {

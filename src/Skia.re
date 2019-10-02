@@ -72,6 +72,12 @@ module Data = {
         let dataSize = Unsigned.Size_t.to_int(SkiaWrapped.Data.getSize(data));
         Ctypes.string_from_ptr(dataPtr, ~length=dataSize);
     };
+
+    let newFromFile = (path) => {
+        let data = SkiaWrapped.Data.newFromFile(path);
+        Gc.finalise(SkiaWrapped.Data.delete, data);
+        data;
+    };
 };
 
 module Imageinfo = {
@@ -81,12 +87,18 @@ module Imageinfo = {
 };
 
 module Image = {
-    type t = SkiaWrapped.Image.t;
+    type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Image.t));
 
     let encodeToData = image => {
         let data = SkiaWrapped.Image.encode(image);
         Gc.finalise(SkiaWrapped.Data.delete, data);
         data;
+    };
+
+    let newFromEncoded = data => {
+        let img = SkiaWrapped.Image.newFromEncoded(data);
+        Gc.finalise(SkiaWrapped.Image.delete, img);
+        img;
     };
 };
 
@@ -124,6 +136,7 @@ module Gr = {
 module Canvas = {
     type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Canvas.t));
 
+    let drawImage = SkiaWrapped.Canvas.drawImage;
     let drawPaint = SkiaWrapped.Canvas.drawPaint;
     let drawRect = SkiaWrapped.Canvas.drawRect;
     let drawOval = SkiaWrapped.Canvas.drawOval;
@@ -135,6 +148,7 @@ module Canvas = {
     let flush = SkiaWrapped.Canvas.flush;
     let restore = SkiaWrapped.Canvas.restore;
     let save = SkiaWrapped.Canvas.save;
+    let translate = SkiaWrapped.Canvas.translate;
 };   
 
 module SurfaceProps = {

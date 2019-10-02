@@ -213,6 +213,25 @@ module M = (T: TYPE) => {
     let t = typedef(t, "sk_canvas_t");
   };
 
+  module View3d = {
+    type t;
+    let t: typ(structure(t)) = structure("sk_3dview_t");
+    let t = typedef(t, "sk_3dview_t");
+
+  };
+  
+  module Matrix = {
+    type t;
+    let t: typ(structure(t)) = structure("sk_matrix_t");
+    let t = typedef(t, "sk_matrix_t");
+  };
+
+  module Matrix44 = {
+    type t;
+    let t: typ(structure(t)) = structure("sk_matrix44_t");
+    let t = typedef(t, "sk_matrix44_t");
+  };
+
   module SurfaceProps = {
     type t;
     let t: typ(structure(t)) = structure("sk_surfaceprops_t");

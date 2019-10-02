@@ -28,3 +28,10 @@ uint32_t reason_skia_stub_sk_color_get_b(sk_color_t color)
 {
     return sk_color_get_b(color);
 }
+
+sk_image_t* reason_skia_stub_sk_image_new_from_encoded(const sk_data_t *encoded) {
+    printf("DATA: %d\n", encoded);
+    sk_image_t* ret = sk_image_new_from_encoded(encoded, NULL);
+    printf("RET: %d\n", ret);
+    return ret;
+};

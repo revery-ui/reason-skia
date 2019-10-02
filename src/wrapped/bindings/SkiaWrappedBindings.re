@@ -28,6 +28,10 @@ module M = (F: FOREIGN) => {
       foreign("sk_fontstyle_new", int @-> int @-> SkiaTypes.FontStyle.slant @-> returning(t));
   };
 
+  module Matrix44 = {
+    
+  };
+
   module TypeFace = {
 
     type t = ptr(SkiaTypes.TypeFace.t);
@@ -124,6 +128,7 @@ module M = (F: FOREIGN) => {
     type t = ptr(SkiaTypes.Data.t);
     let t = ptr(SkiaTypes.Data.t);
 
+    let newFromFile = foreign("sk_data_new_from_file", string @-> returning(t));
     let delete = foreign("sk_data_unref", t @-> returning(void));
 
     let getData = foreign("sk_data_get_data", t @-> returning(ptr(void)));
@@ -152,6 +157,8 @@ module M = (F: FOREIGN) => {
     let delete = foreign("sk_image_unref", t @-> returning(void));
 
     let encode = foreign("sk_image_encode", t @-> returning(Data.t));
+
+    let newFromEncoded = foreign("reason_skia_stub_sk_image_new_from_encoded", Data.t @-> returning(t));
   };
 
   type pixelGeometry = SkiaTypes.pixelGeometry;
@@ -199,6 +206,8 @@ module M = (F: FOREIGN) => {
     type t = ptr(SkiaTypes.Canvas.t);
     let t = ptr(SkiaTypes.Canvas.t);
 
+    let drawImage =
+      foreign("sk_canvas_draw_image", t @-> Image.t @-> float @-> float @-> Paint.t @-> returning(void));
     let drawPaint =
       foreign("sk_canvas_draw_paint", t @-> Paint.t @-> returning(void));
     let drawRect =
@@ -238,6 +247,12 @@ module M = (F: FOREIGN) => {
       foreign(
         "sk_canvas_save",
         t @-> returning(void),
+      );
+
+    let translate =
+      foreign(
+        "sk_canvas_translate",
+        t @-> float @-> float @-> returning(void)
       );
   };
 

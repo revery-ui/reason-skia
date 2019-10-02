@@ -57,6 +57,28 @@ module M = (F: FOREIGN) => {
     let t = ptr(SkiaTypes.Vector.t);
   };
 
+  module IRect = {
+    type t = ptr(structure(SkiaTypes.IRect.t));
+    let t = ptr(SkiaTypes.IRect.t);
+
+    let makeEmpty = () => {
+      let iRect = allocate_n(SkiaTypes.IRect.t, ~count=1);
+      setf(!@iRect, SkiaTypes.IRect.left, Int32.of_int(0));
+      setf(!@iRect, SkiaTypes.IRect.top, Int32.of_int(0));
+      setf(!@iRect, SkiaTypes.IRect.right, Int32.of_int(0));
+      setf(!@iRect, SkiaTypes.IRect.bottom, Int32.of_int(0));
+      iRect;
+    };
+    let makeLtrb = (left, top, right, bottom) => {
+      let iRect = allocate_n(SkiaTypes.IRect.t, ~count=1);
+      setf(!@iRect, SkiaTypes.IRect.left, left);
+      setf(!@iRect, SkiaTypes.IRect.top, top);
+      setf(!@iRect, SkiaTypes.IRect.right, right);
+      setf(!@iRect, SkiaTypes.IRect.bottom, bottom);
+      iRect;
+    };
+  };
+
   module Rect = {
     type t = ptr(structure(SkiaTypes.Rect.t));
     let t = ptr(SkiaTypes.Rect.t);
@@ -221,6 +243,11 @@ module M = (F: FOREIGN) => {
     type t = ptr(structure(SkiaTypes.Image.t));
     let t = ptr(SkiaTypes.Image.t);
 
+    let allocateFromEncoded =
+      foreign(
+        "sk_image_new_from_encoded",
+        Data.t @-> ptr_opt(SkiaTypes.IRect.t) @-> returning(ptr_opt(SkiaTypes.Image.t))
+      );
     let delete = foreign("sk_image_unref", t @-> returning(void));
 
     let encode = foreign("sk_image_encode", t @-> returning(Data.t));

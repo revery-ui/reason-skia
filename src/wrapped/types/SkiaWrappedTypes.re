@@ -57,6 +57,17 @@ module M = (T: TYPE) => {
     let t = typedef(t, "sk_matrix44_t");
   };
 
+  module IRect = {
+    type t;
+    let t: typ(structure(t)) = structure("sk_irect_t");
+    let left = field(t, "left", int32_t);
+    let top = field(t, "top", int32_t);
+    let right = field(t, "right", int32_t);
+    let bottom = field(t, "bottom", int32_t);
+    seal(t);
+    let t = typedef(t, "sk_irect_t");
+  };
+
   module Rect = {
     type t;
     let t: typ(structure(t)) = structure("sk_rect_t");

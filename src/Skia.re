@@ -126,6 +126,13 @@ module Matrix44 = {
     type t = SkiaWrapped.Matrix44.t;
 };
 
+module IRect = {
+    type t = SkiaWrapped.IRect.t;
+
+    let makeEmpty = SkiaWrapped.IRect.makeEmpty;
+    let makeLtrb = SkiaWrapped.IRect.makeLtrb;
+};
+
 module Rect = {
     type t = SkiaWrapped.Rect.t;
 
@@ -205,6 +212,16 @@ module ImageInfo = {
 module Image = {
     type t = SkiaWrapped.Image.t;
 
+    let makeFromEncoded = (encodedData, subset) => {
+        switch(SkiaWrapped.Image.allocateFromEncoded(encodedData, subset)) {
+            | Some(image) => {
+                Gc.finalise(SkiaWrapped.Image.delete, image);
+                Some(image);
+            }
+            | None => None;
+        };
+    };
+    
     let encodeToData = image => {
         let data = SkiaWrapped.Image.encode(image);
         Gc.finalise(SkiaWrapped.Data.delete, data);

@@ -312,18 +312,6 @@ module M = (T: TYPE) => {
 
   };
   
-  module Matrix = {
-    type t;
-    let t: typ(structure(t)) = structure("sk_matrix_t");
-    let t = typedef(t, "sk_matrix_t");
-  };
-
-  module Matrix44 = {
-    type t;
-    let t: typ(structure(t)) = structure("sk_matrix44_t");
-    let t = typedef(t, "sk_matrix44_t");
-  };
-
   module SurfaceProps = {
     type t;
     let t: typ(structure(t)) = structure("sk_surfaceprops_t");

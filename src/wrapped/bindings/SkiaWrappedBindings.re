@@ -35,26 +35,6 @@ module M = (F: FOREIGN) => {
     let newFontStyle = 
       foreign("sk_fontstyle_new", int @-> int @-> SkiaTypes.FontStyle.slant @-> returning(t));
   };
-  
-  module Matrix = {
-   type t = ptr(SkiaTypes.Matrix.t); 
-   let t = ptr(SkiaTypes.Matrix.t);
-
-   let make = foreign("reason_skia_sk_matrix_new", void @-> returning(t));
-   let destroy = foreign("reason_skia_sk_matrix_destroy", t @-> returning(void));
-  };
-
-  module Matrix44 = {
-   type t = ptr(SkiaTypes.Matrix44.t); 
-   let t = ptr(SkiaTypes.Matrix44.t);
-
-   let make = foreign("sk_matrix44_new", void @-> returning(t));
-   let destroy = foreign("sk_matrix44_destroy", t @-> returning(void));
-
-   let get = foreign("sk_matrix44_get", t @-> int @-> int @-> returning(float));
-   let set = foreign("sk_matrix44_set", t @-> int @-> int @-> float @-> returning(void));
-   let toMatrix = foreign("sk_matrix44_to_matrix", t @-> Matrix.t @-> returning(void));
-  };
 
   module TypeFace = {
 
@@ -198,6 +178,13 @@ module M = (F: FOREIGN) => {
   module Matrix44 = {
     type t = ptr(structure(SkiaTypes.Matrix44.t));
     let t = ptr(SkiaTypes.Matrix44.t);
+
+   let make = foreign("sk_matrix44_new", void @-> returning(t));
+   let destroy = foreign("sk_matrix44_destroy", t @-> returning(void));
+
+   let get = foreign("sk_matrix44_get", t @-> int @-> int @-> returning(float));
+   let set = foreign("sk_matrix44_set", t @-> int @-> int @-> float @-> returning(void));
+   let toMatrix = foreign("sk_matrix44_to_matrix", t @-> Matrix.t @-> returning(void));
   };
 
   module RRect = {
@@ -301,8 +288,6 @@ module M = (F: FOREIGN) => {
     let delete = foreign("sk_image_unref", t @-> returning(void));
 
     let encode = foreign("sk_image_encode", t @-> returning(Data.t));
-
-    let newFromEncoded = foreign("reason_skia_stub_sk_image_new_from_encoded", Data.t @-> returning(t));
   };
 
   type pixelGeometry = SkiaTypes.pixelGeometry;
@@ -399,7 +384,7 @@ module M = (F: FOREIGN) => {
     let translate =
       foreign(
         "sk_canvas_translate",
-        t @-> float @-> float @-> returning(void)
+        t @-> float @-> float @-> returning(void));
 
     let drawImage =
       foreign(

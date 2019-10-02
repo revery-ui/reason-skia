@@ -267,6 +267,24 @@ module Canvas = {
     let drawRect = SkiaWrapped.Canvas.drawRect;
     let drawOval = SkiaWrapped.Canvas.drawOval;
     let drawPath = SkiaWrapped.Canvas.drawPath;
+
+    let concat = SkiaWrapped.Canvas.concat;
+    let setMatrix = SkiaWrapped.Canvas.setMatrix;
+    let translate = SkiaWrapped.Canvas.translate;
+    let scale = SkiaWrapped.Canvas.scale;
+    let rotate = SkiaWrapped.Canvas.rotate;
+    let skew = SkiaWrapped.Canvas.skew;
+    let resetMatrix = SkiaWrapped.Canvas.resetMatrix;
+
+    let clipRect = SkiaWrapped.Canvas.clipRect;
+    let clipPath = SkiaWrapped.Canvas.clipPath;
+    let clipRRect = SkiaWrapped.Canvas.clipRRect;
+
+    let save = SkiaWrapped.Canvas.save;
+    let saveLayer = SkiaWrapped.Canvas.saveLayer;
+    let restore = SkiaWrapped.Canvas.restore;
+
+    let flush = SkiaWrapped.Canvas.flush;
 };   
 
 module SurfaceProps = {

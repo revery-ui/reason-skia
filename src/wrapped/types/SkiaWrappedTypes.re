@@ -272,6 +272,17 @@ module M = (T: TYPE) => {
     };
   };
 
+  type clipOp =
+    | Difference
+    | Intersect;
+  let clipOp = skiaCEnum(
+    "sk_clipop_t",
+    [
+      (Difference, "DIFFERENCE_SK_CLIPOP"),
+      (Intersect, "INTERSECT_SK_CLIPOP"),
+    ],
+  );
+
   module Canvas = {
     type t;
     let t: typ(structure(t)) = structure("sk_canvas_t");

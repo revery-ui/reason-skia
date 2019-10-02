@@ -294,6 +294,9 @@ module M = (F: FOREIGN) => {
     };
   };
 
+  type clipOp = SkiaTypes.clipOp;
+  let clipOp = SkiaTypes.clipOp;
+
   module Canvas = {
     type t = ptr(structure(SkiaTypes.Canvas.t));
     let t = ptr(SkiaTypes.Canvas.t);
@@ -325,6 +328,40 @@ module M = (F: FOREIGN) => {
         "sk_canvas_draw_image",
         t @-> Image.t @-> float @-> float @-> ptr_opt(SkiaTypes.Paint.t) @-> returning(void)
       );
+
+    let concat = foreign("sk_canvas_concat", t @-> Matrix.t @-> returning(void));
+    let setMatrix = foreign("sk_canvas_set_matrix", t @-> Matrix.t @-> returning(void));
+    let translate = foreign("sk_canvas_translate", t @-> float @-> float @-> returning(void));
+    let scale = foreign("sk_canvas_scale", t @-> float @-> float @-> returning(void));
+    let rotate = foreign("sk_canvas_rotate_degrees", t @-> float @-> returning(void));
+    let skew = foreign("sk_canvas_skew", t @-> float @-> float @-> returning(void));
+    let resetMatrix = foreign("sk_canvas_reset_matrix", t @-> returning(void));
+
+    let clipRect =
+      foreign(
+        "sk_canvas_clip_rect_with_operation",
+        t @-> Rect.t @-> clipOp @-> bool @-> returning(void),
+      );
+    let clipPath =
+      foreign(
+        "sk_canvas_clip_path_with_operation",
+        t @-> Path.t @-> clipOp @-> bool @-> returning(void),
+      );
+    let clipRRect =
+      foreign(
+        "sk_canvas_clip_rrect_with_operation",
+        t @-> RRect.t @-> clipOp @-> bool @-> returning(void),
+      );
+
+    let save = foreign("sk_canvas_save", t @-> returning(int));
+    let saveLayer =
+      foreign(
+        "sk_canvas_save_layer",
+        t @-> ptr_opt(SkiaTypes.Rect.t) @-> ptr_opt(SkiaTypes.Paint.t) @-> returning(int)
+      );
+    let restore = foreign("sk_canvas_restore", t @-> returning(void));
+
+    let flush = foreign("sk_canvas_flush", t @-> returning(void));
   };
 
   module SurfaceProps = {

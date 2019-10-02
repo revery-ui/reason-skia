@@ -283,10 +283,20 @@ module M = (F: FOREIGN) => {
         "sk_canvas_draw_oval",
         t @-> Rect.t @-> Paint.t @-> returning(void),
       );
+    let drawRRect =
+      foreign(
+        "sk_canvas_draw_rrect",
+        t @-> RRect.t @-> Paint.t @-> returning(void),
+      );
     let drawPath =
       foreign(
         "sk_canvas_draw_path",
         t @-> Path.t @-> Paint.t @-> returning(void),
+      );
+    let drawImage =
+      foreign(
+        "sk_canvas_draw_image",
+        t @-> Image.t @-> float @-> float @-> ptr_opt(SkiaTypes.Paint.t) @-> returning(void)
       );
   };
 

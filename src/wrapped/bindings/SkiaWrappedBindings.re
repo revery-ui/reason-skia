@@ -391,6 +391,12 @@ module M = (F: FOREIGN) => {
         "sk_canvas_draw_image",
         t @-> Image.t @-> float @-> float @-> ptr_opt(SkiaTypes.Paint.t) @-> returning(void)
       );
+
+    let setMatrix =
+      foreign(
+        "sk_canvas_set_matrix",
+        t @-> Matrix.t @-> returning(void)
+      );
   };
 
   module SurfaceProps = {

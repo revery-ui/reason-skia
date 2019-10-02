@@ -260,12 +260,6 @@ module Image = {
         Gc.finalise(SkiaWrapped.Data.delete, data);
         data;
     };
-
-    let newFromEncoded = data => {
-        let img = SkiaWrapped.Image.newFromEncoded(data);
-        Gc.finalise(SkiaWrapped.Image.delete, img);
-        img;
-    };
 };
 
 type pixelGeometry = SkiaWrapped.pixelGeometry;
@@ -315,6 +309,8 @@ module Canvas = {
     let restore = SkiaWrapped.Canvas.restore;
     let save = SkiaWrapped.Canvas.save;
     let translate = SkiaWrapped.Canvas.translate;
+
+    let setMatrix = SkiaWrapped.Canvas.setMatrix;
 };   
 
 module SurfaceProps = {

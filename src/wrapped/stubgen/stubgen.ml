@@ -8,6 +8,7 @@ let prologue = "
 #include \"sk_paint.h\"
 #include \"sk_path.h\"
 #include \"sk_surface.h\"
+#include \"sk_rrect.h\"
 "
 
 let () =

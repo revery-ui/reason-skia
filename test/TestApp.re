@@ -1,18 +1,33 @@
 open Skia;
 
 let makeSurface = (width, height) => {
-    let imageinfo = Imageinfo.make(width, height, Rgba8888, Premul, None);
+    let imageinfo = ImageInfo.make(width, height, Rgba8888, Premul, None);
     Surface.makeRaster(imageinfo, 0, None);
 };
 
-let makeGpuSurface = (width, height) => {
-    let glContext = Gr.Context.makeGl(None);
-    // TODO the following should be made more idiomatic
-    let framebufferInfo = Gr.Gl.FramebufferInfo.make(Unsigned.UInt.of_int(0), Unsigned.UInt.of_int(0x8058)); // GR_GL_RGBA8
-    let backendRenderTarget = Gr.BackendRenderTarget.makeGl(width, height, 0, 8, framebufferInfo);
-    let surfaceProps = SurfaceProps.make(Unsigned.UInt32.of_int(0), Unknown);
-    Surface.makeFromBackendRenderTarget(glContext, backendRenderTarget, TopLeft, Rgba8888, None, Some(surfaceProps));
-};
+// TODO we will need additional tools for setting up an OpenGL context for this to work.
+// See /tools/gpu inside the skia codebase
+//
+// let makeGpuSurface = (width, height) => {
+//     let glInterfaceOption = Gr.Gl.Interface.makeNative();
+//     if (glInterfaceOption === None) {
+//         print_endline("GL Interface Creation failed");
+//     }
+//     let glContextOption = Gr.Context.makeGl(glInterfaceOption);
+//     switch (glContextOption) {
+//     | None => {
+//         print_endline("GL Context creation failed");
+//         None;
+//     }
+//     | Some(glContext) => {
+//         // TODO the following should be made more idiomatic
+//         let framebufferInfo = Gr.Gl.FramebufferInfo.make(Unsigned.UInt.of_int(0), Unsigned.UInt.of_int(0x8058)); // GR_GL_RGBA8
+//         let backendRenderTarget = Gr.BackendRenderTarget.makeGl(width, height, 0, 8, Some(framebufferInfo));
+//         let surfaceProps = SurfaceProps.make(Unsigned.UInt32.of_int(0), Unknown);
+//         Surface.makeFromBackendRenderTarget(glContext, backendRenderTarget, TopLeft, Rgba8888, None, Some(surfaceProps));
+//     }
+//     };
+// };
 
 let emitPng = (path, surface) => {
     let image = Surface.makeImageSnapshot(surface);
@@ -55,12 +70,12 @@ let canvas = Surface.getCanvas(surface);
 draw(canvas);
 emitPng("skia-c-example.png", surface);
 
-let surfaceOption = makeGpuSurface(640, 480);
-switch (surfaceOption) {
-| Some(surface) => {
-    let canvas = Surface.getCanvas(surface);
-    draw(canvas);
-    emitPng("skia-gpu-c-example.png", surface);
-}
-| None => print_endline("No Surface could be created!")
-};
+// let surfaceOption = makeGpuSurface(640, 480);
+// switch (surfaceOption) {
+// | Some(surface) => {
+//     let canvas = Surface.getCanvas(surface);
+//     draw(canvas);
+//     emitPng("skia-gpu-c-example.png", surface);
+// }
+// | None => print_endline("Surface creation failed")
+// };

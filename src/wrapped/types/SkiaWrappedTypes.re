@@ -29,6 +29,34 @@ module M = (T: TYPE) => {
     );
   };
 
+  module Point = {
+    type t;
+    let t: typ(structure(t)) = structure("sk_point_t");
+    let x = field(t, "x", float);
+    let y = field(t, "y", float);
+    seal(t);
+    let t = typedef(t, "sk_point_t");
+  };
+
+  module Vector = {
+    type t = Point.t;
+    let t = Point.t;
+  };
+
+  module Matrix = {
+    type t;
+    let t: typ(structure(t)) = structure("sk_matrix_t");
+    let mat = field(t, "mat", array(9, float));
+    seal(t);
+    let t = typedef(t, "sk_matrix_t");
+  };
+
+  module Matrix44 = {
+    type t;
+    let t: typ(structure(t)) = structure("sk_matrix44_t");
+    let t = typedef(t, "sk_matrix44_t");
+  };
+
   module Rect = {
     type t;
     let t: typ(structure(t)) = structure("sk_rect_t");
@@ -38,6 +66,47 @@ module M = (T: TYPE) => {
     let bottom = field(t, "bottom", float);
     seal(t);
     let t = typedef(t, "sk_rect_t");
+  };
+
+  module RRect = {
+    type t;
+    let t: typ(structure(t)) = structure("sk_rrect_t");
+    let t = typedef(t, "sk_rrect_t");
+
+    // this should be called "type" only but that's a reserved keyword
+    type rrectType =
+      | Empty
+      | Rect
+      | Oval
+      | Simple
+      | NinePatch
+      | Complex;
+    let rrectType = skiaCEnum(
+      "sk_rrect_type_t",
+      [
+        (Empty, "EMPTY_SK_RRECT_TYPE"),
+        (Rect, "RECT_SK_RRECT_TYPE"),
+        (Oval, "OVAL_SK_RRECT_TYPE"),
+        (Simple, "SIMPLE_SK_RRECT_TYPE"),
+        (NinePatch, "NINE_PATCH_SK_RRECT_TYPE"),
+        (Complex, "COMPLEX_SK_RRECT_TYPE"),
+      ],
+    );
+
+    type corner =
+      | UpperLeft
+      | UpperRight
+      | LowerLeft
+      | LowerRight;
+    let corner = skiaCEnum(
+      "sk_rrect_corner_t",
+      [
+        (UpperLeft, "UPPER_LEFT_SK_RRECT_CORNER"),
+        (UpperRight, "UPPER_RIGHT_SK_RRECT_CORNER"),
+        (LowerRight, "LOWER_RIGHT_SK_RRECT_CORNER"),
+        (LowerLeft, "LOWER_LEFT_SK_RRECT_CORNER"),
+      ],
+    );
   };
 
   module Path = {
@@ -102,7 +171,7 @@ module M = (T: TYPE) => {
     let t = typedef(t, "sk_data_t");
   };
 
-  module Imageinfo = {
+  module ImageInfo = {
     type t;
     let t: typ(structure(t)) = structure("sk_imageinfo_t");
     let colorSpace = field(t, "colorspace", ptr_opt(ColorSpace.t));
@@ -178,6 +247,18 @@ module M = (T: TYPE) => {
       let t = typedef(t, "gr_backendrendertarget_t");
     };
 
+  };
+
+  module TextBlob = {
+    type t;
+    let t: typ(structure(t)) = structure("sk_textblob_t");
+    let t = typedef(t, "sk_textblob_t"); 
+
+    module Builder = {
+      type t;
+      let t: typ(structure(t)) = structure("sk_textblob_builder_t");
+      let t = typedef(t, "sk_textblob_builder_t"); 
+    };
   };
 
   module Canvas = {

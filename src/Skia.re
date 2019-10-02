@@ -50,6 +50,116 @@ module Matrix44 = {
     let toMatrix = SkiaWrapped.Matrix44.toMatrix;
 };
 
+module Matrix = {
+    type t = SkiaWrapped.Matrix.t;
+
+    let make = SkiaWrapped.Matrix.make;
+    let setAll = SkiaWrapped.Matrix.setAll;
+    let get = SkiaWrapped.Matrix.get;
+    let set = SkiaWrapped.Matrix.set;
+
+    let setTranslate = (matrix, translateX, translateY) =>
+      setAll(
+        matrix,
+        1., 0., translateX,
+        0., 1., translateY,
+        0., 0., 1.,
+      );
+    let setScale = (matrix, scaleX, scaleY, pivotX, pivotY) =>
+      setAll(
+        matrix,
+        scaleX, 0.,     pivotX -. scaleX *. pivotX,
+        0.,     scaleY, pivotY -. scaleY *. pivotY,
+        0.,     0.,     1.,
+      );
+
+    let makeAll = (
+      scaleX, skewX, translateX,
+      skewY, scaleY, translateY,
+      perspective0, perspective1, perspective2
+    ) => {
+      let matrix = make();
+      setAll(
+        matrix,
+        scaleX, skewX, translateX,
+        skewY, scaleY, translateY,
+        perspective0, perspective1, perspective2
+      );
+      matrix;
+    };
+    let makeScale = (scaleX, scaleY, pivotX, pivotY) => {
+      let matrix = make();
+      setScale(matrix, scaleX, scaleY, pivotX, pivotY);
+      matrix;
+    };
+    let makeTranslate = (translateX, translateY) => {
+      let matrix = make();
+      setTranslate(matrix, translateX, translateY);
+      matrix;
+    };
+    
+    let getScaleX = (matrix) => get(matrix,0);
+    let getScaleY = (matrix) => get(matrix, 4);
+    let getSkewX = (matrix) => get(matrix, 1);
+    let getSkewY = (matrix) => get(matrix, 3);
+    let getTranslateX = (matrix) => get(matrix, 2);
+    let getTranslateY = (matrix) => get(matrix, 5);
+    let getPerspX = (matrix) => get(matrix, 6);
+    let getPerspY = (matrix) => get(matrix, 7);
+
+    let setScaleX = (matrix, scaleX) => set(matrix, 0, scaleX);
+    let setScaleY = (matrix, scaleY) => set(matrix, 4, scaleY);
+    let setSkewX = (matrix, skewX) => set(matrix, 1, skewX);
+    let setSkewY = (matrix, skewY) => set(matrix, 3, skewY);
+    let setTranslateX = (matrix, translateX) => set(matrix, 2, translateX);
+    let setTranslateY = (matrix, translateY) => set(matrix, 5, translateY);
+    let setPerspX = (matrix, perspectiveX) => set(matrix, 6, perspectiveX);
+    let setPerspY = (matrix, perspectiveY) => set(matrix, 7, perspectiveY);
+    let setSkew = (matrix, skewX, skewY, pivotX, pivotY) =>
+      setAll(
+        matrix,
+        1.,     skewX,  -.skewX *. pivotY,
+        skewY,  1.,     -.skewY *. pivotX,
+        0.,     0.,     1.,
+      );
+    let setIdentity = (matrix) =>
+        setAll(
+            matrix,
+            1., 0., 0.,
+            0., 1., 0.,
+            0., 0., 1.,
+        );
+    let reset = setIdentity;
+
+    let invert = SkiaWrapped.Matrix.invert;
+    let concat = SkiaWrapped.Matrix.concat;
+    let preConcat = SkiaWrapped.Matrix.preConcat;
+    let postConcat = SkiaWrapped.Matrix.postConcat;
+    let mapRect = SkiaWrapped.Matrix.mapRect;
+    let mapPoints = SkiaWrapped.Matrix.mapPoints;
+    let mapVectors = SkiaWrapped.Matrix.mapVectors;
+    let mapXy = SkiaWrapped.Matrix.mapXy;
+    let mapVector = SkiaWrapped.Matrix.mapVector;
+    let mapRadius = SkiaWrapped.Matrix.mapRadius;
+
+    let identity = makeAll(
+      1., 0., 0.,
+      0., 1., 0.,
+      0., 0., 1.,
+    );
+};
+
+module Matrix44 = {
+    type t = SkiaWrapped.Matrix44.t;
+};
+
+module IRect = {
+    type t = SkiaWrapped.IRect.t;
+
+    let makeEmpty = SkiaWrapped.IRect.makeEmpty;
+    let makeLtrb = SkiaWrapped.IRect.makeLtrb;
+};
+
 module Rect = {
     type t = SkiaWrapped.Rect.t;
 
@@ -68,6 +178,41 @@ module TypeFace = {
 
     let createFromNameWithFontStyle = SkiaWrapped.TypeFace.createFromNameWithFontStyle;
     let createFromFile = SkiaWrapped.TypeFace.createFromFile;
+}
+
+module RRect = {
+    type t = SkiaWrapped.RRect.t;
+    type rrectType = SkiaWrapped.RRect.rrectType;
+    type corner = SkiaWrapped.RRect.corner;
+
+    let make = () => {
+        let rRect = SkiaWrapped.RRect.allocate();
+        Gc.finalise(SkiaWrapped.RRect.delete, rRect);
+        rRect;
+    };
+    let copy = (originalRRect) => {
+        let rRect = SkiaWrapped.RRect.allocateCopy(originalRRect);
+        Gc.finalise(SkiaWrapped.RRect.delete, rRect);
+        rRect;
+    };
+
+    let getType = SkiaWrapped.RRect.getType;
+    let getRect = SkiaWrapped.RRect.getRect;
+    let getRadii = SkiaWrapped.RRect.getRadii;
+    let getWidth = SkiaWrapped.RRect.getWidth;
+    let getHeight = SkiaWrapped.RRect.getHeight;
+    let setEmpty = SkiaWrapped.RRect.setEmpty;
+    let setRect = SkiaWrapped.RRect.setRect;
+    let setOval = SkiaWrapped.RRect.setOval;
+    let setRectXy = SkiaWrapped.RRect.setRectXy;
+    let setNinePatch = SkiaWrapped.RRect.setNinePatch;
+    let setRectRadii = SkiaWrapped.RRect.setRectRadii;
+    let inset = SkiaWrapped.RRect.inset;
+    let outset = SkiaWrapped.RRect.outset;
+    let offset = SkiaWrapped.RRect.offset;
+    let contains = SkiaWrapped.RRect.contains;
+    let isValid = SkiaWrapped.RRect.isValid;
+    let transform = SkiaWrapped.RRect.transform;
 };
 
 module Path = {
@@ -104,15 +249,25 @@ module Data = {
     };
 };
 
-module Imageinfo = {
-    type t = SkiaWrapped.Imageinfo.t;
+module ImageInfo = {
+    type t = SkiaWrapped.ImageInfo.t;
 
-    let make = SkiaWrapped.Imageinfo.make;
+    let make = SkiaWrapped.ImageInfo.make;
 };
 
 module Image = {
     type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Image.t));
 
+    let makeFromEncoded = (encodedData, subset) => {
+        switch(SkiaWrapped.Image.allocateFromEncoded(encodedData, subset)) {
+            | Some(image) => {
+                Gc.finalise(SkiaWrapped.Image.delete, image);
+                Some(image);
+            }
+            | None => None;
+        };
+    };
+    
     let encodeToData = image => {
         let data = SkiaWrapped.Image.encode(image);
         Gc.finalise(SkiaWrapped.Data.delete, data);

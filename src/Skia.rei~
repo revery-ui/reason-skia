@@ -47,7 +47,7 @@ module Data: {
     let makeString: t => string;
 };
 
-module Imageinfo: {
+module ImageInfo: {
     type t;
 
     let make: (int32, int32, colorType, alphaType, option(ColorSpace.t)) => t;
@@ -75,7 +75,7 @@ module SurfaceProps: {
 module Surface: {
     type t;
 
-    let makeRaster: (Imageinfo.t, int, option(SurfaceProps.t)) => t;
+    let makeRaster: (ImageInfo.t, int, option(SurfaceProps.t)) => t;
 
     let makeImageSnapshot: t => Image.t;
 };

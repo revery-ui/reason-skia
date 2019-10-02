@@ -26,6 +26,30 @@ module Paint = {
     let setTypeFace = SkiaWrapped.Paint.setTypeFace;
 };
 
+module Matrix = {
+    type t = SkiaWrapped.Matrix.t;
+
+    let make = () => {
+        let mat = SkiaWrapped.Matrix.make();
+        Gc.finalise(SkiaWrapped.Matrix.destroy, mat);
+        mat;
+    };
+};
+
+module Matrix44 = {
+    type t = SkiaWrapped.Matrix44.t;
+
+    let make = () => {
+        let mat = SkiaWrapped.Matrix44.make();
+        Gc.finalise(SkiaWrapped.Matrix44.destroy, mat);
+        mat;
+    };
+
+    let get = SkiaWrapped.Matrix44.get;
+    let set = SkiaWrapped.Matrix44.set;
+    let toMatrix = SkiaWrapped.Matrix44.toMatrix;
+};
+
 module Rect = {
     type t = SkiaWrapped.Rect.t;
 

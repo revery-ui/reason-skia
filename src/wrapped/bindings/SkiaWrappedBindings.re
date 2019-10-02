@@ -45,6 +45,7 @@ module M = (F: FOREIGN) => {
 
    let get = foreign("sk_matrix44_get", t @-> int @-> int @-> returning(float));
    let set = foreign("sk_matrix44_set", t @-> int @-> int @-> float @-> returning(void));
+   let toMatrix = foreign("sk_matrix44_to_matrix", t @-> Matrix.t @-> returning(void));
   };
 
   module TypeFace = {

@@ -7,6 +7,17 @@ module Color = {
     let makeArgb = SkiaWrapped.Color.makeArgb;
 };
 
+module ImageFilter = {
+    type t = SkiaWrapped.ImageFilter.t;
+    type dropShadowShadowMode = SkiaWrapped.ImageFilter.dropShadowShadowMode;
+
+    let makeDropShadow = (dx, dy, sigmaX, sigmaY, color, shadowMode, inputOption, cropRectOption) => {
+        let imageFilter = SkiaWrapped.ImageFilter.allocateDropShadow(dx, dy, sigmaX, sigmaY, color, shadowMode, inputOption, cropRectOption);
+        Gc.finalise(SkiaWrapped.ImageFilter.delete, imageFilter);
+        imageFilter;
+    };
+};
+
 module Paint = {
     type t = SkiaWrapped.Paint.t;
     type style = SkiaWrapped.Paint.style;

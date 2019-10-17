@@ -10,6 +10,30 @@ module M = (T: TYPE) => {
     ~unexpected = i => invalid_arg(Printf.sprintf("Unsupported %s enum: %Ld", name, i)),
   );
 
+  module ImageFilter = {
+    type t;
+    let t: typ(structure(t)) = structure("sk_imagefilter_t");
+    let t = typedef(t, "sk_imagefilter_t");
+
+    module CropRect = {
+      type t;
+      let t: typ(structure(t)) = structure("sk_imagefilter_croprect_t");
+      let t = typedef(t, "sk_imagefilter_croprect_t");
+    };
+    
+    type dropShadowShadowMode =
+      | DrawShadowAndForeground
+      | DrawShadowOnly;
+    let dropShadowShadowMode = skiaCEnum(
+      "sk_drop_shadow_image_filter_shadow_mode_t",
+      [
+        (DrawShadowAndForeground, "DRAW_SHADOW_AND_FOREGROUND_SK_DROP_SHADOW_IMAGE_FILTER_SHADOW_MODE"),
+        (DrawShadowOnly, "DRAW_SHADOW_ONLY_SK_DROP_SHADOW_IMAGE_FILTER_SHADOW_MODE"),
+      ]
+    );
+
+  };
+
   module Paint = {
     type t;
     let t: typ(structure(t)) = structure("sk_paint_t");

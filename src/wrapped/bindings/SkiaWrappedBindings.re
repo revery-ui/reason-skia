@@ -28,6 +28,34 @@ module M = (F: FOREIGN) => {
     );
   };
 
+  module ImageFilter = {
+    type t = ptr(structure(SkiaTypes.ImageFilter.t));
+    let t = ptr(SkiaTypes.ImageFilter.t);
+    type dropShadowShadowMode = SkiaTypes.ImageFilter.dropShadowShadowMode;
+    let dropShadowShadowMode = SkiaTypes.ImageFilter.dropShadowShadowMode;
+
+    module CropRect = {
+      type t = ptr(structure(SkiaTypes.ImageFilter.CropRect.t));
+      let t = ptr(SkiaTypes.ImageFilter.CropRect.t); 
+    };
+
+    let delete = foreign("sk_imagefilter_unref", t @-> returning(void));
+
+    let allocateDropShadow =
+      foreign(
+        "sk_imagefilter_new_drop_shadow",
+        float @->
+        float @->
+        float @->
+        float @->
+        Color.t @->
+        dropShadowShadowMode @->
+        ptr_opt(SkiaTypes.ImageFilter.t) @->
+        ptr_opt(SkiaTypes.ImageFilter.CropRect.t) @->
+        returning(t),
+      );
+  };
+
   module Paint = {
     type t = ptr(structure(SkiaTypes.Paint.t));
     let t = ptr(SkiaTypes.Paint.t);
@@ -45,6 +73,8 @@ module M = (F: FOREIGN) => {
       foreign("sk_paint_set_style", t @-> style @-> returning(void));
     let setStrokeWidth = 
       foreign("sk_paint_set_stroke_width", t @-> float @-> returning(void));
+    let setImageFilter =
+      foreign("sk_paint_set_imagefilter", t @-> ImageFilter.t @-> returning(void));
   };
 
   module Point = {

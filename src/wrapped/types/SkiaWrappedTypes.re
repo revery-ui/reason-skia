@@ -21,16 +21,18 @@ module M = (T: TYPE) => {
       let t = typedef(t, "sk_imagefilter_croprect_t");
     };
     
-    type dropShadowShadowMode =
-      | DrawShadowAndForeground
-      | DrawShadowOnly;
-    let dropShadowShadowMode = skiaCEnum(
-      "sk_drop_shadow_image_filter_shadow_mode_t",
-      [
-        (DrawShadowAndForeground, "DRAW_SHADOW_AND_FOREGROUND_SK_DROP_SHADOW_IMAGE_FILTER_SHADOW_MODE"),
-        (DrawShadowOnly, "DRAW_SHADOW_ONLY_SK_DROP_SHADOW_IMAGE_FILTER_SHADOW_MODE"),
-      ]
-    );
+    module DropShadow = {
+      type shadowMode =
+        | DrawShadowAndForeground
+        | DrawShadowOnly;
+      let shadowMode = skiaCEnum(
+        "sk_drop_shadow_image_filter_shadow_mode_t",
+        [
+          (DrawShadowAndForeground, "DRAW_SHADOW_AND_FOREGROUND_SK_DROP_SHADOW_IMAGE_FILTER_SHADOW_MODE"),
+          (DrawShadowOnly, "DRAW_SHADOW_ONLY_SK_DROP_SHADOW_IMAGE_FILTER_SHADOW_MODE"),
+        ]
+      );
+    };
 
   };
 
@@ -109,14 +111,14 @@ module M = (T: TYPE) => {
     let t = typedef(t, "sk_rrect_t");
 
     // this should be called "type" only but that's a reserved keyword
-    type rrectType =
+    type rRectType =
       | Empty
       | Rect
       | Oval
       | Simple
       | NinePatch
       | Complex;
-    let rrectType = skiaCEnum(
+    let rRectType = skiaCEnum(
       "sk_rrect_type_t",
       [
         (Empty, "EMPTY_SK_RRECT_TYPE"),

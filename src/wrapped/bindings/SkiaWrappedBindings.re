@@ -31,9 +31,7 @@ module M = (F: FOREIGN) => {
   module ImageFilter = {
     type t = ptr(structure(SkiaTypes.ImageFilter.t));
     let t = ptr(SkiaTypes.ImageFilter.t);
-    type dropShadowShadowMode = SkiaTypes.ImageFilter.dropShadowShadowMode;
-    let dropShadowShadowMode = SkiaTypes.ImageFilter.dropShadowShadowMode;
-
+    
     module CropRect = {
       type t = ptr(structure(SkiaTypes.ImageFilter.CropRect.t));
       let t = ptr(SkiaTypes.ImageFilter.CropRect.t); 
@@ -41,19 +39,24 @@ module M = (F: FOREIGN) => {
 
     let delete = foreign("sk_imagefilter_unref", t @-> returning(void));
 
-    let allocateDropShadow =
-      foreign(
-        "sk_imagefilter_new_drop_shadow",
-        float @->
-        float @->
-        float @->
-        float @->
-        Color.t @->
-        dropShadowShadowMode @->
-        ptr_opt(SkiaTypes.ImageFilter.t) @->
-        ptr_opt(SkiaTypes.ImageFilter.CropRect.t) @->
-        returning(t),
-      );
+    module DropShadow = {
+      type shadowMode = SkiaTypes.ImageFilter.DropShadow.shadowMode;
+      let shadowMode = SkiaTypes.ImageFilter.DropShadow.shadowMode;
+
+      let allocate =
+        foreign(
+          "sk_imagefilter_new_drop_shadow",
+          float @->
+          float @->
+          float @->
+          float @->
+          Color.t @->
+          shadowMode @->
+          ptr_opt(SkiaTypes.ImageFilter.t) @->
+          ptr_opt(SkiaTypes.ImageFilter.CropRect.t) @->
+          returning(t),
+        );
+    };
   };
 
   module Paint = {
@@ -185,8 +188,8 @@ module M = (F: FOREIGN) => {
     type t = ptr(structure(SkiaTypes.RRect.t));
     let t = ptr(SkiaTypes.RRect.t);
 
-    type rrectType = SkiaTypes.RRect.rrectType;
-    let rrectType = SkiaTypes.RRect.rrectType;
+    type rRectType = SkiaTypes.RRect.rRectType;
+    let rRectType = SkiaTypes.RRect.rRectType;
 
     type corner = SkiaTypes.RRect.corner;
     let corner = SkiaTypes.RRect.corner;
@@ -195,7 +198,7 @@ module M = (F: FOREIGN) => {
     let allocateCopy = foreign("sk_rrect_new_copy", t @-> returning(t));
     let delete = foreign("sk_rrect_delete", t @-> returning(void));
 
-    let getType = foreign("sk_rrect_get_type", t @-> returning(rrectType));
+    let getType = foreign("sk_rrect_get_type", t @-> returning(rRectType));
     let getRect = foreign("sk_rrect_get_rect", t @-> Rect.t @-> returning(void));
     let getRadii = foreign("sk_rrect_get_radii", t @-> corner @-> Vector.t @-> returning(void));
     let getWidth = foreign("sk_rrect_get_width", t @-> returning(float));
@@ -320,7 +323,7 @@ module M = (F: FOREIGN) => {
       type t = ptr(structure(SkiaTypes.Gr.BackendRenderTarget.t));
       let t = ptr(SkiaTypes.Gr.BackendRenderTarget.t);
 
-      let makeGl = foreign("gr_backendrendertarget_new_gl", int @-> int @-> int @-> int @-> ptr(SkiaTypes.Gr.Gl.FramebufferInfo.t) @-> returning(t));
+      let makeGl = foreign("gr_backendrendertarget_new_gl", int @-> int @-> int @-> int @-> Gl.FramebufferInfo.t @-> returning(t));
     };
   };
 
@@ -413,20 +416,18 @@ module M = (F: FOREIGN) => {
     let allocateRenderTarget =
       foreign(
         "sk_surface_new_render_target", 
-        // TODO clarify which parameters are optional here
         Gr.Context.t @->
         bool @->
         ImageInfo.t @->
         int @->
         Gr.surfaceOrigin @->
-        SurfaceProps.t @->
+        ptr_opt(SkiaTypes.SurfaceProps.t) @->
         bool @->
         returning(ptr_opt(SkiaTypes.Surface.t)),
       );
     let allocateFromBackendRenderTarget =
       foreign(
         "sk_surface_new_backend_render_target", 
-        // TODO clarify which parameters are optional here
         Gr.Context.t @->
         Gr.BackendRenderTarget.t @->
         Gr.surfaceOrigin @->

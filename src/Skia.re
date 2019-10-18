@@ -9,13 +9,22 @@ module Color = {
 
 module ImageFilter = {
     type t = SkiaWrapped.ImageFilter.t;
-    type dropShadowShadowMode = SkiaWrapped.ImageFilter.dropShadowShadowMode;
 
-    let makeDropShadow = (dx, dy, sigmaX, sigmaY, color, shadowMode, inputOption, cropRectOption) => {
-        let imageFilter = SkiaWrapped.ImageFilter.allocateDropShadow(dx, dy, sigmaX, sigmaY, color, shadowMode, inputOption, cropRectOption);
-        Gc.finalise(SkiaWrapped.ImageFilter.delete, imageFilter);
-        imageFilter;
+    module CropRect = {
+        type t = SkiaWrapped.ImageFilter.CropRect.t;
     };
+
+    module DropShadow = {
+        type shadowMode = SkiaWrapped.ImageFilter.DropShadow.shadowMode;
+    
+        let make = (dx, dy, sigmaX, sigmaY, color, shadowMode, inputOption, cropRectOption) => {
+            let imageFilter = SkiaWrapped.ImageFilter.DropShadow.allocate(dx, dy, sigmaX, sigmaY, color, shadowMode, inputOption, cropRectOption);
+            Gc.finalise(SkiaWrapped.ImageFilter.delete, imageFilter);
+            imageFilter;
+        };
+    };
+
+    let makeDropShadow = DropShadow.make;
 };
 
 module Paint = {
@@ -33,6 +42,14 @@ module Paint = {
     let setStyle = SkiaWrapped.Paint.setStyle;
     let setStrokeWidth = SkiaWrapped.Paint.setStrokeWidth;
     let setImageFilter = SkiaWrapped.Paint.setImageFilter;
+};
+
+module Point = {
+    type t = SkiaWrapped.Point.t;
+};
+
+module Vector = {
+    type t = SkiaWrapped.Vector.t;
 };
 
 module Matrix = {
@@ -154,7 +171,7 @@ module Rect = {
 
 module RRect = {
     type t = SkiaWrapped.RRect.t;
-    type rrectType = SkiaWrapped.RRect.rrectType;
+    type rRectType = SkiaWrapped.RRect.rRectType;
     type corner = SkiaWrapped.RRect.corner;
 
     let make = () => {
@@ -270,15 +287,18 @@ module Gr = {
         let makeGl = SkiaWrapped.Gr.BackendRenderTarget.makeGl;
     };
 };
-        
+
+type clipOp = SkiaWrapped.clipOp;
 
 module Canvas = {
     type t = SkiaWrapped.Canvas.t;
 
     let drawPaint = SkiaWrapped.Canvas.drawPaint;
     let drawRect = SkiaWrapped.Canvas.drawRect;
+    let drawRRect = SkiaWrapped.Canvas.drawRRect;
     let drawOval = SkiaWrapped.Canvas.drawOval;
     let drawPath = SkiaWrapped.Canvas.drawPath;
+    let drawImage = SkiaWrapped.Canvas.drawImage;
 
     let concat = SkiaWrapped.Canvas.concat;
     let setMatrix = SkiaWrapped.Canvas.setMatrix;
@@ -308,25 +328,25 @@ module SurfaceProps = {
 module Surface = {
     type t = SkiaWrapped.Surface.t;
 
-    let makeRaster = (imageinfo, rowBytes, surfaceProps) => {
+    let makeRaster = (imageInfo, rowBytes, surfaceProps) => {
         let surface = SkiaWrapped.Surface.allocateRaster(
-            imageinfo,
+            imageInfo,
             Unsigned.Size_t.of_int(rowBytes),
             surfaceProps,
         );
         Gc.finalise(SkiaWrapped.Surface.delete, surface);
         surface;
     };
-    let makeRenderTarget = (context, shouldBeBudgeted, imageinfo, sampleCount, colorType, colorSpace, surfaceProps) => {
+    let makeRenderTarget = (context, shouldBeBudgeted, imageInfo, sampleCount, surfaceOrigin, surfacePropsOption, shouldCreateWithMips) => {
         let surfaceOption =
             SkiaWrapped.Surface.allocateRenderTarget(
                 context,
                 shouldBeBudgeted,
-                imageinfo,
+                imageInfo,
                 sampleCount,
-                colorType,
-                colorSpace,
-                surfaceProps
+                surfaceOrigin,
+                surfacePropsOption,
+                shouldCreateWithMips,
             );
         switch (surfaceOption) {
         | Some(surface) => {
@@ -336,15 +356,15 @@ module Surface = {
         | None => None;
         };
     };
-    let makeFromBackendRenderTarget = (context, backendRenderTarget, surfaceOrigin, colorType, colorSpace, surfaceProps) => {
+    let makeFromBackendRenderTarget = (context, backendRenderTarget, surfaceOrigin, colorType, colorSpaceOption, surfacePropsOption) => {
         let surfaceOption =
             SkiaWrapped.Surface.allocateFromBackendRenderTarget(
                 context,
                 backendRenderTarget,
                 surfaceOrigin,
                 colorType,
-                colorSpace,
-                surfaceProps
+                colorSpaceOption,
+                surfacePropsOption,
             );
         switch (surfaceOption) {
         | Some(surface) => {

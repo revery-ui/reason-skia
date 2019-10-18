@@ -1,8 +1,8 @@
 open Skia;
 
 let makeSurface = (width, height) => {
-    let imageinfo = ImageInfo.make(width, height, Rgba8888, Premul, None);
-    Surface.makeRaster(imageinfo, 0, None);
+    let imageInfo = ImageInfo.make(width, height, Rgba8888, Premul, None);
+    Surface.makeRaster(imageInfo, 0, None);
 };
 
 // TODO we will need additional tools for setting up an OpenGL context for this to work.

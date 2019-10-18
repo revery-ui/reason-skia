@@ -60,7 +60,20 @@ let draw = (canvas) => {
     Path.lineTo(path, 590., 430.);
     Canvas.drawPath(canvas, path, stroke);
 
-    Paint.setColor(fill, Color.makeArgb(0x80, 0x00, 0xFF, 0x00));
+    Paint.setColor(fill, Color.makeArgb(0xCC, 0x00, 0xFF, 0x00));
+    Paint.setImageFilter(
+        fill,
+        ImageFilter.makeDropShadow(
+            10.,
+            10.,
+            3.,
+            3.,
+            Color.makeArgb(0xAA, 0x00, 0x00, 0x00),
+            DrawShadowAndForeground,
+            None,
+            None,
+        ),
+    );
     let rect2 = Rect.makeLtrb(120., 120., 520., 360.);
     Canvas.drawOval(canvas, rect2, fill);
 };

@@ -32,6 +32,7 @@ module Paint = {
     let setAntiAlias = SkiaWrapped.Paint.setAntiAlias;
     let setStyle = SkiaWrapped.Paint.setStyle;
     let setStrokeWidth = SkiaWrapped.Paint.setStrokeWidth;
+    let setImageFilter = SkiaWrapped.Paint.setImageFilter;
 };
 
 module Matrix = {

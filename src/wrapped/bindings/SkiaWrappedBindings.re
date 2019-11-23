@@ -28,6 +28,32 @@ module M = (F: FOREIGN) => {
     );
   };
 
+  module FontStyle = {
+    type t = ptr(structure(SkiaTypes.FontStyle.t));
+    let t = ptr(SkiaTypes.FontStyle.t);
+
+    type slant = SkiaTypes.FontStyle.slant;
+    let slant = SkiaTypes.FontStyle.slant;
+
+    // TODO this should probaly be called make
+    let newFontStyle = 
+      foreign("sk_fontstyle_new", int @-> int @-> slant @-> returning(t));
+  };
+
+  // TODO this should follow the casing in original Skia: Typeface
+  module TypeFace = {
+    type t = ptr(structure(SkiaTypes.TypeFace.t));
+    let t = ptr(SkiaTypes.TypeFace.t);
+
+    // TODO this should either use the make naming convention or match a constroctur more closely
+    let createFromNameWithFontStyle =
+      foreign("sk_typeface_create_from_name_with_font_style", string @-> FontStyle.t @-> returning(t));
+
+    // TODO this should also match the make naming convention
+    let createFromFile =
+      foreign("sk_typeface_create_from_file", string @-> int @-> returning(t));
+  };
+
   module ImageFilter = {
     type t = ptr(structure(SkiaTypes.ImageFilter.t));
     let t = ptr(SkiaTypes.ImageFilter.t);
@@ -76,6 +102,16 @@ module M = (F: FOREIGN) => {
       foreign("sk_paint_set_style", t @-> style @-> returning(void));
     let setStrokeWidth = 
       foreign("sk_paint_set_stroke_width", t @-> float @-> returning(void));
+
+    let setTypeFace =
+      foreign("sk_paint_set_typeface", t @-> TypeFace.t @-> returning(void));
+
+    let setLcdRenderText =
+      foreign("sk_paint_set_lcd_render_text", t @-> bool @-> returning(void));
+
+    let setTextSize =
+      foreign("sk_paint_set_textsize", t @-> float @-> returning(void));
+      
     let setImageFilter =
       foreign("sk_paint_set_imagefilter", t @-> ImageFilter.t @-> returning(void));
   };
@@ -182,6 +218,14 @@ module M = (F: FOREIGN) => {
   module Matrix44 = {
     type t = ptr(structure(SkiaTypes.Matrix44.t));
     let t = ptr(SkiaTypes.Matrix44.t);
+
+    // TODO this should be called allocate for consistency
+    let make = foreign("sk_matrix44_new", void @-> returning(t));
+    let destroy = foreign("sk_matrix44_destroy", t @-> returning(void));
+  
+    let get = foreign("sk_matrix44_get", t @-> int @-> int @-> returning(float));
+    let set = foreign("sk_matrix44_set", t @-> int @-> int @-> float @-> returning(void));
+    let toMatrix = foreign("sk_matrix44_to_matrix", t @-> Matrix.t @-> returning(void));
   };
 
   module RRect = {
@@ -251,6 +295,8 @@ module M = (F: FOREIGN) => {
     type t = ptr(structure(SkiaTypes.Data.t));
     let t = ptr(SkiaTypes.Data.t);
 
+    // TODO this should match the make naming convention
+    let newFromFile = foreign("sk_data_new_from_file", string @-> returning(t));
     let delete = foreign("sk_data_unref", t @-> returning(void));
 
     let getData = foreign("sk_data_get_data", t @-> returning(ptr(void)));
@@ -356,6 +402,12 @@ module M = (F: FOREIGN) => {
         "sk_canvas_draw_path",
         t @-> Path.t @-> Paint.t @-> returning(void),
       );
+
+    let drawText =
+      foreign(
+        "sk_canvas_draw_text",
+        t @-> string @-> int @-> float @-> float @-> Paint.t @-> returning(void));
+
     let drawImage =
       foreign(
         "sk_canvas_draw_image",
@@ -363,7 +415,7 @@ module M = (F: FOREIGN) => {
       );
 
     let concat = foreign("sk_canvas_concat", t @-> Matrix.t @-> returning(void));
-    let setMatrix = foreign("sk_canvas_set_matrix", t @-> Matrix.t @-> returning(void));
+    let setMatrix = foreign( "sk_canvas_set_matrix", t @-> Matrix.t @-> returning(void));
     let translate = foreign("sk_canvas_translate", t @-> float @-> float @-> returning(void));
     let scale = foreign("sk_canvas_scale", t @-> float @-> float @-> returning(void));
     let rotate = foreign("sk_canvas_rotate_degrees", t @-> float @-> returning(void));

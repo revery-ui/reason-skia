@@ -10,6 +10,33 @@ module M = (T: TYPE) => {
     ~unexpected = i => invalid_arg(Printf.sprintf("Unsupported %s enum: %Ld", name, i)),
   );
 
+  module FontStyle = {
+    type t;
+    let t: typ(structure(t)) = structure("sk_fontstyle_t");
+    let t = typedef(t, "sk_fontstyle_t");
+
+    type slant =
+    | Upright
+    | Italic
+    | Oblique;
+    
+    let slant = skiaCEnum(
+      "sk_font_style_slant_t",
+      [
+        (Upright, "UPRIGHT_SK_FONT_STYLE_SLANT"),
+        (Italic, "ITALIC_SK_FONT_STYLE_SLANT"),
+        (Oblique, "OBLIQUE_SK_FONT_STYLE_SLANT"),
+      ]
+    );
+    
+  };
+
+  module TypeFace = {
+    type t;
+    let t: typ(structure(t)) = structure("sk_typeface_t");
+    let t = typedef(t, "sk_typeface_t");
+  };
+
   module ImageFilter = {
     type t;
     let t: typ(structure(t)) = structure("sk_imagefilter_t");
@@ -33,7 +60,6 @@ module M = (T: TYPE) => {
         ]
       );
     };
-
   };
 
   module Paint = {
@@ -315,6 +341,13 @@ module M = (T: TYPE) => {
     let t = typedef(t, "sk_canvas_t");
   };
 
+  module View3d = {
+    type t;
+    let t: typ(structure(t)) = structure("sk_3dview_t");
+    let t = typedef(t, "sk_3dview_t");
+
+  };
+  
   module SurfaceProps = {
     type t;
     let t: typ(structure(t)) = structure("sk_surfaceprops_t");

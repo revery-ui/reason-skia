@@ -7,6 +7,20 @@ module Color: {
     let makeArgb: (int, int, int, int) => t;
 };
 
+module FontStyle: {
+    type t;
+    type slant = SkiaWrapped.FontStyle.slant;
+
+    let newFontStyle: (int, int, slant) => t;
+};
+
+module TypeFace: {
+    type t;
+
+    let createFromNameWithFontStyle: (string, FontStyle.t) => t;
+    let createFromFile: (string, int) => t;
+};
+
 module ImageFilter: {
     type t;
 
@@ -53,6 +67,9 @@ module Paint: {
     let setStyle: (t, style) => unit;
     let setStrokeWidth: (t, float) => unit;
     let setImageFilter: (t, ImageFilter.t) => unit;
+    let setTypeFace: (t, TypeFace.t) => unit;
+    let setLcdRenderText: (t, bool) => unit;
+    let setTextSize: (t, float) => unit;
 };
 
 module Point: {
@@ -137,6 +154,12 @@ module Matrix: {
 
 module Matrix44: {
     type t;
+
+    let make: unit => t;
+
+    let get: (t, int, int) => float;
+    let set: (t, int, int, float) => unit;
+    let toMatrix: (t, Matrix.t) => unit;
 };
 
 module RRect: {
@@ -183,6 +206,8 @@ module Path: {
 
 module Data: {
     type t;
+
+    let newFromFile: string => t;
 
     let makeString: t => string;
 };
@@ -240,6 +265,7 @@ module Canvas: {
     let drawOval: (t, Rect.t, Paint.t) => unit;
     let drawRRect: (t, RRect.t, Paint.t) => unit;
     let drawPath: (t, Path.t, Paint.t) => unit;
+    let drawText: (t, string, float, float, Paint.t) => unit;
     let drawImage: (t, Image.t, float, float, option(Paint.t)) => unit;
 
     let concat: (t, Matrix.t) => unit;

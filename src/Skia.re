@@ -41,6 +41,9 @@ module Paint = {
     let setAntiAlias = SkiaWrapped.Paint.setAntiAlias;
     let setStyle = SkiaWrapped.Paint.setStyle;
     let setStrokeWidth = SkiaWrapped.Paint.setStrokeWidth;
+    let setLcdRenderText = SkiaWrapped.Paint.setLcdRenderText;
+    let setTextSize = SkiaWrapped.Paint.setTextSize;
+    let setTypeFace = SkiaWrapped.Paint.setTypeFace;
     let setImageFilter = SkiaWrapped.Paint.setImageFilter;
 };
 
@@ -151,8 +154,19 @@ module Matrix = {
     );
 };
 
+
 module Matrix44 = {
     type t = SkiaWrapped.Matrix44.t;
+
+    let make = () => {
+        let mat = SkiaWrapped.Matrix44.make();
+        Gc.finalise(SkiaWrapped.Matrix44.destroy, mat);
+        mat;
+    };
+
+    let get = SkiaWrapped.Matrix44.get;
+    let set = SkiaWrapped.Matrix44.set;
+    let toMatrix = SkiaWrapped.Matrix44.toMatrix;
 };
 
 module IRect = {
@@ -168,6 +182,20 @@ module Rect = {
     let makeEmpty = SkiaWrapped.Rect.makeEmpty;
     let makeLtrb = SkiaWrapped.Rect.makeLtrb;
 };
+
+module FontStyle = {
+    type t = SkiaWrapped.FontStyle.t;
+    type slant = SkiaWrapped.FontStyle.slant;
+    
+    let newFontStyle = SkiaWrapped.FontStyle.newFontStyle;
+};
+
+module TypeFace = {
+    type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.TypeFace.t));
+
+    let createFromNameWithFontStyle = SkiaWrapped.TypeFace.createFromNameWithFontStyle;
+    let createFromFile = SkiaWrapped.TypeFace.createFromFile;
+}
 
 module RRect = {
     type t = SkiaWrapped.RRect.t;
@@ -230,6 +258,12 @@ module Data = {
         let dataSize = Unsigned.Size_t.to_int(SkiaWrapped.Data.getSize(data));
         Ctypes.string_from_ptr(dataPtr, ~length=dataSize);
     };
+
+    let newFromFile = (path) => {
+        let data = SkiaWrapped.Data.newFromFile(path);
+        Gc.finalise(SkiaWrapped.Data.delete, data);
+        data;
+    };
 };
 
 module ImageInfo = {
@@ -239,7 +273,7 @@ module ImageInfo = {
 };
 
 module Image = {
-    type t = SkiaWrapped.Image.t;
+    type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Image.t));
 
     let makeFromEncoded = (encodedData, subset) => {
         switch(SkiaWrapped.Image.allocateFromEncoded(encodedData, subset)) {
@@ -291,13 +325,17 @@ module Gr = {
 type clipOp = SkiaWrapped.clipOp;
 
 module Canvas = {
-    type t = SkiaWrapped.Canvas.t;
+    type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Canvas.t));
 
     let drawPaint = SkiaWrapped.Canvas.drawPaint;
     let drawRect = SkiaWrapped.Canvas.drawRect;
     let drawRRect = SkiaWrapped.Canvas.drawRRect;
     let drawOval = SkiaWrapped.Canvas.drawOval;
     let drawPath = SkiaWrapped.Canvas.drawPath;
+
+    let drawText = (canvas, text, x, y, paint) => {
+        SkiaWrapped.Canvas.drawText(canvas, text, String.length(text), x, y, paint);
+    };
     let drawImage = SkiaWrapped.Canvas.drawImage;
 
     let concat = SkiaWrapped.Canvas.concat;
@@ -326,7 +364,7 @@ module SurfaceProps = {
 };
 
 module Surface = {
-    type t = SkiaWrapped.Surface.t;
+    type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Surface.t));
 
     let makeRaster = (imageInfo, rowBytes, surfaceProps) => {
         let surface = SkiaWrapped.Surface.allocateRaster(

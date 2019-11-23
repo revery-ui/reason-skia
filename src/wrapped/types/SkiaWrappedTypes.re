@@ -37,6 +37,31 @@ module M = (T: TYPE) => {
     let t = typedef(t, "sk_typeface_t");
   };
 
+  module ImageFilter = {
+    type t;
+    let t: typ(structure(t)) = structure("sk_imagefilter_t");
+    let t = typedef(t, "sk_imagefilter_t");
+
+    module CropRect = {
+      type t;
+      let t: typ(structure(t)) = structure("sk_imagefilter_croprect_t");
+      let t = typedef(t, "sk_imagefilter_croprect_t");
+    };
+    
+    module DropShadow = {
+      type shadowMode =
+        | DrawShadowAndForeground
+        | DrawShadowOnly;
+      let shadowMode = skiaCEnum(
+        "sk_drop_shadow_image_filter_shadow_mode_t",
+        [
+          (DrawShadowAndForeground, "DRAW_SHADOW_AND_FOREGROUND_SK_DROP_SHADOW_IMAGE_FILTER_SHADOW_MODE"),
+          (DrawShadowOnly, "DRAW_SHADOW_ONLY_SK_DROP_SHADOW_IMAGE_FILTER_SHADOW_MODE"),
+        ]
+      );
+    };
+  };
+
   module Paint = {
     type t;
     let t: typ(structure(t)) = structure("sk_paint_t");
@@ -112,14 +137,14 @@ module M = (T: TYPE) => {
     let t = typedef(t, "sk_rrect_t");
 
     // this should be called "type" only but that's a reserved keyword
-    type rrectType =
+    type rRectType =
       | Empty
       | Rect
       | Oval
       | Simple
       | NinePatch
       | Complex;
-    let rrectType = skiaCEnum(
+    let rRectType = skiaCEnum(
       "sk_rrect_type_t",
       [
         (Empty, "EMPTY_SK_RRECT_TYPE"),
@@ -298,6 +323,17 @@ module M = (T: TYPE) => {
       let t = typedef(t, "sk_textblob_builder_t"); 
     };
   };
+
+  type clipOp =
+    | Difference
+    | Intersect;
+  let clipOp = skiaCEnum(
+    "sk_clipop_t",
+    [
+      (Difference, "DIFFERENCE_SK_CLIPOP"),
+      (Intersect, "INTERSECT_SK_CLIPOP"),
+    ],
+  );
 
   module Canvas = {
     type t;

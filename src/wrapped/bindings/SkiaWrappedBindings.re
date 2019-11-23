@@ -29,23 +29,60 @@ module M = (F: FOREIGN) => {
   };
 
   module FontStyle = {
-    type t = ptr(SkiaTypes.FontStyle.t);
+    type t = ptr(structure(SkiaTypes.FontStyle.t));
     let t = ptr(SkiaTypes.FontStyle.t);
 
+    type slant = SkiaTypes.FontStyle.slant;
+    let slant = SkiaTypes.FontStyle.slant;
+
+    // TODO this should probaly be called make
     let newFontStyle = 
-      foreign("sk_fontstyle_new", int @-> int @-> SkiaTypes.FontStyle.slant @-> returning(t));
+      foreign("sk_fontstyle_new", int @-> int @-> slant @-> returning(t));
   };
 
+  // TODO this should follow the casing in original Skia: Typeface
   module TypeFace = {
-
-    type t = ptr(SkiaTypes.TypeFace.t);
+    type t = ptr(structure(SkiaTypes.TypeFace.t));
     let t = ptr(SkiaTypes.TypeFace.t);
 
+    // TODO this should either use the make naming convention or match a constroctur more closely
     let createFromNameWithFontStyle =
       foreign("sk_typeface_create_from_name_with_font_style", string @-> FontStyle.t @-> returning(t));
 
+    // TODO this should also match the make naming convention
     let createFromFile =
       foreign("sk_typeface_create_from_file", string @-> int @-> returning(t));
+  };
+
+  module ImageFilter = {
+    type t = ptr(structure(SkiaTypes.ImageFilter.t));
+    let t = ptr(SkiaTypes.ImageFilter.t);
+    
+    module CropRect = {
+      type t = ptr(structure(SkiaTypes.ImageFilter.CropRect.t));
+      let t = ptr(SkiaTypes.ImageFilter.CropRect.t); 
+    };
+
+    let delete = foreign("sk_imagefilter_unref", t @-> returning(void));
+
+    module DropShadow = {
+      type shadowMode = SkiaTypes.ImageFilter.DropShadow.shadowMode;
+      let shadowMode = SkiaTypes.ImageFilter.DropShadow.shadowMode;
+
+      let allocate =
+        foreign(
+          "sk_imagefilter_new_drop_shadow",
+          float @->
+          float @->
+          float @->
+          float @->
+          Color.t @->
+          shadowMode @->
+          ptr_opt(SkiaTypes.ImageFilter.t) @->
+          ptr_opt(SkiaTypes.ImageFilter.CropRect.t) @->
+          returning(t),
+        );
+    };
   };
 
   module Paint = {
@@ -74,6 +111,9 @@ module M = (F: FOREIGN) => {
 
     let setTextSize =
       foreign("sk_paint_set_textsize", t @-> float @-> returning(void));
+      
+    let setImageFilter =
+      foreign("sk_paint_set_imagefilter", t @-> ImageFilter.t @-> returning(void));
   };
 
   module Point = {
@@ -179,20 +219,21 @@ module M = (F: FOREIGN) => {
     type t = ptr(structure(SkiaTypes.Matrix44.t));
     let t = ptr(SkiaTypes.Matrix44.t);
 
-   let make = foreign("sk_matrix44_new", void @-> returning(t));
-   let destroy = foreign("sk_matrix44_destroy", t @-> returning(void));
-
-   let get = foreign("sk_matrix44_get", t @-> int @-> int @-> returning(float));
-   let set = foreign("sk_matrix44_set", t @-> int @-> int @-> float @-> returning(void));
-   let toMatrix = foreign("sk_matrix44_to_matrix", t @-> Matrix.t @-> returning(void));
+    // TODO this should be called allocate for consistency
+    let make = foreign("sk_matrix44_new", void @-> returning(t));
+    let destroy = foreign("sk_matrix44_destroy", t @-> returning(void));
+  
+    let get = foreign("sk_matrix44_get", t @-> int @-> int @-> returning(float));
+    let set = foreign("sk_matrix44_set", t @-> int @-> int @-> float @-> returning(void));
+    let toMatrix = foreign("sk_matrix44_to_matrix", t @-> Matrix.t @-> returning(void));
   };
 
   module RRect = {
     type t = ptr(structure(SkiaTypes.RRect.t));
     let t = ptr(SkiaTypes.RRect.t);
 
-    type rrectType = SkiaTypes.RRect.rrectType;
-    let rrectType = SkiaTypes.RRect.rrectType;
+    type rRectType = SkiaTypes.RRect.rRectType;
+    let rRectType = SkiaTypes.RRect.rRectType;
 
     type corner = SkiaTypes.RRect.corner;
     let corner = SkiaTypes.RRect.corner;
@@ -201,7 +242,7 @@ module M = (F: FOREIGN) => {
     let allocateCopy = foreign("sk_rrect_new_copy", t @-> returning(t));
     let delete = foreign("sk_rrect_delete", t @-> returning(void));
 
-    let getType = foreign("sk_rrect_get_type", t @-> returning(rrectType));
+    let getType = foreign("sk_rrect_get_type", t @-> returning(rRectType));
     let getRect = foreign("sk_rrect_get_rect", t @-> Rect.t @-> returning(void));
     let getRadii = foreign("sk_rrect_get_radii", t @-> corner @-> Vector.t @-> returning(void));
     let getWidth = foreign("sk_rrect_get_width", t @-> returning(float));
@@ -254,6 +295,7 @@ module M = (F: FOREIGN) => {
     type t = ptr(structure(SkiaTypes.Data.t));
     let t = ptr(SkiaTypes.Data.t);
 
+    // TODO this should match the make naming convention
     let newFromFile = foreign("sk_data_new_from_file", string @-> returning(t));
     let delete = foreign("sk_data_unref", t @-> returning(void));
 
@@ -327,9 +369,12 @@ module M = (F: FOREIGN) => {
       type t = ptr(structure(SkiaTypes.Gr.BackendRenderTarget.t));
       let t = ptr(SkiaTypes.Gr.BackendRenderTarget.t);
 
-      let makeGl = foreign("gr_backendrendertarget_new_gl", int @-> int @-> int @-> int @-> ptr(SkiaTypes.Gr.Gl.FramebufferInfo.t) @-> returning(t));
+      let makeGl = foreign("gr_backendrendertarget_new_gl", int @-> int @-> int @-> int @-> Gl.FramebufferInfo.t @-> returning(t));
     };
   };
+
+  type clipOp = SkiaTypes.clipOp;
+  let clipOp = SkiaTypes.clipOp;
 
   module Canvas = {
     type t = ptr(structure(SkiaTypes.Canvas.t));
@@ -363,40 +408,45 @@ module M = (F: FOREIGN) => {
         "sk_canvas_draw_text",
         t @-> string @-> int @-> float @-> float @-> Paint.t @-> returning(void));
 
-    let flush =
-      foreign(
-        "sk_canvas_flush",
-        t @-> returning(void),
-      );
-    
-    let restore =
-      foreign(
-        "sk_canvas_restore",
-        t @-> returning(void),
-      );
-
-    let save =
-      foreign(
-        "sk_canvas_save",
-        t @-> returning(void),
-      );
-
-    let translate =
-      foreign(
-        "sk_canvas_translate",
-        t @-> float @-> float @-> returning(void));
-
     let drawImage =
       foreign(
         "sk_canvas_draw_image",
         t @-> Image.t @-> float @-> float @-> ptr_opt(SkiaTypes.Paint.t) @-> returning(void)
       );
 
-    let setMatrix =
+    let concat = foreign("sk_canvas_concat", t @-> Matrix.t @-> returning(void));
+    let setMatrix = foreign( "sk_canvas_set_matrix", t @-> Matrix.t @-> returning(void));
+    let translate = foreign("sk_canvas_translate", t @-> float @-> float @-> returning(void));
+    let scale = foreign("sk_canvas_scale", t @-> float @-> float @-> returning(void));
+    let rotate = foreign("sk_canvas_rotate_degrees", t @-> float @-> returning(void));
+    let skew = foreign("sk_canvas_skew", t @-> float @-> float @-> returning(void));
+    let resetMatrix = foreign("sk_canvas_reset_matrix", t @-> returning(void));
+
+    let clipRect =
       foreign(
-        "sk_canvas_set_matrix",
-        t @-> Matrix.t @-> returning(void)
+        "sk_canvas_clip_rect_with_operation",
+        t @-> Rect.t @-> clipOp @-> bool @-> returning(void),
       );
+    let clipPath =
+      foreign(
+        "sk_canvas_clip_path_with_operation",
+        t @-> Path.t @-> clipOp @-> bool @-> returning(void),
+      );
+    let clipRRect =
+      foreign(
+        "sk_canvas_clip_rrect_with_operation",
+        t @-> RRect.t @-> clipOp @-> bool @-> returning(void),
+      );
+
+    let save = foreign("sk_canvas_save", t @-> returning(int));
+    let saveLayer =
+      foreign(
+        "sk_canvas_save_layer",
+        t @-> ptr_opt(SkiaTypes.Rect.t) @-> ptr_opt(SkiaTypes.Paint.t) @-> returning(int)
+      );
+    let restore = foreign("sk_canvas_restore", t @-> returning(void));
+
+    let flush = foreign("sk_canvas_flush", t @-> returning(void));
   };
 
   module SurfaceProps = {
@@ -418,20 +468,18 @@ module M = (F: FOREIGN) => {
     let allocateRenderTarget =
       foreign(
         "sk_surface_new_render_target", 
-        // TODO clarify which parameters are optional here
         Gr.Context.t @->
         bool @->
         ImageInfo.t @->
         int @->
         Gr.surfaceOrigin @->
-        SurfaceProps.t @->
+        ptr_opt(SkiaTypes.SurfaceProps.t) @->
         bool @->
         returning(ptr_opt(SkiaTypes.Surface.t)),
       );
     let allocateFromBackendRenderTarget =
       foreign(
         "sk_surface_new_backend_render_target", 
-        // TODO clarify which parameters are optional here
         Gr.Context.t @->
         Gr.BackendRenderTarget.t @->
         Gr.surfaceOrigin @->

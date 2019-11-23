@@ -43,7 +43,7 @@ module Paint = {
     let setStrokeWidth = SkiaWrapped.Paint.setStrokeWidth;
     let setLcdRenderText = SkiaWrapped.Paint.setLcdRenderText;
     let setTextSize = SkiaWrapped.Paint.setTextSize;
-    let setTypeFace = SkiaWrapped.Paint.setTypeFace;
+    let setTypeface = SkiaWrapped.Paint.setTypeface;
     let setImageFilter = SkiaWrapped.Paint.setImageFilter;
 };
 
@@ -190,11 +190,11 @@ module FontStyle = {
     let newFontStyle = SkiaWrapped.FontStyle.newFontStyle;
 };
 
-module TypeFace = {
-    type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.TypeFace.t));
+module Typeface = {
+    type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Typeface.t));
 
-    let createFromNameWithFontStyle = SkiaWrapped.TypeFace.createFromNameWithFontStyle;
-    let createFromFile = SkiaWrapped.TypeFace.createFromFile;
+    let createFromNameWithFontStyle = SkiaWrapped.Typeface.createFromNameWithFontStyle;
+    let createFromFile = SkiaWrapped.Typeface.createFromFile;
 }
 
 module RRect = {

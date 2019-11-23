@@ -14,7 +14,7 @@ module FontStyle: {
     let newFontStyle: (int, int, slant) => t;
 };
 
-module TypeFace: {
+module Typeface: {
     type t;
 
     let createFromNameWithFontStyle: (string, FontStyle.t) => t;
@@ -67,7 +67,7 @@ module Paint: {
     let setStyle: (t, style) => unit;
     let setStrokeWidth: (t, float) => unit;
     let setImageFilter: (t, ImageFilter.t) => unit;
-    let setTypeFace: (t, TypeFace.t) => unit;
+    let setTypeface: (t, Typeface.t) => unit;
     let setLcdRenderText: (t, bool) => unit;
     let setTextSize: (t, float) => unit;
 };

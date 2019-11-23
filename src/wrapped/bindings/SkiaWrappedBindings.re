@@ -40,10 +40,9 @@ module M = (F: FOREIGN) => {
       foreign("sk_fontstyle_new", int @-> int @-> slant @-> returning(t));
   };
 
-  // TODO this should follow the casing in original Skia: Typeface
-  module TypeFace = {
-    type t = ptr(structure(SkiaTypes.TypeFace.t));
-    let t = ptr(SkiaTypes.TypeFace.t);
+  module Typeface = {
+    type t = ptr(structure(SkiaTypes.Typeface.t));
+    let t = ptr(SkiaTypes.Typeface.t);
 
     // TODO this should either use the make naming convention or match a constroctur more closely
     let createFromNameWithFontStyle =
@@ -103,8 +102,8 @@ module M = (F: FOREIGN) => {
     let setStrokeWidth = 
       foreign("sk_paint_set_stroke_width", t @-> float @-> returning(void));
 
-    let setTypeFace =
-      foreign("sk_paint_set_typeface", t @-> TypeFace.t @-> returning(void));
+    let setTypeface =
+      foreign("sk_paint_set_typeface", t @-> Typeface.t @-> returning(void));
 
     let setLcdRenderText =
       foreign("sk_paint_set_lcd_render_text", t @-> bool @-> returning(void));

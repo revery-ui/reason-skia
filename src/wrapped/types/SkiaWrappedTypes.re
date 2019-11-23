@@ -31,7 +31,7 @@ module M = (T: TYPE) => {
     
   };
 
-  module TypeFace = {
+  module Typeface = {
     type t;
     let t: typ(structure(t)) = structure("sk_typeface_t");
     let t = typedef(t, "sk_typeface_t");

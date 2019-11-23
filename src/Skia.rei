@@ -21,6 +21,10 @@ module Typeface: {
     let makeFromFile: (string, int) => t;
 };
 
+module FontMetrics: {
+    type t = SkiaWrapped.FontMetrics.t;
+};
+
 module ImageFilter: {
     type t;
 
@@ -70,6 +74,7 @@ module Paint: {
     let setTypeface: (t, Typeface.t) => unit;
     let setLcdRenderText: (t, bool) => unit;
     let setTextSize: (t, float) => unit;
+    let getFontMetrics: (t, option(FontMetrics.t), float) => float;
 };
 
 module Point: {

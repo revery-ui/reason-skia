@@ -50,6 +50,11 @@ module M = (F: FOREIGN) => {
       foreign("sk_typeface_create_from_file", string @-> int @-> returning(t));
   };
 
+  module FontMetrics = {
+    type t = ptr(structure(SkiaTypes.FontMetrics.t));
+    let t = ptr(SkiaTypes.FontMetrics.t);
+  };
+
   module ImageFilter = {
     type t = ptr(structure(SkiaTypes.ImageFilter.t));
     let t = ptr(SkiaTypes.ImageFilter.t);
@@ -107,6 +112,9 @@ module M = (F: FOREIGN) => {
 
     let setTextSize =
       foreign("sk_paint_set_textsize", t @-> float @-> returning(void));
+
+    let getFontMetrics =
+      foreign("sk_paint_get_fontmetrics", t @-> ptr_opt(SkiaTypes.FontMetrics.t) @-> float @-> returning(float));
       
     let setImageFilter =
       foreign("sk_paint_set_imagefilter", t @-> ImageFilter.t @-> returning(void));

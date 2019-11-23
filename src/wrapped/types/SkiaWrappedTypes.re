@@ -37,6 +37,29 @@ module M = (T: TYPE) => {
     let t = typedef(t, "sk_typeface_t");
   };
 
+  module FontMetrics ={
+    type t;
+    let t: typ(structure(t)) = structure("sk_fontmetrics_t");
+    let flags = field(t, "fFlags", uint32_t);
+    let top = field(t, "fTop", float);
+    let ascent = field(t, "fAscent", float);
+    let descent = field(t, "fDescent", float);
+    let bottom = field(t, "fBottom", float);
+    let leading = field(t, "fLeading", float);
+    let avgCharWidth = field(t, "fAvgCharWidth", float);
+    let maxCharWidth = field(t, "fMaxCharWidth", float);
+    let xMin = field(t, "fXMin", float);
+    let xMax = field(t, "fXMax", float);
+    let xHeight = field(t, "fXHeight", float);
+    let capHeight = field(t, "fCapHeight", float);
+    let underlineThickness = field(t, "fUnderlineThickness", float);
+    let underlinePosition = field(t, "fUnderlinePosition", float);
+    let strikeoutThickness = field(t, "fStrikeoutThickness", float);
+    let strikeoutPosition = field(t, "fStrikeoutPosition", float);
+    seal(t);
+    let t = typedef(t, "sk_fontmetrics_t");
+  };
+
   module ImageFilter = {
     type t;
     let t: typ(structure(t)) = structure("sk_imagefilter_t");

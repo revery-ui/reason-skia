@@ -7,6 +7,10 @@ module Color = {
     let makeArgb = SkiaWrapped.Color.makeArgb;
 };
 
+module FontMetrics = {
+    type t = SkiaWrapped.FontMetrics.t;
+};
+
 module ImageFilter = {
     type t = SkiaWrapped.ImageFilter.t;
 
@@ -44,6 +48,7 @@ module Paint = {
     let setLcdRenderText = SkiaWrapped.Paint.setLcdRenderText;
     let setTextSize = SkiaWrapped.Paint.setTextSize;
     let setTypeface = SkiaWrapped.Paint.setTypeface;
+    let getFontMetrics = SkiaWrapped.Paint.getFontMetrics;
     let setImageFilter = SkiaWrapped.Paint.setImageFilter;
 };
 

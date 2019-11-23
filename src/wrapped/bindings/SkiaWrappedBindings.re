@@ -35,8 +35,7 @@ module M = (F: FOREIGN) => {
     type slant = SkiaTypes.FontStyle.slant;
     let slant = SkiaTypes.FontStyle.slant;
 
-    // TODO this should probaly be called make
-    let newFontStyle = 
+    let make = 
       foreign("sk_fontstyle_new", int @-> int @-> slant @-> returning(t));
   };
 
@@ -44,12 +43,10 @@ module M = (F: FOREIGN) => {
     type t = ptr(structure(SkiaTypes.Typeface.t));
     let t = ptr(SkiaTypes.Typeface.t);
 
-    // TODO this should either use the make naming convention or match a constroctur more closely
-    let createFromNameWithFontStyle =
+    let makeFromName =
       foreign("sk_typeface_create_from_name_with_font_style", string @-> FontStyle.t @-> returning(t));
 
-    // TODO this should also match the make naming convention
-    let createFromFile =
+    let makeFromFile =
       foreign("sk_typeface_create_from_file", string @-> int @-> returning(t));
   };
 
@@ -218,8 +215,7 @@ module M = (F: FOREIGN) => {
     type t = ptr(structure(SkiaTypes.Matrix44.t));
     let t = ptr(SkiaTypes.Matrix44.t);
 
-    // TODO this should be called allocate for consistency
-    let make = foreign("sk_matrix44_new", void @-> returning(t));
+    let allocate = foreign("sk_matrix44_new", void @-> returning(t));
     let destroy = foreign("sk_matrix44_destroy", t @-> returning(void));
   
     let get = foreign("sk_matrix44_get", t @-> int @-> int @-> returning(float));
@@ -294,8 +290,7 @@ module M = (F: FOREIGN) => {
     type t = ptr(structure(SkiaTypes.Data.t));
     let t = ptr(SkiaTypes.Data.t);
 
-    // TODO this should match the make naming convention
-    let newFromFile = foreign("sk_data_new_from_file", string @-> returning(t));
+    let makeFromFileName = foreign("sk_data_new_from_file", string @-> returning(t));
     let delete = foreign("sk_data_unref", t @-> returning(void));
 
     let getData = foreign("sk_data_get_data", t @-> returning(ptr(void)));

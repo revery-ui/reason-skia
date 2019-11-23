@@ -159,7 +159,7 @@ module Matrix44 = {
     type t = SkiaWrapped.Matrix44.t;
 
     let make = () => {
-        let mat = SkiaWrapped.Matrix44.make();
+        let mat = SkiaWrapped.Matrix44.allocate();
         Gc.finalise(SkiaWrapped.Matrix44.destroy, mat);
         mat;
     };
@@ -187,14 +187,14 @@ module FontStyle = {
     type t = SkiaWrapped.FontStyle.t;
     type slant = SkiaWrapped.FontStyle.slant;
     
-    let newFontStyle = SkiaWrapped.FontStyle.newFontStyle;
+    let make = SkiaWrapped.FontStyle.make;
 };
 
 module Typeface = {
     type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Typeface.t));
 
-    let createFromNameWithFontStyle = SkiaWrapped.Typeface.createFromNameWithFontStyle;
-    let createFromFile = SkiaWrapped.Typeface.createFromFile;
+    let makeFromName = SkiaWrapped.Typeface.makeFromName;
+    let makeFromFile = SkiaWrapped.Typeface.makeFromFile;
 }
 
 module RRect = {
@@ -259,8 +259,8 @@ module Data = {
         Ctypes.string_from_ptr(dataPtr, ~length=dataSize);
     };
 
-    let newFromFile = (path) => {
-        let data = SkiaWrapped.Data.newFromFile(path);
+    let makeFromFileName = (path) => {
+        let data = SkiaWrapped.Data.makeFromFileName(path);
         Gc.finalise(SkiaWrapped.Data.delete, data);
         data;
     };

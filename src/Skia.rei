@@ -11,14 +11,14 @@ module FontStyle: {
     type t;
     type slant = SkiaWrapped.FontStyle.slant;
 
-    let newFontStyle: (int, int, slant) => t;
+    let make: (int, int, slant) => t;
 };
 
 module Typeface: {
     type t;
 
-    let createFromNameWithFontStyle: (string, FontStyle.t) => t;
-    let createFromFile: (string, int) => t;
+    let makeFromName: (string, FontStyle.t) => t;
+    let makeFromFile: (string, int) => t;
 };
 
 module ImageFilter: {
@@ -207,7 +207,7 @@ module Path: {
 module Data: {
     type t;
 
-    let newFromFile: string => t;
+    let makeFromFileName: string => t;
 
     let makeString: t => string;
 };

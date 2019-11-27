@@ -320,4 +320,7 @@ module Surface: {
 
     let makeImageSnapshot: t => Image.t;
     let getCanvas: t => Canvas.t;
+    let getWidth: t => int;
+    let getHeight: t => int;
+    let getProps: t => SurfaceProps.t;
 };

@@ -499,5 +499,9 @@ module M = (F: FOREIGN) => {
         "sk_surface_new_image_snapshot",
         t @-> returning(Image.t),
       );
+
+    let getWidth = foreign("sk_surface_get_width", t @-> returning(int));
+    let getHeight = foreign("sk_surface_get_height", t @-> returning(int));
+    let getProps = foreign("sk_surface_get_props", t @-> returning(SurfaceProps.t));
   };
 };

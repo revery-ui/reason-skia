@@ -25,7 +25,7 @@
     "@opam/ctypes-foreign": "0.4.0",
     "@opam/dune": "*",
     "@opam/lambda-term": "*",
-    "esy-skia": "0.4.0",
+    "esy-skia": "0.5.0",
     "@opam/lwt": "*",
     "refmterr": "*",
     "yarn-pkg-config": "*"

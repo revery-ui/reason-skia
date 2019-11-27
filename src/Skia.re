@@ -424,4 +424,8 @@ module Surface = {
         Gc.finalise(SkiaWrapped.Image.delete, imageSnapshot);
         imageSnapshot;
     };
+
+    let getWidth = SkiaWrapped.Surface.getWidth;
+    let getHeight = SkiaWrapped.Surface.getHeight;
+    let getProps = SkiaWrapped.Surface.getProps;
 };

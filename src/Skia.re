@@ -228,7 +228,8 @@ module RRect = {
     let setOval = SkiaWrapped.RRect.setOval;
     let setRectXy = SkiaWrapped.RRect.setRectXy;
     let setNinePatch = SkiaWrapped.RRect.setNinePatch;
-    let setRectRadii = SkiaWrapped.RRect.setRectRadii;
+    // TODO find a way to correctly bind the SkVector[4] parameter
+    // let setRectRadii = SkiaWrapped.RRect.setRectRadii;
     let inset = SkiaWrapped.RRect.inset;
     let outset = SkiaWrapped.RRect.outset;
     let offset = SkiaWrapped.RRect.offset;

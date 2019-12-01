@@ -186,7 +186,8 @@ module RRect: {
     let setOval: (t, Rect.t) => unit;
     let setRectXy: (t, Rect.t, float, float) => unit;
     let setNinePatch: (t, Rect.t, float, float, float, float) => unit;
-    let setRectRadii: (t, Rect.t, Vector.t) => unit;
+    // TODO find a way to correctly bind the SkVector[4] parameter
+    // let setRectRadii: (t, Rect.t, Vector.t) => unit;
     let inset: (t, float, float) => unit;
     let outset: (t, float, float) => unit;
     let offset: (t, float, float) => unit;

@@ -255,7 +255,8 @@ module M = (F: FOREIGN) => {
     let setOval = foreign("sk_rrect_set_oval", t @-> Rect.t @-> returning(void));
     let setRectXy = foreign("sk_rrect_set_rect_xy", t @-> Rect.t @-> float @-> float @-> returning(void));
     let setNinePatch = foreign("sk_rrect_set_nine_patch", t @-> Rect.t @-> float @-> float @-> float @-> float @-> returning(void));
-    let setRectRadii = foreign("sk_rrect_set_rect_radii", t @-> Rect.t @-> Vector.t @-> returning(void));
+    // TODO find a way to correctly bind the SkVector[4] parameter
+    // let setRectRadii = foreign("sk_rrect_set_rect_radii", t @-> Rect.t @-> array(4, Vector.t) @-> returning(void));
     let inset = foreign("sk_rrect_inset", t @-> float @-> float @-> returning(void));
     let outset = foreign("sk_rrect_outset", t @-> float @-> float @-> returning(void));
     let offset = foreign("sk_rrect_offset", t @-> float @-> float @-> returning(void));

@@ -79,10 +79,20 @@ module Paint: {
 
 module Point: {
     type t;
+
+    let make: (float, float) => t;
+
+    let getX: t => float;
+    let getY: t => float;
 };
 
 module Vector: {
-    type t;
+    type t = Point.t;
+
+    let make: (float, float) => t;
+
+    let getX: t => float;
+    let getY: t => float;
 };
 
 module IRect: {
@@ -186,8 +196,7 @@ module RRect: {
     let setOval: (t, Rect.t) => unit;
     let setRectXy: (t, Rect.t, float, float) => unit;
     let setNinePatch: (t, Rect.t, float, float, float, float) => unit;
-    // TODO find a way to correctly bind the SkVector[4] parameter
-    // let setRectRadii: (t, Rect.t, Vector.t) => unit;
+    let setRectRadii: (t, Rect.t, Vector.t, Vector.t, Vector.t, Vector.t) => unit;
     let inset: (t, float, float) => unit;
     let outset: (t, float, float) => unit;
     let offset: (t, float, float) => unit;

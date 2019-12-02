@@ -123,11 +123,39 @@ module M = (F: FOREIGN) => {
   module Point = {
     type t = ptr(structure(SkiaTypes.Point.t));
     let t = ptr(SkiaTypes.Point.t);
+
+    let make = (x, y) => {
+      let point = allocate_n(SkiaTypes.Point.t, ~count=1);
+      setf(!@point, SkiaTypes.Point.x, x);
+      setf(!@point, SkiaTypes.Point.y, y);
+      point;
+    };
+
+    let getX = (point) => {
+      getf(!@point, SkiaTypes.Point.x);
+    };
+    let getY = (point) => {
+      getf(!@point, SkiaTypes.Point.y);
+    };
   };
 
   module Vector = {
     type t = ptr(structure(SkiaTypes.Vector.t));
     let t = ptr(SkiaTypes.Vector.t);
+
+    let make = (x, y) => {
+      let point = allocate_n(SkiaTypes.Vector.t, ~count=1);
+      setf(!@point, SkiaTypes.Vector.x, x);
+      setf(!@point, SkiaTypes.Vector.y, y);
+      point;
+    };
+
+    let getX = (point) => {
+      getf(!@point, SkiaTypes.Vector.x);
+    };
+    let getY = (point) => {
+      getf(!@point, SkiaTypes.Vector.y);
+    };
   };
 
   module IRect = {
@@ -255,8 +283,7 @@ module M = (F: FOREIGN) => {
     let setOval = foreign("sk_rrect_set_oval", t @-> Rect.t @-> returning(void));
     let setRectXy = foreign("sk_rrect_set_rect_xy", t @-> Rect.t @-> float @-> float @-> returning(void));
     let setNinePatch = foreign("sk_rrect_set_nine_patch", t @-> Rect.t @-> float @-> float @-> float @-> float @-> returning(void));
-    // TODO find a way to correctly bind the SkVector[4] parameter
-    // let setRectRadii = foreign("sk_rrect_set_rect_radii", t @-> Rect.t @-> array(4, Vector.t) @-> returning(void));
+    let setRectRadii = foreign("sk_rrect_set_rect_radii", t @-> Rect.t @-> Vector.t @-> returning(void));
     let inset = foreign("sk_rrect_inset", t @-> float @-> float @-> returning(void));
     let outset = foreign("sk_rrect_outset", t @-> float @-> float @-> returning(void));
     let offset = foreign("sk_rrect_offset", t @-> float @-> float @-> returning(void));

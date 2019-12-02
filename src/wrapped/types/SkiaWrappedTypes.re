@@ -113,10 +113,7 @@ module M = (T: TYPE) => {
     let t = typedef(t, "sk_point_t");
   };
 
-  module Vector = {
-    type t = Point.t;
-    let t = Point.t;
-  };
+  module Vector = Point;
 
   module Matrix = {
     type t;

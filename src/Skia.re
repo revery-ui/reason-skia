@@ -54,10 +54,20 @@ module Paint = {
 
 module Point = {
     type t = SkiaWrapped.Point.t;
+
+    let make = SkiaWrapped.Point.make;
+
+    let getX = SkiaWrapped.Point.getX;
+    let getY = SkiaWrapped.Point.getY;
 };
 
 module Vector = {
     type t = SkiaWrapped.Vector.t;
+
+    let make = SkiaWrapped.Vector.make;
+
+    let getX = SkiaWrapped.Vector.getX;
+    let getY = SkiaWrapped.Vector.getY;
 };
 
 module Matrix = {
@@ -196,7 +206,7 @@ module FontStyle = {
 };
 
 module Typeface = {
-    type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Typeface.t));
+    type t = SkiaWrapped.Typeface.t;
 
     let makeFromName = SkiaWrapped.Typeface.makeFromName;
     let makeFromFile = SkiaWrapped.Typeface.makeFromFile;
@@ -228,8 +238,16 @@ module RRect = {
     let setOval = SkiaWrapped.RRect.setOval;
     let setRectXy = SkiaWrapped.RRect.setRectXy;
     let setNinePatch = SkiaWrapped.RRect.setNinePatch;
-    // TODO find a way to correctly bind the SkVector[4] parameter
-    // let setRectRadii = SkiaWrapped.RRect.setRectRadii;
+    let setRectRadii = (rRect, rect, topLeftRadii, topRightRadii, bottomRightRadii, bottomLeftRadii) => {
+        let radiiCArray =
+            Ctypes.CArray.make(SkiaWrappedBindings.SkiaTypes.Vector.t, 4);
+        Ctypes.CArray.unsafe_set(radiiCArray, 0, Ctypes.(!@topLeftRadii));
+        Ctypes.CArray.unsafe_set(radiiCArray, 1, Ctypes.(!@topRightRadii));
+        Ctypes.CArray.unsafe_set(radiiCArray, 2, Ctypes.(!@bottomRightRadii));
+        Ctypes.CArray.unsafe_set(radiiCArray, 3, Ctypes.(!@bottomLeftRadii));
+        let radiiPointer = Ctypes.CArray.start(radiiCArray);
+        SkiaWrapped.RRect.setRectRadii(rRect, rect, radiiPointer);
+    };
     let inset = SkiaWrapped.RRect.inset;
     let outset = SkiaWrapped.RRect.outset;
     let offset = SkiaWrapped.RRect.offset;
@@ -354,7 +372,14 @@ module Canvas = {
 
     let clipRect = SkiaWrapped.Canvas.clipRect;
     let clipPath = SkiaWrapped.Canvas.clipPath;
-    let clipRRect = SkiaWrapped.Canvas.clipRRect;
+    let clipRRect = (canvas, rrect, clipOp:clipOp, antiAlias) => {
+        let output = switch(clipOp) {
+        | Intersect => "Intersect"
+        | Difference => "Difference"
+      };
+      print_endline("clipOp: " ++ output);
+        SkiaWrapped.Canvas.clipRRect(canvas, rrect, clipOp, antiAlias);
+    };
 
     let save = SkiaWrapped.Canvas.save;
     let saveLayer = SkiaWrapped.Canvas.saveLayer;

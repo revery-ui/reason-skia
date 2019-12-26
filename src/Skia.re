@@ -1,295 +1,457 @@
-module Gr = {
-  module GLInterface = {
-    type t;
-  };
+type colorType = SkiaWrapped.colorType;
+type alphaType = SkiaWrapped.alphaType;
 
-  module Context = {
-    type t;
+module Color = {
+    type t = SkiaWrapped.Color.t;
 
-    external makeGL: option(GLInterface.t) => t = "caml_GrContext_MakeGL";
-  };
+    let makeArgb = SkiaWrapped.Color.makeArgb;
 };
 
-module Sk = {
-  type scalar = float;
+module FontMetrics = {
+    type t = SkiaWrapped.FontMetrics.t;
+};
 
-  type point = (scalar, scalar);
-  type vector = point;
+module ImageFilter = {
+    type t = SkiaWrapped.ImageFilter.t;
 
-  type budgeted =
-    | No
-    | Yes;
-
-  module Color = {
-    type t;
-
-    external make: (int, int, int, int) => t = "caml_SkColor_make";
-  };
-
-  module Matrix = {
-    type t;
-  };
-
-  module Path = {
-    type t;
-    // external create: unit => t = "caml_SkPath_create";
-    // external copy: t => t = "caml_SkPath_copy";
-  };
-
-  type flattenableType =
-    | ColorFilter
-    | Drawable
-    | DrawLooper
-    | ImageFilter
-    | MaskFilter
-    | PathEffect
-    | PixelRef
-    | ShaderBase
-    | NormalSource;
-
-  type blurStyle =
-    | Normal
-    | Solid
-    | Outer
-    | Inner;
-
-  module MaskFilter = {
-    type t;
-
-    external makeBlur: (blurStyle, scalar) => t = "caml_SkMaskFilter_MakeBlur";
-  };
-
-  module Shader = {
-    type t;
-
-    type gradientType =
-      | None
-      | Color
-      | Linear
-      | Radial
-      | Sweep
-      | Conical;
-
-    type tileMode =
-      | Clamp
-      | Repeat
-      | Mirror
-      | Decal;
-  };
-
-  module Paint = {
-    type t;
-
-    type cap =
-      | Butt
-      | Round
-      | Square;
-
-    type join =
-      | Miter
-      | Round
-      | Bevel;
-
-    type style =
-      | Fill
-      | Stroke
-      | StrokeAndFill;
-
-    external make: unit => t = "caml_SkPaint_make";
-    // external shallowCopy: t => t = "caml_SkPaint_shallowCopy";
-    // external reset: t => unit = "caml_SkPaint_reset";
-
-    external setColor: (t, Color.t) => unit = "caml_SkPaint_setColor";
-    external getColor: t => Color.t = "caml_SkPaint_getColor";
-    external setStyle: (t, style) => unit = "caml_SkPaint_setStyle";
-    external getStyle: t => style = "caml_SkPaint_getStyle";
-    external setStrokeWidth: (t, scalar) => unit =
-      "caml_SkPaint_setStrokeWidth";
-    external getStrokeWidth: t => scalar = "caml_SkPaint_getStrokeWidth";
-    external setStrokeCap: (t, cap) => unit = "caml_SkPaint_setStrokeCap";
-    external getStrokeCap: t => cap = "caml_SkPaint_getStrokeCap";
-    external setStrokeJoin: (t, join) => unit = "caml_SkPaint_setStrokeJoin";
-    external getStrokeJoin: t => join = "caml_SkPaint_getStrokeJoin";
-    external setStrokeMiter: (t, scalar) => unit =
-      "caml_SkPaint_setStrokeMiter";
-    external getStrokeMiter: t => scalar = "caml_SkPaint_getStrokeMiter";
-    external setAntiAlias: (t, bool) => unit = "caml_SkPaint_setAntiAlias";
-    external isAntiAlias: t => bool = "caml_SkPaint_isAntiAlias";
-    external setMaskFilter: (t, MaskFilter.t) => unit =
-      "caml_SkPaint_setMaskFilter";
-    external getMaskFilter: t => MaskFilter.t = "caml_SkPaint_getMaskFilter";
-  };
-
-  module Typeface = {
-    type t;
-
-    external makeDefault: unit => t = "caml_SkTypeface_MakeDefault";
-  };
-
-  module Font = {
-    type t;
-
-    type edging =
-      | Alias
-      | AntiAlias
-      | SubpixelAntiAlias;
-
-    external make: (Typeface.t, scalar, scalar, scalar) => t =
-      "caml_SkFont_Make";
-
-    external setSubpixel: (t, bool) => unit = "caml_SkFont_setSubpixel";
-    external isSubpixel: t => bool = "caml_SkFont_isSubpixel";
-    external setEdging: (t, edging) => unit = "caml_SkFont_setEdging";
-    external getEdging: t => edging = "caml_SkFont_getEdging";
-  };
-
-  type textEncoding =
-    | UTF8
-    | UTF16
-    | UTF32
-    | GlyphID;
-
-  type fontHinting =
-    | None
-    | Slight
-    | Normal
-    | Full;
-
-  module TextBlob = {
-    type t;
-
-    external makeFromString: (string, Font.t, option(textEncoding)) => t =
-      "caml_SkTextBlob_MakeFromString";
-  };
-
-  module Rect = {
-    type t;
-
-    external makeLTRB: (scalar, scalar, scalar, scalar) => t =
-      "caml_SkRect_MakeLTRB";
-    external makeXYWH: (scalar, scalar, scalar, scalar) => t =
-      "caml_SkRect_MakeXYWH";
-  };
-
-  module RRect = {
-    type t;
-
-    type rRectType =
-      | Empty
-      | Rect
-      | Oval
-      | Simple
-      | NinePatch
-      | Complex;
-
-    external makeRect: Rect.t => t = "caml_SkRRect_MakeRect";
-    external makeOval: Rect.t => t = "caml_SkRRect_MakeOval";
-    external makeRectXY: (Rect.t, scalar, scalar) => t =
-      "caml_SkRRect_MakeRectXY";
-    external setRectRadii:
-      (t, Rect.t, (vector, vector, vector, vector)) => unit =
-      "caml_SkRRect_setRectRadii";
-  };
-
-  module Canvas = {
-    type t;
-
-    // external save: t => unit = "caml_SkCanvas_save";
-    // external translate: (t, scalar, scalar) => unit =
-    //   "caml_SkCanvas_translate";
-    // external rotate: (t, scalar, scalar, scalar) => unit =
-    //   "caml_SkCanvas_rotate";
-    external drawPaint: (t, Paint.t) => unit = "caml_SkCanvas_drawPaint";
-    external drawRect: (t, Rect.t, Paint.t) => unit = "caml_SkCanvas_drawRect";
-    external drawRRect: (t, RRect.t, Paint.t) => unit =
-      "caml_SkCanvas_drawRRect";
-    external drawTextBlob: (t, TextBlob.t, scalar, scalar, Paint.t) => unit =
-      "caml_SkCanvas_drawTextBlob";
-    // external restore: t => unit = "caml_SkCanvas_restore";
-  };
-
-  module Size = {
-    type t = {
-      w: int,
-      h: int,
+    module CropRect = {
+        type t = SkiaWrapped.ImageFilter.CropRect.t;
     };
-  };
 
-  module ColorSpace = {
-    type t;
-  };
+    module DropShadow = {
+        type shadowMode = SkiaWrapped.ImageFilter.DropShadow.shadowMode;
+    
+        let make = (dx, dy, sigmaX, sigmaY, color, shadowMode, inputOption, cropRectOption) => {
+            let imageFilter = SkiaWrapped.ImageFilter.DropShadow.allocate(dx, dy, sigmaX, sigmaY, color, shadowMode, inputOption, cropRectOption);
+            Gc.finalise(SkiaWrapped.ImageFilter.delete, imageFilter);
+            imageFilter;
+        };
+    };
 
-  type colorType =
-    | Unknown
-    | Alpha8
-    | RGB565
-    | ARGB4444
-    | RGBA8888
-    | RGB888X
-    | BGRA8888
-    | RGBA1010102
-    | RGB101010X
-    | Gray8
-    | RGBAF16Norm
-    | RGBAF16
-    | RGBAF32
-    | N32;
+    let makeDropShadow = DropShadow.make;
+};
 
-  type alphaType =
-    | Unknown
-    | Opaque
-    | Premul
-    | Unpremul;
+module Paint = {
+    type t = SkiaWrapped.Paint.t;
+    type style = SkiaWrapped.Paint.style;
 
-  module ImageInfo = {
-    type t;
+    let make = () => {
+      let paint = SkiaWrapped.Paint.allocate();
+      Gc.finalise(SkiaWrapped.Paint.delete, paint);
+      paint;
+    };
 
-    external make: (int, int, colorType, alphaType, option(ColorSpace.t)) => t =
-      "caml_SkImageInfo_Make";
-  };
+    let setColor = SkiaWrapped.Paint.setColor;
+    let setAntiAlias = SkiaWrapped.Paint.setAntiAlias;
+    let setStyle = SkiaWrapped.Paint.setStyle;
+    let setStrokeWidth = SkiaWrapped.Paint.setStrokeWidth;
+    let setLcdRenderText = SkiaWrapped.Paint.setLcdRenderText;
+    let setTextSize = SkiaWrapped.Paint.setTextSize;
+    let setTypeface = SkiaWrapped.Paint.setTypeface;
+    let getFontMetrics = SkiaWrapped.Paint.getFontMetrics;
+    let setImageFilter = SkiaWrapped.Paint.setImageFilter;
+};
 
-  module Data = {
-    type t;
-  };
+module Point = {
+    type t = SkiaWrapped.Point.t;
 
-  module FILEWStream = {
-    type t;
+    let make = SkiaWrapped.Point.make;
 
-    external make: string => t = "caml_SkFILEWStream_make";
-    external write: (t, Data.t) => unit = "caml_SkFILEWStream_write"; // TODO proper typing and binding
-  };
+    let getX = SkiaWrapped.Point.getX;
+    let getY = SkiaWrapped.Point.getY;
+};
 
-  module Image = {
-    type t;
+module Vector = {
+    type t = SkiaWrapped.Vector.t;
 
-    external encodeToData: t => Data.t = "caml_SkImage_encodeToData";
-  };
+    let make = SkiaWrapped.Vector.make;
 
-  type pixelGeometry =
-    | Unknown
-    | RGBH
-    | BGRH
-    | RGBV
-    | BGRV;
+    let getX = SkiaWrapped.Vector.getX;
+    let getY = SkiaWrapped.Vector.getY;
+};
 
-  module SurfaceProps = {
-    type t;
+module Matrix = {
+    type t = SkiaWrapped.Matrix.t;
 
-    external make: pixelGeometry => t = "caml_SkSurfaceProps_Make";
-  };
+    let make = SkiaWrapped.Matrix.make;
+    let setAll = SkiaWrapped.Matrix.setAll;
+    let get = SkiaWrapped.Matrix.get;
+    let set = SkiaWrapped.Matrix.set;
 
-  module Surface = {
-    type t;
+    let setTranslate = (matrix, translateX, translateY) =>
+      setAll(
+        matrix,
+        1., 0., translateX,
+        0., 1., translateY,
+        0., 0., 1.,
+      );
+    let setScale = (matrix, scaleX, scaleY, pivotX, pivotY) =>
+      setAll(
+        matrix,
+        scaleX, 0.,     pivotX -. scaleX *. pivotX,
+        0.,     scaleY, pivotY -. scaleY *. pivotY,
+        0.,     0.,     1.,
+      );
 
-    external makeRenderTarget: (Gr.Context.t, budgeted, ImageInfo.t) => t =
-      "caml_SkSurface_MakeRenderTarget";
+    let makeAll = (
+      scaleX, skewX, translateX,
+      skewY, scaleY, translateY,
+      perspective0, perspective1, perspective2
+    ) => {
+      let matrix = make();
+      setAll(
+        matrix,
+        scaleX, skewX, translateX,
+        skewY, scaleY, translateY,
+        perspective0, perspective1, perspective2
+      );
+      matrix;
+    };
+    let makeScale = (scaleX, scaleY, pivotX, pivotY) => {
+      let matrix = make();
+      setScale(matrix, scaleX, scaleY, pivotX, pivotY);
+      matrix;
+    };
+    let makeTranslate = (translateX, translateY) => {
+      let matrix = make();
+      setTranslate(matrix, translateX, translateY);
+      matrix;
+    };
+    
+    let getScaleX = (matrix) => get(matrix,0);
+    let getScaleY = (matrix) => get(matrix, 4);
+    let getSkewX = (matrix) => get(matrix, 1);
+    let getSkewY = (matrix) => get(matrix, 3);
+    let getTranslateX = (matrix) => get(matrix, 2);
+    let getTranslateY = (matrix) => get(matrix, 5);
+    let getPerspX = (matrix) => get(matrix, 6);
+    let getPerspY = (matrix) => get(matrix, 7);
 
-    external makeRaster: (ImageInfo.t, option(SurfaceProps.t)) => t =
-      "caml_SkSurface_MakeRaster"; // TODO this should accept an optional SurfaceProps parameter
+    let setScaleX = (matrix, scaleX) => set(matrix, 0, scaleX);
+    let setScaleY = (matrix, scaleY) => set(matrix, 4, scaleY);
+    let setSkewX = (matrix, skewX) => set(matrix, 1, skewX);
+    let setSkewY = (matrix, skewY) => set(matrix, 3, skewY);
+    let setTranslateX = (matrix, translateX) => set(matrix, 2, translateX);
+    let setTranslateY = (matrix, translateY) => set(matrix, 5, translateY);
+    let setPerspX = (matrix, perspectiveX) => set(matrix, 6, perspectiveX);
+    let setPerspY = (matrix, perspectiveY) => set(matrix, 7, perspectiveY);
+    let setSkew = (matrix, skewX, skewY, pivotX, pivotY) =>
+      setAll(
+        matrix,
+        1.,     skewX,  -.skewX *. pivotY,
+        skewY,  1.,     -.skewY *. pivotX,
+        0.,     0.,     1.,
+      );
+    let setIdentity = (matrix) =>
+        setAll(
+            matrix,
+            1., 0., 0.,
+            0., 1., 0.,
+            0., 0., 1.,
+        );
+    let reset = setIdentity;
 
-    external getCanvas: t => Canvas.t = "caml_SkSurface_getCanvas";
+    let invert = SkiaWrapped.Matrix.invert;
+    let concat = SkiaWrapped.Matrix.concat;
+    let preConcat = SkiaWrapped.Matrix.preConcat;
+    let postConcat = SkiaWrapped.Matrix.postConcat;
+    let mapRect = SkiaWrapped.Matrix.mapRect;
+    let mapPoints = SkiaWrapped.Matrix.mapPoints;
+    let mapVectors = SkiaWrapped.Matrix.mapVectors;
+    let mapXy = SkiaWrapped.Matrix.mapXy;
+    let mapVector = SkiaWrapped.Matrix.mapVector;
+    let mapRadius = SkiaWrapped.Matrix.mapRadius;
 
-    external makeImageSnapshot: t => Image.t =
-      "caml_SkSurface_makeImageSnapshot";
-  };
+    let identity = makeAll(
+      1., 0., 0.,
+      0., 1., 0.,
+      0., 0., 1.,
+    );
+};
+
+
+module Matrix44 = {
+    type t = SkiaWrapped.Matrix44.t;
+
+    let make = () => {
+        let mat = SkiaWrapped.Matrix44.allocate();
+        Gc.finalise(SkiaWrapped.Matrix44.destroy, mat);
+        mat;
+    };
+
+    let get = SkiaWrapped.Matrix44.get;
+    let set = SkiaWrapped.Matrix44.set;
+    let toMatrix = SkiaWrapped.Matrix44.toMatrix;
+};
+
+module IRect = {
+    type t = SkiaWrapped.IRect.t;
+
+    let makeEmpty = SkiaWrapped.IRect.makeEmpty;
+    let makeLtrb = SkiaWrapped.IRect.makeLtrb;
+};
+
+module Rect = {
+    type t = SkiaWrapped.Rect.t;
+
+    let makeEmpty = SkiaWrapped.Rect.makeEmpty;
+    let makeLtrb = SkiaWrapped.Rect.makeLtrb;
+};
+
+module FontStyle = {
+    type t = SkiaWrapped.FontStyle.t;
+    type slant = SkiaWrapped.FontStyle.slant;
+    
+    let make = SkiaWrapped.FontStyle.make;
+};
+
+module Typeface = {
+    type t = SkiaWrapped.Typeface.t;
+
+    let makeFromName = SkiaWrapped.Typeface.makeFromName;
+    let makeFromFile = SkiaWrapped.Typeface.makeFromFile;
+}
+
+module RRect = {
+    type t = SkiaWrapped.RRect.t;
+    type rRectType = SkiaWrapped.RRect.rRectType;
+    type corner = SkiaWrapped.RRect.corner;
+
+    let make = () => {
+        let rRect = SkiaWrapped.RRect.allocate();
+        Gc.finalise(SkiaWrapped.RRect.delete, rRect);
+        rRect;
+    };
+    let copy = (originalRRect) => {
+        let rRect = SkiaWrapped.RRect.allocateCopy(originalRRect);
+        Gc.finalise(SkiaWrapped.RRect.delete, rRect);
+        rRect;
+    };
+
+    let getType = SkiaWrapped.RRect.getType;
+    let getRect = SkiaWrapped.RRect.getRect;
+    let getRadii = SkiaWrapped.RRect.getRadii;
+    let getWidth = SkiaWrapped.RRect.getWidth;
+    let getHeight = SkiaWrapped.RRect.getHeight;
+    let setEmpty = SkiaWrapped.RRect.setEmpty;
+    let setRect = SkiaWrapped.RRect.setRect;
+    let setOval = SkiaWrapped.RRect.setOval;
+    let setRectXy = SkiaWrapped.RRect.setRectXy;
+    let setNinePatch = SkiaWrapped.RRect.setNinePatch;
+    let setRectRadii = (rRect, rect, topLeftRadii, topRightRadii, bottomRightRadii, bottomLeftRadii) => {
+        let radiiCArray =
+            Ctypes.CArray.make(SkiaWrappedBindings.SkiaTypes.Vector.t, 4);
+        Ctypes.CArray.unsafe_set(radiiCArray, 0, Ctypes.(!@topLeftRadii));
+        Ctypes.CArray.unsafe_set(radiiCArray, 1, Ctypes.(!@topRightRadii));
+        Ctypes.CArray.unsafe_set(radiiCArray, 2, Ctypes.(!@bottomRightRadii));
+        Ctypes.CArray.unsafe_set(radiiCArray, 3, Ctypes.(!@bottomLeftRadii));
+        let radiiPointer = Ctypes.CArray.start(radiiCArray);
+        SkiaWrapped.RRect.setRectRadii(rRect, rect, radiiPointer);
+    };
+    let inset = SkiaWrapped.RRect.inset;
+    let outset = SkiaWrapped.RRect.outset;
+    let offset = SkiaWrapped.RRect.offset;
+    let contains = SkiaWrapped.RRect.contains;
+    let isValid = SkiaWrapped.RRect.isValid;
+    let transform = SkiaWrapped.RRect.transform;
+};
+
+module Path = {
+    type t = SkiaWrapped.Path.t;
+
+    let make = () => {
+      let path = SkiaWrapped.Path.allocate();
+      Gc.finalise(SkiaWrapped.Path.delete, path);
+      path;
+    };
+
+    let moveTo = SkiaWrapped.Path.moveTo;
+    let lineTo = SkiaWrapped.Path.lineTo;
+    let cubicTo = SkiaWrapped.Path.cubicTo;
+};
+
+module ColorSpace = {
+    type t = SkiaWrapped.ColorSpace.t;
+};
+
+module Data = {
+    type t = SkiaWrapped.Data.t;
+
+    let makeString = data => {
+        let dataPtr = Ctypes.from_voidp(Ctypes.char, SkiaWrapped.Data.getData(data));
+        let dataSize = Unsigned.Size_t.to_int(SkiaWrapped.Data.getSize(data));
+        Ctypes.string_from_ptr(dataPtr, ~length=dataSize);
+    };
+
+    let makeFromFileName = (path) => {
+        let data = SkiaWrapped.Data.makeFromFileName(path);
+        Gc.finalise(SkiaWrapped.Data.delete, data);
+        data;
+    };
+};
+
+module ImageInfo = {
+    type t = SkiaWrapped.ImageInfo.t;
+
+    let make = SkiaWrapped.ImageInfo.make;
+};
+
+module Image = {
+    type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Image.t));
+
+    let makeFromEncoded = (encodedData, subset) => {
+        switch(SkiaWrapped.Image.allocateFromEncoded(encodedData, subset)) {
+            | Some(image) => {
+                Gc.finalise(SkiaWrapped.Image.delete, image);
+                Some(image);
+            }
+            | None => None;
+        };
+    };
+    
+    let encodeToData = image => {
+        let data = SkiaWrapped.Image.encode(image);
+        Gc.finalise(SkiaWrapped.Data.delete, data);
+        data;
+    };
+};
+
+type pixelGeometry = SkiaWrapped.pixelGeometry;
+
+module Gr = {
+    type surfaceOrigin = SkiaWrapped.Gr.surfaceOrigin;
+
+    module Gl = {
+        module Interface = {
+            type t = SkiaWrapped.Gr.Gl.Interface.t;
+        };
+
+        module FramebufferInfo = {
+            type t = SkiaWrapped.Gr.Gl.FramebufferInfo.t;
+
+            let make = SkiaWrapped.Gr.Gl.FramebufferInfo.make;
+        };
+    };
+
+    module Context = {
+        type t = SkiaWrapped.Gr.Context.t;
+
+        let makeGl = SkiaWrapped.Gr.Context.makeGl;
+    };
+
+    module BackendRenderTarget = {
+        type t = SkiaWrapped.Gr.BackendRenderTarget.t;
+
+        let makeGl = SkiaWrapped.Gr.BackendRenderTarget.makeGl;
+    };
+};
+
+type clipOp = SkiaWrapped.clipOp;
+
+module Canvas = {
+    type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Canvas.t));
+
+    let drawPaint = SkiaWrapped.Canvas.drawPaint;
+    let drawRect = SkiaWrapped.Canvas.drawRect;
+    let drawRRect = SkiaWrapped.Canvas.drawRRect;
+    let drawOval = SkiaWrapped.Canvas.drawOval;
+    let drawPath = SkiaWrapped.Canvas.drawPath;
+
+    let drawText = (canvas, text, x, y, paint) => {
+        SkiaWrapped.Canvas.drawText(canvas, text, String.length(text), x, y, paint);
+    };
+    let drawImage = SkiaWrapped.Canvas.drawImage;
+
+    let concat = SkiaWrapped.Canvas.concat;
+    let setMatrix = SkiaWrapped.Canvas.setMatrix;
+    let translate = SkiaWrapped.Canvas.translate;
+    let scale = SkiaWrapped.Canvas.scale;
+    let rotate = SkiaWrapped.Canvas.rotate;
+    let skew = SkiaWrapped.Canvas.skew;
+    let resetMatrix = SkiaWrapped.Canvas.resetMatrix;
+
+    let clipRect = SkiaWrapped.Canvas.clipRect;
+    let clipPath = SkiaWrapped.Canvas.clipPath;
+    let clipRRect = (canvas, rrect, clipOp:clipOp, antiAlias) => {
+        let output = switch(clipOp) {
+        | Intersect => "Intersect"
+        | Difference => "Difference"
+      };
+      print_endline("clipOp: " ++ output);
+        SkiaWrapped.Canvas.clipRRect(canvas, rrect, clipOp, antiAlias);
+    };
+
+    let save = SkiaWrapped.Canvas.save;
+    let saveLayer = SkiaWrapped.Canvas.saveLayer;
+    let restore = SkiaWrapped.Canvas.restore;
+
+    let flush = SkiaWrapped.Canvas.flush;
+};   
+
+module SurfaceProps = {
+    type t = SkiaWrapped.SurfaceProps.t;
+
+    let make = SkiaWrapped.SurfaceProps.make;
+};
+
+module Surface = {
+    type t = Ctypes_static.ptr(Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Surface.t));
+
+    let makeRaster = (imageInfo, rowBytes, surfaceProps) => {
+        let surface = SkiaWrapped.Surface.allocateRaster(
+            imageInfo,
+            Unsigned.Size_t.of_int(rowBytes),
+            surfaceProps,
+        );
+        Gc.finalise(SkiaWrapped.Surface.delete, surface);
+        surface;
+    };
+    let makeRenderTarget = (context, shouldBeBudgeted, imageInfo, sampleCount, surfaceOrigin, surfacePropsOption, shouldCreateWithMips) => {
+        let surfaceOption =
+            SkiaWrapped.Surface.allocateRenderTarget(
+                context,
+                shouldBeBudgeted,
+                imageInfo,
+                sampleCount,
+                surfaceOrigin,
+                surfacePropsOption,
+                shouldCreateWithMips,
+            );
+        switch (surfaceOption) {
+        | Some(surface) => {
+            Gc.finalise(SkiaWrapped.Surface.delete, surface);
+            Some(surface);
+        }
+        | None => None;
+        };
+    };
+    let makeFromBackendRenderTarget = (context, backendRenderTarget, surfaceOrigin, colorType, colorSpaceOption, surfacePropsOption) => {
+        let surfaceOption =
+            SkiaWrapped.Surface.allocateFromBackendRenderTarget(
+                context,
+                backendRenderTarget,
+                surfaceOrigin,
+                colorType,
+                colorSpaceOption,
+                surfacePropsOption,
+            );
+        switch (surfaceOption) {
+        | Some(surface) => {
+            Gc.finalise(SkiaWrapped.Surface.delete, surface);
+            Some(surface);
+        }
+        | None => None;
+        };
+    };
+
+    let getCanvas = SkiaWrapped.Surface.getCanvas;
+    let makeImageSnapshot = surface => {
+        let imageSnapshot = SkiaWrapped.Surface.allocateImageSnapshot(surface);
+        Gc.finalise(SkiaWrapped.Image.delete, imageSnapshot);
+        imageSnapshot;
+    };
+
+    let getWidth = SkiaWrapped.Surface.getWidth;
+    let getHeight = SkiaWrapped.Surface.getHeight;
+    let getProps = SkiaWrapped.Surface.getProps;
 };

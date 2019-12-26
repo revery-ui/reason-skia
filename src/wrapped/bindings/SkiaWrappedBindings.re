@@ -44,10 +44,18 @@ module M = (F: FOREIGN) => {
     let t = ptr(SkiaTypes.Typeface.t);
 
     let makeFromName =
-      foreign("sk_typeface_create_from_name_with_font_style", string @-> FontStyle.t @-> returning(t));
+      foreign(
+        "sk_typeface_create_from_name_with_font_style",
+        string @->
+        FontStyle.t @->
+        returning(ptr_opt(SkiaTypes.Typeface.t))
+      );
 
     let makeFromFile =
-      foreign("sk_typeface_create_from_file", string @-> int @-> returning(t));
+      foreign(
+        "sk_typeface_create_from_file",
+        string @-> int @-> returning(ptr_opt(SkiaTypes.Typeface.t))
+      );
   };
 
   module FontMetrics = {

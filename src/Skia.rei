@@ -17,8 +17,8 @@ module FontStyle: {
 module Typeface: {
     type t;
 
-    let makeFromName: (string, FontStyle.t) => t;
-    let makeFromFile: (string, int) => t;
+    let makeFromName: (string, FontStyle.t) => option(t);
+    let makeFromFile: (string, int) => option(t);
 };
 
 module FontMetrics: {

@@ -2,6 +2,9 @@
   "name": "reason-skia",
   "version": "0.1.0",
   "description": "Reason bindings for the Skia 2D graphics library",
+  "scripts": {
+    "format": "esy dune build @fmt --auto-promote"
+  },
   "esy": {
     "build": [
       [
@@ -37,6 +40,7 @@
   "resolutions": {
     "@opam/ocaml-migrate-parsetree": "1.1.0",
     "yarn-pkg-config": "esy-ocaml/yarn-pkg-config#34947ac97f898c8a94b1731df45aea16f8fc7b3c",
-    "@esy-ocaml/libffi": "esy-ocaml/libffi#599bc3567ecf839240977b6d9aaf0b80f983b5aa"
+    "@esy-ocaml/libffi": "esy-ocaml/libffi#599bc3567ecf839240977b6d9aaf0b80f983b5aa",
+    "esy-skia": "revery-ui/esy-skia#ff2e46d"
   }
 }

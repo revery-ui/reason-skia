@@ -3,12 +3,18 @@ open Ctypes;
 module M = (T: TYPE) => {
   open T;
 
-  let skiaCEnum = (name, mapping) => enum(
-    name,
-    ~typedef=true,
-    List.map(((constructor, constantName)) => (constructor, constant(constantName, int64_t)), mapping),
-    ~unexpected = i => invalid_arg(Printf.sprintf("Unsupported %s enum: %Ld", name, i)),
-  );
+  let skiaCEnum = (name, mapping) =>
+    enum(
+      name,
+      ~typedef=true,
+      List.map(
+        ((constructor, constantName)) =>
+          (constructor, constant(constantName, int64_t)),
+        mapping,
+      ),
+      ~unexpected=i =>
+      invalid_arg(Printf.sprintf("Unsupported %s enum: %Ld", name, i))
+    );
 
   module FontStyle = {
     type t;
@@ -16,19 +22,19 @@ module M = (T: TYPE) => {
     let t = typedef(t, "sk_fontstyle_t");
 
     type slant =
-    | Upright
-    | Italic
-    | Oblique;
-    
-    let slant = skiaCEnum(
-      "sk_font_style_slant_t",
-      [
-        (Upright, "UPRIGHT_SK_FONT_STYLE_SLANT"),
-        (Italic, "ITALIC_SK_FONT_STYLE_SLANT"),
-        (Oblique, "OBLIQUE_SK_FONT_STYLE_SLANT"),
-      ]
-    );
-    
+      | Upright
+      | Italic
+      | Oblique;
+
+    let slant =
+      skiaCEnum(
+        "sk_font_style_slant_t",
+        [
+          (Upright, "UPRIGHT_SK_FONT_STYLE_SLANT"),
+          (Italic, "ITALIC_SK_FONT_STYLE_SLANT"),
+          (Oblique, "OBLIQUE_SK_FONT_STYLE_SLANT"),
+        ],
+      );
   };
 
   module Typeface = {
@@ -37,7 +43,7 @@ module M = (T: TYPE) => {
     let t = typedef(t, "sk_typeface_t");
   };
 
-  module FontMetrics ={
+  module FontMetrics = {
     type t;
     let t: typ(structure(t)) = structure("sk_fontmetrics_t");
     let flags = field(t, "fFlags", uint32_t);
@@ -70,18 +76,25 @@ module M = (T: TYPE) => {
       let t: typ(structure(t)) = structure("sk_imagefilter_croprect_t");
       let t = typedef(t, "sk_imagefilter_croprect_t");
     };
-    
+
     module DropShadow = {
       type shadowMode =
         | DrawShadowAndForeground
         | DrawShadowOnly;
-      let shadowMode = skiaCEnum(
-        "sk_drop_shadow_image_filter_shadow_mode_t",
-        [
-          (DrawShadowAndForeground, "DRAW_SHADOW_AND_FOREGROUND_SK_DROP_SHADOW_IMAGE_FILTER_SHADOW_MODE"),
-          (DrawShadowOnly, "DRAW_SHADOW_ONLY_SK_DROP_SHADOW_IMAGE_FILTER_SHADOW_MODE"),
-        ]
-      );
+      let shadowMode =
+        skiaCEnum(
+          "sk_drop_shadow_image_filter_shadow_mode_t",
+          [
+            (
+              DrawShadowAndForeground,
+              "DRAW_SHADOW_AND_FOREGROUND_SK_DROP_SHADOW_IMAGE_FILTER_SHADOW_MODE",
+            ),
+            (
+              DrawShadowOnly,
+              "DRAW_SHADOW_ONLY_SK_DROP_SHADOW_IMAGE_FILTER_SHADOW_MODE",
+            ),
+          ],
+        );
     };
   };
 
@@ -89,19 +102,20 @@ module M = (T: TYPE) => {
     type t;
     let t: typ(structure(t)) = structure("sk_paint_t");
     let t = typedef(t, "sk_paint_t");
- 
+
     type style =
       | Fill
       | Stroke
       | StrokeAndFill;
-    let style = skiaCEnum(
-      "sk_paint_style_t",
-      [
-        (Fill, "FILL_SK_PAINT_STYLE"),
-        (Stroke, "STROKE_SK_PAINT_STYLE"),
-        (StrokeAndFill, "STROKE_AND_FILL_SK_PAINT_STYLE"),
-      ],
-    );
+    let style =
+      skiaCEnum(
+        "sk_paint_style_t",
+        [
+          (Fill, "FILL_SK_PAINT_STYLE"),
+          (Stroke, "STROKE_SK_PAINT_STYLE"),
+          (StrokeAndFill, "STROKE_AND_FILL_SK_PAINT_STYLE"),
+        ],
+      );
   };
 
   module Point = {
@@ -164,32 +178,34 @@ module M = (T: TYPE) => {
       | Simple
       | NinePatch
       | Complex;
-    let rRectType = skiaCEnum(
-      "sk_rrect_type_t",
-      [
-        (Empty, "EMPTY_SK_RRECT_TYPE"),
-        (Rect, "RECT_SK_RRECT_TYPE"),
-        (Oval, "OVAL_SK_RRECT_TYPE"),
-        (Simple, "SIMPLE_SK_RRECT_TYPE"),
-        (NinePatch, "NINE_PATCH_SK_RRECT_TYPE"),
-        (Complex, "COMPLEX_SK_RRECT_TYPE"),
-      ],
-    );
+    let rRectType =
+      skiaCEnum(
+        "sk_rrect_type_t",
+        [
+          (Empty, "EMPTY_SK_RRECT_TYPE"),
+          (Rect, "RECT_SK_RRECT_TYPE"),
+          (Oval, "OVAL_SK_RRECT_TYPE"),
+          (Simple, "SIMPLE_SK_RRECT_TYPE"),
+          (NinePatch, "NINE_PATCH_SK_RRECT_TYPE"),
+          (Complex, "COMPLEX_SK_RRECT_TYPE"),
+        ],
+      );
 
     type corner =
       | UpperLeft
       | UpperRight
       | LowerLeft
       | LowerRight;
-    let corner = skiaCEnum(
-      "sk_rrect_corner_t",
-      [
-        (UpperLeft, "UPPER_LEFT_SK_RRECT_CORNER"),
-        (UpperRight, "UPPER_RIGHT_SK_RRECT_CORNER"),
-        (LowerRight, "LOWER_RIGHT_SK_RRECT_CORNER"),
-        (LowerLeft, "LOWER_LEFT_SK_RRECT_CORNER"),
-      ],
-    );
+    let corner =
+      skiaCEnum(
+        "sk_rrect_corner_t",
+        [
+          (UpperLeft, "UPPER_LEFT_SK_RRECT_CORNER"),
+          (UpperRight, "UPPER_RIGHT_SK_RRECT_CORNER"),
+          (LowerRight, "LOWER_RIGHT_SK_RRECT_CORNER"),
+          (LowerLeft, "LOWER_LEFT_SK_RRECT_CORNER"),
+        ],
+      );
   };
 
   module Path = {
@@ -197,7 +213,7 @@ module M = (T: TYPE) => {
     let t: typ(structure(t)) = structure("sk_path_t");
     let t = typedef(t, "sk_path_t");
   };
-  
+
   module ColorSpace = {
     type t;
     let t: typ(structure(t)) = structure("sk_colorspace_t");
@@ -216,37 +232,39 @@ module M = (T: TYPE) => {
     | Rgb101010x
     | Gray8
     | RgbaF16;
-  let colorType = skiaCEnum(
-    "sk_colortype_t",
-    [
-      (Unknown, "UNKNOWN_SK_COLORTYPE"),
-      (Alpha8, "ALPHA_8_SK_COLORTYPE"),
-      (Rgb565, "RGB_565_SK_COLORTYPE"),
-      (Argb4444, "ARGB_4444_SK_COLORTYPE"),
-      (Rgba8888, "RGBA_8888_SK_COLORTYPE"),
-      (Rgb888x, "RGB_888X_SK_COLORTYPE"),
-      (Bgra8888, "BGRA_8888_SK_COLORTYPE"),
-      (Rgba1010102, "RGBA_1010102_SK_COLORTYPE"),
-      (Rgb101010x, "RGB_101010X_SK_COLORTYPE"),
-      (Gray8, "GRAY_8_SK_COLORTYPE"),
-      (RgbaF16, "RGBA_F16_SK_COLORTYPE"),
-    ],
-  );
+  let colorType =
+    skiaCEnum(
+      "sk_colortype_t",
+      [
+        (Unknown, "UNKNOWN_SK_COLORTYPE"),
+        (Alpha8, "ALPHA_8_SK_COLORTYPE"),
+        (Rgb565, "RGB_565_SK_COLORTYPE"),
+        (Argb4444, "ARGB_4444_SK_COLORTYPE"),
+        (Rgba8888, "RGBA_8888_SK_COLORTYPE"),
+        (Rgb888x, "RGB_888X_SK_COLORTYPE"),
+        (Bgra8888, "BGRA_8888_SK_COLORTYPE"),
+        (Rgba1010102, "RGBA_1010102_SK_COLORTYPE"),
+        (Rgb101010x, "RGB_101010X_SK_COLORTYPE"),
+        (Gray8, "GRAY_8_SK_COLORTYPE"),
+        (RgbaF16, "RGBA_F16_SK_COLORTYPE"),
+      ],
+    );
 
   type alphaType =
     | Unknown
     | Opaque
     | Premul
     | Unpremul;
-  let alphaType = skiaCEnum(
-    "sk_alphatype_t",
-    [
-      (Unknown, "UNKNOWN_SK_ALPHATYPE"),
-      (Opaque, "OPAQUE_SK_ALPHATYPE"),
-      (Premul, "PREMUL_SK_ALPHATYPE"),
-      (Unpremul, "UNPREMUL_SK_ALPHATYPE"),
-    ],
-  );
+  let alphaType =
+    skiaCEnum(
+      "sk_alphatype_t",
+      [
+        (Unknown, "UNKNOWN_SK_ALPHATYPE"),
+        (Opaque, "OPAQUE_SK_ALPHATYPE"),
+        (Premul, "PREMUL_SK_ALPHATYPE"),
+        (Unpremul, "UNPREMUL_SK_ALPHATYPE"),
+      ],
+    );
 
   module Data = {
     type t;
@@ -278,29 +296,31 @@ module M = (T: TYPE) => {
     | BgrH
     | RgbV
     | BgrV;
-  let pixelGeometry = skiaCEnum(
-    "sk_pixelgeometry_t",
-    [
-      (Unknown, "UNKNOWN_SK_PIXELGEOMETRY"),
-      (RgbH, "RGB_H_SK_PIXELGEOMETRY"),
-      (BgrH, "BGR_H_SK_PIXELGEOMETRY"),
-      (RgbV, "RGB_V_SK_PIXELGEOMETRY"),
-      (BgrV, "RGB_V_SK_PIXELGEOMETRY"),
-    ],
-  );
+  let pixelGeometry =
+    skiaCEnum(
+      "sk_pixelgeometry_t",
+      [
+        (Unknown, "UNKNOWN_SK_PIXELGEOMETRY"),
+        (RgbH, "RGB_H_SK_PIXELGEOMETRY"),
+        (BgrH, "BGR_H_SK_PIXELGEOMETRY"),
+        (RgbV, "RGB_V_SK_PIXELGEOMETRY"),
+        (BgrV, "RGB_V_SK_PIXELGEOMETRY"),
+      ],
+    );
 
   module Gr = {
     type surfaceOrigin =
       | TopLeft
       | BottomLeft;
-    let surfaceOrigin = skiaCEnum(
-      "gr_surfaceorigin_t",
-      [
-        (TopLeft, "TOP_LEFT_GR_SURFACE_ORIGIN"),
-        (BottomLeft, "BOTTOM_LEFT_GR_SURFACE_ORIGIN"),
-      ],
-    );
-        
+    let surfaceOrigin =
+      skiaCEnum(
+        "gr_surfaceorigin_t",
+        [
+          (TopLeft, "TOP_LEFT_GR_SURFACE_ORIGIN"),
+          (BottomLeft, "BOTTOM_LEFT_GR_SURFACE_ORIGIN"),
+        ],
+      );
+
     module Gl = {
       module Interface = {
         type t;
@@ -329,31 +349,31 @@ module M = (T: TYPE) => {
       let t: typ(structure(t)) = structure("gr_backendrendertarget_t");
       let t = typedef(t, "gr_backendrendertarget_t");
     };
-
   };
 
   module TextBlob = {
     type t;
     let t: typ(structure(t)) = structure("sk_textblob_t");
-    let t = typedef(t, "sk_textblob_t"); 
+    let t = typedef(t, "sk_textblob_t");
 
     module Builder = {
       type t;
       let t: typ(structure(t)) = structure("sk_textblob_builder_t");
-      let t = typedef(t, "sk_textblob_builder_t"); 
+      let t = typedef(t, "sk_textblob_builder_t");
     };
   };
 
   type clipOp =
     | Difference
     | Intersect;
-  let clipOp = skiaCEnum(
-    "sk_clipop_t",
-    [
-      (Difference, "DIFFERENCE_SK_CLIPOP"),
-      (Intersect, "INTERSECT_SK_CLIPOP"),
-    ],
-  );
+  let clipOp =
+    skiaCEnum(
+      "sk_clipop_t",
+      [
+        (Difference, "DIFFERENCE_SK_CLIPOP"),
+        (Intersect, "INTERSECT_SK_CLIPOP"),
+      ],
+    );
 
   module Canvas = {
     type t;
@@ -365,9 +385,8 @@ module M = (T: TYPE) => {
     type t;
     let t: typ(structure(t)) = structure("sk_3dview_t");
     let t = typedef(t, "sk_3dview_t");
-
   };
-  
+
   module SurfaceProps = {
     type t;
     let t: typ(structure(t)) = structure("sk_surfaceprops_t");

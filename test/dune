@@ -1,0 +1,7 @@
+(executables
+    (names TestApp)
+    (package skia)
+    (public_names TestApp)
+    (libraries
+        skia
+            ))

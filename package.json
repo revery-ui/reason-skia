@@ -42,6 +42,7 @@
     "@opam/ocaml-migrate-parsetree": "1.1.0",
     "yarn-pkg-config": "esy-ocaml/yarn-pkg-config#34947ac97f898c8a94b1731df45aea16f8fc7b3c",
     "@esy-ocaml/libffi": "esy-ocaml/libffi#599bc3567ecf839240977b6d9aaf0b80f983b5aa",
-    "esy-cmake": "prometheansacrifice/esy-cmake#2a47392def"
+    "esy-cmake": "prometheansacrifice/esy-cmake#2a47392def",
+    "esy-libjpeg-turbo": "bryphe/libjpeg-turbo#12d3cef"
   }
 }

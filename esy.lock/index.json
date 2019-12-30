@@ -1,5 +1,5 @@
 {
-  "checksum": "139a05040dea2a9884924da803baddab",
+  "checksum": "34f048b7371e33dd7799bbfd0923c13d",
   "root": "reason-skia@link-dev:./package.json",
   "node": {
     "yarn-pkg-config@github:esy-ocaml/yarn-pkg-config#34947ac97f898c8a94b1731df45aea16f8fc7b3c@d41d8cd9": {
@@ -89,7 +89,7 @@
       },
       "overrides": [],
       "dependencies": [
-        "esy-libjpeg-turbo@github:prometheansacrifice/libjpeg-turbo#50e8e32c48@d41d8cd9",
+        "esy-libjpeg-turbo@github:bryphe/libjpeg-turbo#12d3cef@d41d8cd9",
         "@esy-cross/ninja-build@1.8.2001@d41d8cd9"
       ],
       "devDependencies": []
@@ -110,14 +110,13 @@
       "dependencies": [],
       "devDependencies": []
     },
-    "esy-libjpeg-turbo@github:prometheansacrifice/libjpeg-turbo#50e8e32c48@d41d8cd9": {
-      "id":
-        "esy-libjpeg-turbo@github:prometheansacrifice/libjpeg-turbo#50e8e32c48@d41d8cd9",
+    "esy-libjpeg-turbo@github:bryphe/libjpeg-turbo#12d3cef@d41d8cd9": {
+      "id": "esy-libjpeg-turbo@github:bryphe/libjpeg-turbo#12d3cef@d41d8cd9",
       "name": "esy-libjpeg-turbo",
-      "version": "github:prometheansacrifice/libjpeg-turbo#50e8e32c48",
+      "version": "github:bryphe/libjpeg-turbo#12d3cef",
       "source": {
         "type": "install",
-        "source": [ "github:prometheansacrifice/libjpeg-turbo#50e8e32c48" ]
+        "source": [ "github:bryphe/libjpeg-turbo#12d3cef" ]
       },
       "overrides": [],
       "dependencies": [

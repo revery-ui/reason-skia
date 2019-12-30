@@ -22,7 +22,7 @@ jobs:
   - template: .ci/use-node.yml
   - template: .ci/restore-build-cache.yml
   - template: .ci/esy-build-steps.yml
-  # - script: esy x TestApp
+  - script: esy x TestApp
   - template: .ci/publish-build-cache.yml
 
 - job: Hygiene_Checks

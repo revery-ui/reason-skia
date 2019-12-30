@@ -6,3 +6,14 @@
 Reason / OCaml bindings to the Skia 2D graphics library
 
 See [the official Skia page](https://skia.org/) for information
+
+## Build
+
+- `esy install`
+- `esy build`
+
+## Example
+
+- `esy '@example' install`
+- `esy '@example' build`
+- `esy '@example' run`

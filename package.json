@@ -11,12 +11,12 @@
         "refmterr",
         "dune",
         "build",
-        "--root",
-        "."
+        "-p",
+	"skia"
       ]
     ],
     "install": [
-      "esy-installer"
+      "esy-installer skia.install"
     ]
   },
   "peerDependencies": {

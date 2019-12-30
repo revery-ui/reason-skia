@@ -1,6 +1,6 @@
 (executables
     (names TestApp)
-    (package skia)
+    (package skia-example)
     (public_names TestApp)
     (libraries
         skia

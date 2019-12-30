@@ -82,15 +82,15 @@ let draw = canvas => {
   Paint.setTextSize(fill3, 30.);
 
   let filePath = Sys.getcwd() ++ "/test/Orbitron Medium.ttf";
-  print_endline ("Loading font: " ++ filePath);
+  print_endline("Loading font: " ++ filePath);
   let maybeTypeface = Typeface.makeFromFile(filePath, 0);
   switch (maybeTypeface) {
-  | None => failwith("Unable to load font: " ++ filePath);
-  | Some(typeFace) => 
-    print_endline ("Loaded!");
+  | None => failwith("Unable to load font: " ++ filePath)
+  | Some(typeFace) =>
+    print_endline("Loaded!");
     Paint.setTypeface(fill3, typeFace);
     Canvas.drawText(canvas, "Hello, world!", 30., 30., fill3);
-  }
+  };
 };
 
 let surface = makeSurface(640l, 480l);

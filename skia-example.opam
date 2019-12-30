@@ -1,0 +1,7 @@
+opam-version: "1.2"
+version: "dev"
+maintainer: "manuel@hornung.in"
+author: ["Manuel Hornung"]
+build: [
+
+]

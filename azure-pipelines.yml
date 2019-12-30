@@ -22,7 +22,6 @@ jobs:
   - template: .ci/use-node.yml
   - template: .ci/restore-build-cache.yml
   - template: .ci/esy-build-steps.yml
-  - script: esy x TestApp
   - task: PublishBuildArtifacts@1
     inputs:
       pathToPublish: 'skia-c-example.png'
@@ -66,7 +65,6 @@ jobs:
   - script: node --version
   - template: .ci/restore-build-cache.yml
   - template: .ci/esy-build-steps.yml
-  - script: esy x TestApp
   - task: PublishBuildArtifacts@1
     inputs:
       pathToPublish: 'skia-c-example.png'
@@ -88,7 +86,6 @@ jobs:
   - template: .ci/use-node.yml
   - template: .ci/restore-build-cache.yml
   - template: .ci/esy-build-steps.yml
-  - script: esy x TestApp
   - task: PublishBuildArtifacts@1
     inputs:
       pathToPublish: 'skia-c-example.png'

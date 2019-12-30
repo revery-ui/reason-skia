@@ -1,11 +1,13 @@
 (executable
  (name stubgen)
+ (package skia)
  (modules stubgen)
  (public_name stubgen.exe)
  (libraries skia.wrapped.bindings ctypes ctypes.foreign))
 
 (executable
  (name types_stubgen)
+ (package skia)
  (modules types_stubgen)
  (public_name types_stubgen.exe)
  (libraries skia.wrapped.types ctypes.stubs ctypes))

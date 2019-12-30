@@ -23,6 +23,10 @@ jobs:
   - template: .ci/restore-build-cache.yml
   - template: .ci/esy-build-steps.yml
   - script: esy x TestApp
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: 'skia-c-example.png'
+      artifactName: 'skia-c-example-linux.png'
   - template: .ci/publish-build-cache.yml
 
 - job: Hygiene_Checks
@@ -63,6 +67,10 @@ jobs:
   - template: .ci/restore-build-cache.yml
   - template: .ci/esy-build-steps.yml
   - script: esy x TestApp
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: 'skia-c-example.png'
+      artifactName: 'skia-c-example-osx.png'
   - template: .ci/publish-build-cache.yml
 
 - job: Windows
@@ -81,4 +89,8 @@ jobs:
   - template: .ci/restore-build-cache.yml
   - template: .ci/esy-build-steps.yml
   - script: esy x TestApp
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: 'skia-c-example.png'
+      artifactName: 'skia-c-example-win.png'
   - template: .ci/publish-build-cache.yml

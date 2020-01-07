@@ -60,6 +60,15 @@ let () =
       | _ => []
       };
 
+    let c_flags =
+      switch (get_os) {
+      | Linux =>
+        conf.c_flags
+        @ ccopt("-I" ++ Sys.getenv("SKIA_INCLUDE_PATH"))
+      | _ => conf.cflags
+      };
+   
+
     let libs =
       switch (get_os) {
       | Linux =>

@@ -81,7 +81,7 @@ let draw = canvas => {
   Paint.setColor(fill3, Color.makeArgb(0xFF, 0xFF, 0xFF, 0xFF));
   Paint.setTextSize(fill3, 30.);
 
-  let filePath = Sys.getcwd() ++ "/test/Orbitron Medium.ttf";
+  let filePath = Sys.getcwd() ++ "/example/Orbitron Medium.ttf";
   print_endline("Loading font: " ++ filePath);
   let maybeTypeface = Typeface.makeFromFile(filePath, 0);
   switch (maybeTypeface) {

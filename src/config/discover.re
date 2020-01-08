@@ -54,6 +54,7 @@ let () =
         @ cclib("-lz")
         @ cclib("-lbz2")
         @ ccopt("-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"))
+        @ ccopt("-L" ++ Sys.getenv("SKIA_LIB_PATH"))
         @ ccopt("-I" ++ Sys.getenv("FREETYPE2_INCLUDE_PATH"))
         @ ccopt("-I" ++ Sys.getenv("SKIA_INCLUDE_PATH"))
         @ ccopt("-I/usr/include")
@@ -76,10 +77,12 @@ let () =
       | Linux =>
         conf.libs
         @ [
+          "-lskia",
           "-lfreetype",
           "-lfontconfig",
           "-lz",
           "-lbz2",
+          "-L" ++ Sys.getenv("SKIA_LIB_PATH"),
           "-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"),
         ]
       | _ => conf.libs

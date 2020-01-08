@@ -1,6 +1,8 @@
 type colorType = SkiaWrapped.colorType;
 type alphaType = SkiaWrapped.alphaType;
 
+let testTypeface: unit => unit;
+
 module Color: {
   type t;
 

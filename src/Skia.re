@@ -1,6 +1,8 @@
 type colorType = SkiaWrapped.colorType;
 type alphaType = SkiaWrapped.alphaType;
 
+[@noalloc] external testTypeface: unit => unit = "test_typeface";
+
 module Color = {
   type t = SkiaWrapped.Color.t;
 

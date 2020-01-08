@@ -31,3 +31,11 @@ uint32_t reason_skia_stub_sk_color_get_b(sk_color_t color)
 {
     return sk_color_get_b(color);
 }
+
+void test_typeface() {
+    printf("Hello, world!\n");
+  sk_typeface_t *typeface = sk_typeface_create_from_file("/Users/bryphe/reason-skia/example/Orbitron-Medium.ttf", 0); 
+  int unitsPerEm = sk_typeface_get_units_per_em(typeface);
+    printf("Hello, again: %d\n", unitsPerEm);
+  //let maybeTypeface = Typeface.makeFromFile(filePath, 0);
+}

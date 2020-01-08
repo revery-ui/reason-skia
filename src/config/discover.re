@@ -60,7 +60,7 @@ let () =
       | _ => []
       };
 
-    let c_flags =
+    let cflags =
       switch (get_os) {
       | Linux =>
         conf.cflags
@@ -84,8 +84,8 @@ let () =
       };
 
     write_sexp("flags.sexp", flags);
-    write_lines("c_flags.txt", conf.cflags);
-    write_sexp("c_flags.sexp", conf.cflags);
+    write_lines("c_flags.txt", cflags);
+    write_sexp("c_flags.sexp", cflags);
     write_sexp("c_library_flags.sexp", libs);
     write_lines("c_library_flags.txt", libs);
     write_sexp(

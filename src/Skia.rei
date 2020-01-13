@@ -1,8 +1,15 @@
 //type colorType = SkiaWrapped.colorType;
 //type alphaType = SkiaWrapped.alphaType;
 
+
+module ImageInfo: {
+  type t;
+
+  let make: (int, int) => t;
+};
+
 let testTypeface: unit => unit;
-let testApi: unit => unit;
+let testApi: ImageInfo.t => unit;
 
 /*module Color: {
   type t;

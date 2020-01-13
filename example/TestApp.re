@@ -101,7 +101,8 @@ Printf.printf("Starting C API tests...\n");
 flush(stdout);
 
 testTypeface();
-testApi();
+let imageInfo = ImageInfo.make(256, 256);
+testApi(imageInfo);
 
 Printf.printf("C API tests complete!\n");
 

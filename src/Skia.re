@@ -1,5 +1,14 @@
 [@noalloc] external testTypeface: unit => unit = "test_typeface";
-[@noalloc] external testApi: unit => unit = "test_api";
+
+module ImageInfo {
+  type t;
+
+  external make: (int,int) => t = "resk_imageinfo_make";
+  
+};
+
+
+external testApi: ImageInfo.t => unit = "test_api";
 
 /*module Color = {
   type t = SkiaWrapped.Color.t;

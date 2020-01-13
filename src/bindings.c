@@ -12,6 +12,13 @@
 #include "sk_types.h"
 #include "sk_typeface.h"
 
+#include <caml/alloc.h>
+#include <caml/bigarray.h>
+#include <caml/callback.h>
+#include <caml/memory.h>
+#include <caml/mlvalues.h>
+#include <caml/threads.h>
+
 
 sk_color_t reason_skia_stub_sk_color_set_argb(int alpha, int red, int green, int blue)
 {
@@ -46,15 +53,34 @@ void test_typeface() {
   //let maybeTypeface = Typeface.makeFromFile(filePath, 0);
 }
 
-void test_api() {
-    printf("Creating image info...\n");
+CAMLprim value resk_imageinfo_make(value vWidth, value vHeight) {
+    CAMLparam2(vWidth, vHeight);
+
+    int width = Int_val(vWidth);
+    int height = Int_val(vHeight);
+    // TODO: Track allocation
+    sk_imageinfo_t* pImageInfo = (sk_imageinfo_t*)malloc(sizeof(sk_imageinfo_t));
+    pImageInfo->width = width;
+    pImageInfo->height = height;
+    pImageInfo->colorType = RGBA_8888_SK_COLORTYPE;
+    pImageInfo->alphaType = PREMUL_SK_ALPHATYPE;
+    pImageInfo->colorspace = NULL;
+
+    CAMLreturn((value)pImageInfo);
+};
+
+CAMLprim value test_api(value vImageInfo) {
+    CAMLparam1(vImageInfo);
+
+    sk_imageinfo_t* imageInfo = (sk_imageinfo_t*)vImageInfo;
+    /*printf("Creating image info...\n");
     sk_imageinfo_t* imageInfo= (sk_imageinfo_t *)malloc(sizeof(sk_imageinfo_t));
     imageInfo->height = 256l;
     imageInfo->width = 256l;
     imageInfo->colorType = RGBA_8888_SK_COLORTYPE;
     imageInfo->alphaType = PREMUL_SK_ALPHATYPE;
     imageInfo->colorspace = NULL;
-    printf("ImageInfo created\n");
+    printf("ImageInfo created\n");*/
 
     sk_surface_t *surface = sk_surface_new_raster(
         imageInfo,
@@ -87,5 +113,5 @@ void test_api() {
     }
     //fprintf(fp, "%s", dataString);
     fclose(fp);
-
+    CAMLreturn(Val_unit);
 };

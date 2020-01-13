@@ -96,8 +96,8 @@ let draw = canvas => {
 Printf.printf("Starting C API tests...\n");
 flush(stdout);
 
-  testTypeface();
-  testApi();
+testTypeface();
+testApi();
 
 Printf.printf("C API tests complete!\n");
 

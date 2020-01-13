@@ -60,6 +60,12 @@ void test_api() {
     sk_canvas_t *canvas = sk_surface_get_canvas(surface);
     printf("Canvas created: %d\n", canvas);
 
+    sk_paint_t *paint = sk_paint_new();
+    sk_color_t color = sk_color_set_argb(255, 255, 0, 0);
+    sk_paint_set_color(paint, color);
+
+    sk_canvas_draw_paint(canvas, paint);
+
     sk_image_t *image = sk_surface_new_image_snapshot(surface);
     printf("Created image snapshot: %d\n", image);
 

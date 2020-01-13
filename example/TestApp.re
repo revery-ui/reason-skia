@@ -82,7 +82,6 @@ let draw = canvas => {
   Paint.setTextSize(fill3, 30.);
 
   let filePath = Sys.getcwd() ++ "/example/Orbitron-Medium.ttf";
-  testTypeface();
   print_endline("Loading font: " ++ filePath);
   let maybeTypeface = Typeface.makeFromFile(filePath, 0);
   switch (maybeTypeface) {
@@ -93,6 +92,14 @@ let draw = canvas => {
     Canvas.drawText(canvas, "Hello, world!", 30., 30., fill3);
   };
 };
+
+Printf.printf("Starting C API tests...\n");
+flush(stdout);
+
+  testTypeface();
+  testApi();
+
+Printf.printf("C API tests complete!\n");
 
 let surface = makeSurface(640l, 480l);
 let canvas = Surface.getCanvas(surface);

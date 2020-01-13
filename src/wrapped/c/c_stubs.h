@@ -1,3 +1,6 @@
+#include "sk_data.h"
+#include "sk_image.h"
+#include "sk_surface.h"
 #include "sk_types.h"
 #include "sk_typeface.h"
 

@@ -80,7 +80,7 @@ CAMLprim value test_api(value vImageInfo) {
     // Check if freetype supports LCD rendering...
     FT_Library library;
     FT_Init_FreeType(&library);
-    int result = FT_Library_SetLcdFilter(library, 2);
+    int result = FT_Library_SetLcdFilter(library, 1);
     printf("FreeType initialization result: %d\n", result);
 
     sk_imageinfo_t* imageInfo = (sk_imageinfo_t*)vImageInfo;

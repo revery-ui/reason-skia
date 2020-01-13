@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "sk_canvas.h"
 #include "sk_data.h"
 #include "sk_image.h"
 #include "sk_paint.h"
@@ -18,6 +19,9 @@
 #include <caml/memory.h>
 #include <caml/mlvalues.h>
 #include <caml/threads.h>
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 
 sk_color_t reason_skia_stub_sk_color_set_argb(int alpha, int red, int green, int blue)
@@ -64,6 +68,7 @@ CAMLprim value resk_imageinfo_make(value vWidth, value vHeight) {
     pImageInfo->height = height;
     pImageInfo->colorType = RGBA_8888_SK_COLORTYPE;
     pImageInfo->alphaType = PREMUL_SK_ALPHATYPE;
+    //pImageInfo->alphaType = UNKNOWN_SK_ALPHATYPE;
     pImageInfo->colorspace = NULL;
 
     CAMLreturn((value)pImageInfo);
@@ -71,6 +76,12 @@ CAMLprim value resk_imageinfo_make(value vWidth, value vHeight) {
 
 CAMLprim value test_api(value vImageInfo) {
     CAMLparam1(vImageInfo);
+
+    // Check if freetype supports LCD rendering...
+    FT_Library library;
+    FT_Init_FreeType(&library);
+    int result = FT_Library_SetLcdFilter(library, 2);
+    printf("FreeType initialization result: %d\n", result);
 
     sk_imageinfo_t* imageInfo = (sk_imageinfo_t*)vImageInfo;
     /*printf("Creating image info...\n");
@@ -82,20 +93,42 @@ CAMLprim value test_api(value vImageInfo) {
     imageInfo->colorspace = NULL;
     printf("ImageInfo created\n");*/
 
+    sk_surfaceprops_t* surfaceProps = sk_surfaceprops_new(0,
+        RGB_H_SK_PIXELGEOMETRY
+        );
+
     sk_surface_t *surface = sk_surface_new_raster(
         imageInfo,
         0,
-        NULL);
+        surfaceProps);
     printf("Surface created: %d\n", surface);
 
     sk_canvas_t *canvas = sk_surface_get_canvas(surface);
     printf("Canvas created: %d\n", canvas);
 
     sk_paint_t *paint = sk_paint_new();
-    sk_color_t color = sk_color_set_argb(255, 255, 0, 0);
+    sk_color_t color = sk_color_set_argb(255, 0, 0, 0);
+    sk_color_t colorWhite = sk_color_set_argb(255, 255, 255, 255);
     sk_paint_set_color(paint, color);
 
     sk_canvas_draw_paint(canvas, paint);
+    printf("Painted background\n");
+
+    //sk_typeface_t *typeface = sk_typeface_create_from_file("/Users/bryphe/reason-skia/example/Orbitron-Medium.ttf", 0); 
+    sk_fontstyle_t *fontstyle = sk_fontstyle_new(0, 0, 0);
+    sk_typeface_t *typeface = sk_typeface_create_from_name_with_font_style("Menlo", fontstyle);
+    int unitsPerEM = sk_typeface_get_units_per_em(typeface);
+    printf("Units per EM: %d\n", unitsPerEM);
+
+    sk_paint_t *paintText = sk_paint_new();
+    sk_paint_set_color(paintText, colorWhite);
+    sk_paint_set_antialias(paintText, true);
+    sk_paint_set_lcd_render_text(paintText, true);
+    sk_paint_set_subpixel_text(paintText, true);
+    sk_paint_set_typeface(paintText, typeface);
+    sk_paint_set_textsize(paintText, 15.0);
+    char *sz = "Hello, world!";
+    sk_canvas_draw_text(canvas, sz, strlen(sz), 50.0, 100.0, paintText);
 
     sk_image_t *image = sk_surface_new_image_snapshot(surface);
     printf("Created image snapshot: %d\n", image);

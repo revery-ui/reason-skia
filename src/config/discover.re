@@ -59,8 +59,19 @@ let () =
       | _ => []
       };
 
+    let cflags = conf.cflags
+    @ ["-I" ++ Sys.getenv("FREETYPE2_INCLUDE_PATH")];
+
     let libs =
       switch (get_os) {
+      | Mac =>
+        conf.libs
+        @ [
+          "-lfreetype",
+          "-lz",
+          "-lbz2",
+          "-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"),
+          ]
       | Linux =>
         conf.libs
         @ [
@@ -74,7 +85,7 @@ let () =
       };
 
     write_sexp("flags.sexp", flags);
-    write_sexp("c_flags.sexp", conf.cflags);
+    write_sexp("c_flags.sexp", cflags);
     write_sexp("c_library_flags.sexp", libs);
     write_sexp(
       "cclib_c_library_flags.sexp",

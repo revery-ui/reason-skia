@@ -1,10 +1,10 @@
-type colorType = SkiaWrapped.colorType;
-type alphaType = SkiaWrapped.alphaType;
+//type colorType = SkiaWrapped.colorType;
+//type alphaType = SkiaWrapped.alphaType;
 
 let testTypeface: unit => unit;
 let testApi: unit => unit;
 
-module Color: {
+/*module Color: {
   type t;
 
   let makeArgb: (int, int, int, int) => t;
@@ -330,3 +330,4 @@ module Surface: {
   let getHeight: t => int;
   let getProps: t => SurfaceProps.t;
 };
+*/

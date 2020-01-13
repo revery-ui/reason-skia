@@ -7,5 +7,6 @@
   (name skia)
   (public_name skia)
   (library_flags (:include flags.sexp))
-  (c_library_flags (:include c_library_flags.sexp))
-  (libraries skia.wrapped))
+  (c_names bindings)
+  (c_flags (:include c_flags.sexp))
+  (c_library_flags (:include c_library_flags.sexp)))

@@ -74,10 +74,8 @@ let () =
       };
 
     write_sexp("flags.sexp", flags);
-    write_lines("c_flags.txt", conf.cflags);
     write_sexp("c_flags.sexp", conf.cflags);
     write_sexp("c_library_flags.sexp", libs);
-    write_lines("c_library_flags.txt", libs);
     write_sexp(
       "cclib_c_library_flags.sexp",
       libs |> List.map(o => ["-cclib", o]) |> List.flatten,

@@ -1,8 +1,9 @@
 open Skia;
 
-let makeSurface = (width, height) => {
-  let imageInfo = ImageInfo.make(width, height, Rgba8888, Premul, None);
-  Surface.makeRaster(imageInfo, 0, None);
+let makeSurface = (_width, _height) => {
+  /*let imageInfo = ImageInfo.make(width, height, Rgba8888, Premul, None);
+  Surface.makeRaster(imageInfo, 0, None);*/
+  ();
 };
 
 // TODO we will need additional tools for setting up an OpenGL context for this to work.
@@ -29,17 +30,18 @@ let makeSurface = (width, height) => {
 //     };
 // };
 
-let emitPng = (path, surface) => {
-  let image = Surface.makeImageSnapshot(surface);
+let emitPng = (_path, _surface) => {
+/*    let image = Surface.makeImageSnapshot(surface);
   let data = Image.encodeToData(image);
   let dataString = Data.makeString(data);
   let fileOutputChannel = open_out_bin(path);
   output_string(fileOutputChannel, dataString);
-  close_out(fileOutputChannel);
+  close_out(fileOutputChannel);*/
+  ();
 };
 
-let draw = canvas => {
-  let fill = Paint.make();
+let draw = _canvas => {
+  /*let fill = Paint.make();
   Paint.setColor(fill, Color.makeArgb(0xFF, 0x00, 0x00, 0xFF));
   Canvas.drawPaint(canvas, fill);
 
@@ -91,6 +93,8 @@ let draw = canvas => {
     Paint.setTypeface(fill3, typeFace);
     Canvas.drawText(canvas, "Hello, world!", 30., 30., fill3);
   };
+  */
+  ();
 };
 
 Printf.printf("Starting C API tests...\n");
@@ -101,10 +105,10 @@ testApi();
 
 Printf.printf("C API tests complete!\n");
 
-let surface = makeSurface(640l, 480l);
-let canvas = Surface.getCanvas(surface);
-draw(canvas);
-emitPng("skia-c-example.png", surface);
+//let surface = makeSurface(640l, 480l);
+//let canvas = Surface.getCanvas(surface);
+//draw(canvas);
+//emitPng("skia-c-example.png", surface);
 
 // let surfaceOption = makeGpuSurface(640, 480);
 // switch (surfaceOption) {

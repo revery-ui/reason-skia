@@ -65,6 +65,19 @@ void test_typeface() {
     deserialize: custom_deserialize_default \
 };
 
+#define INIT_POINTER(TYPENAME, FINALIZER) void FINALIZER(value v); \
+typedef struct CONCAT(__resk_internal__, TYPENAME) { \
+    TYPENAME *v;   \
+} CONCAT(TYPENAME, __wrapped); \
+static struct custom_operations CONCAT(TYPENAME, __ptr_custom_ops)= { \
+    identifier: #TYPENAME, \
+    finalize: FINALIZER, \
+    compare: custom_compare_default, \
+    hash: custom_hash_default, \
+    serialize: custom_serialize_default, \
+    deserialize: custom_deserialize_default \ 
+};
+
 #define ALLOC_STRUCT(TYPENAME, INSTANCE) v = caml_alloc_custom(&CONCAT(TYPENAME, __custom_ops), sizeof(TYPENAME), 0, 1); \
     memcpy(Data_custom_val(v), &INSTANCE, sizeof(TYPENAME));
     
@@ -72,17 +85,12 @@ void test_typeface() {
 
 #define POINTER_VAL(TYPENAME, VALUE) (TYPENAME*)((CONCAT(TYPENAME, __wrapped)*)(void *)Data_custom_val(VALUE))->v
 
-typedef struct _surface {
-    sk_surface_t *v;
-} sk_surface_t__wrapped;
-
 typedef struct _paint {
    sk_paint_t *v; 
 } sk_paint_W;
 
-typedef struct _typeface {
-   sk_typeface_t *v; 
-} sk_typeface_t__wrapped;
+INIT_POINTER(sk_typeface_t, resk_finalize_sk_typeface);
+INIT_POINTER(sk_surface_t, resk_finalize_sk_surface);
 
 void resk_finalize_sk_typeface(value vTypeface) {
     sk_typeface_t *typeface = POINTER_VAL(sk_typeface_t, vTypeface);
@@ -105,23 +113,23 @@ void resk_finalize_sk_paint(value vPaint) {
     printf("Paint finalized!\n");
 };
 
-static struct custom_operations sk_typeface_custom_ops= {
+/*static struct custom_operations sk_typeface_custom_ops= {
     identifier: "sk_typeface_t",
     finalize: resk_finalize_sk_typeface,
     compare: custom_compare_default,
     hash: custom_hash_default,
     serialize: custom_serialize_default,
     deserialize: custom_deserialize_default
-};
+};*/
 
-static struct custom_operations sk_surface_custom_ops= {
+/*static struct custom_operations sk_surface_custom_ops= {
     identifier: "sk_surface_t",
     finalize: resk_finalize_sk_surface,
     compare: custom_compare_default,
     hash: custom_hash_default,
     serialize: custom_serialize_default,
     deserialize: custom_deserialize_default
-};
+};*/
 
 static struct custom_operations sk_paint_custom_ops= {
     identifier: "sk_paint_t",
@@ -187,7 +195,7 @@ CAMLprim value resk_typeface_create_from_file(value vPath, value vIndex) {
         sk_typeface_t__wrapped typefaceWrapper;
         typefaceWrapper.v = pTypeface;
 
-        font = caml_alloc_custom(&sk_typeface_custom_ops, sizeof(sk_typeface_t__wrapped), 0, 1);
+        font = caml_alloc_custom(&sk_typeface_t__ptr_custom_ops, sizeof(sk_typeface_t__wrapped), 0, 1);
         memcpy(Data_custom_val(font), &typefaceWrapper, sizeof(sk_typeface_t__wrapped));
         v = Val_some(font);
     }
@@ -287,7 +295,7 @@ CAMLprim value resk_surface_new_raster(value vImageInfo) {
 
     sk_surface_t__wrapped surfaceWrapper;
     surfaceWrapper.v = surface;
-    v = caml_alloc_custom(&sk_surface_custom_ops, sizeof(sk_surface_t__wrapped), 0, 1);
+    v = caml_alloc_custom(&sk_surface_t__ptr_custom_ops, sizeof(sk_surface_t__wrapped), 0, 1);
     memcpy(Data_custom_val(v), &surfaceWrapper, sizeof(sk_surface_t__wrapped));
     printf("Surface created: %d\n", surface);
     CAMLreturn(v);

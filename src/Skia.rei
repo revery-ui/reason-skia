@@ -11,6 +11,18 @@ module Gr: {
   module Context: {type t;};
 };
 
+module Matrix: {
+  type t;
+
+  let make: unit => t;
+};
+
+module Matrix44: {
+  type t;
+
+  let make: unit => t;
+};
+
 module Data: {
   type t;
 

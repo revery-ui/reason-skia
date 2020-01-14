@@ -12,6 +12,18 @@ module Gr = {
   };
 };
 
+module Matrix = {
+  type t;
+
+  external make: unit => t = "resk_matrix_make";
+};
+
+module Matrix44 = {
+  type t;
+
+  external make: unit => t = "resk_matrix44_make";
+};
+
 module Data = {
   type t;
 

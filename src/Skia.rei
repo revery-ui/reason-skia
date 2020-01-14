@@ -73,7 +73,6 @@ module Surface: {
   let getCanvas: t => Canvas.t;
 };
 
-let testTypeface: unit => unit;
 let testWriteSurface: Surface.t => unit;
 
 /*module Color: {

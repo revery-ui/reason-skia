@@ -98,10 +98,8 @@ let draw = canvas => {
   };
 };
 
-Printf.printf("Starting C API tests...\n");
-flush(stdout);
+prerr_endline("Starting C API tests...\n");
 
-testTypeface();
 let () = {
   let surface = makeSurface(640, 480);
   let canvas = Surface.getCanvas(surface);
@@ -131,7 +129,7 @@ let () = {
 
 Gc.full_major();
 
-Printf.printf("C API tests complete!\n");
+prerr_endline("C API tests complete!\n");
 
 //let canvas = Surface.getCanvas(surface);
 //draw(canvas);

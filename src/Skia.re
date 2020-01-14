@@ -1,5 +1,3 @@
-[@noalloc] external testTypeface: unit => unit = "test_typeface";
-
 module ImageInfo = {
   type t;
 

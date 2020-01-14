@@ -53,14 +53,6 @@ CAMLprim value resk_color_set_argb(value vAlpha, value vRed, value vGreen, value
     CAMLreturn(v);
 }
 
-void test_typeface() {
-    printf("Hello, world!\n");
-  sk_typeface_t *typeface = sk_typeface_create_from_file("/Users/bryphe/reason-skia/example/Orbitron-Medium.ttf", 0); 
-  int unitsPerEm = sk_typeface_get_units_per_em(typeface);
-    printf("Hello, again: %d\n", unitsPerEm);
-  //let maybeTypeface = Typeface.makeFromFile(filePath, 0);
-}
-
 #define CONCAT_(a, b) a ## b
 #define CONCAT(a, b) CONCAT_(a, b)
 

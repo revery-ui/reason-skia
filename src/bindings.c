@@ -167,11 +167,7 @@ CAMLprim value resk_typeface_create_from_file(value vPath, value vIndex) {
     if (!pTypeface) {
         v = Val_none;
     } else {
-        sk_typeface_t__wrapped typefaceWrapper;
-        typefaceWrapper.v = pTypeface;
-
-        font = caml_alloc_custom(&sk_typeface_t__ptr_custom_ops, sizeof(sk_typeface_t__wrapped), 0, 1);
-        memcpy(Data_custom_val(font), &typefaceWrapper, sizeof(sk_typeface_t__wrapped));
+        ALLOC_POINTER(sk_typeface_t, pTypeface, font);
         v = Val_some(font);
     }
     
@@ -190,11 +186,8 @@ CAMLprim value resk_paint_make() {
     CAMLparam0();
     CAMLlocal1(v);
 
-    sk_paint_t__wrapped paintWrapper;
-    paintWrapper.v = sk_paint_new();
+    ALLOC_POINTER(sk_paint_t, sk_paint_new(), v);
 
-    v = caml_alloc_custom(&sk_paint_t__ptr_custom_ops, sizeof(sk_paint_t__wrapped), 0, 1);
-    memcpy(Data_custom_val(v), &paintWrapper, sizeof(sk_paint_t__wrapped));
     CAMLreturn(v);
 }
 
@@ -257,10 +250,7 @@ CAMLprim value resk_surface_new_raster(value vImageInfo) {
         0,
         surfaceProps);
 
-    sk_surface_t__wrapped surfaceWrapper;
-    surfaceWrapper.v = surface;
-    v = caml_alloc_custom(&sk_surface_t__ptr_custom_ops, sizeof(sk_surface_t__wrapped), 0, 1);
-    memcpy(Data_custom_val(v), &surfaceWrapper, sizeof(sk_surface_t__wrapped));
+    ALLOC_POINTER(sk_surface_t, surface, v);
     printf("Surface created: %d\n", surface);
     CAMLreturn(v);
 }

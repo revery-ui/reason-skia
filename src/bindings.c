@@ -408,7 +408,7 @@ CAMLprim value test_write_surface(value vSurface) {
     char* dataString = (char *)sk_data_get_data(data);
     size_t dataSize = sk_data_get_size(data);
     printf("Datastring: %d (size: %d)\n", dataString, dataSize);
-    FILE* fp = fopen("test_out2.png", "wb");
+    FILE* fp = fopen("skia-c-example.png", "wb");
     printf("Opened file...\n");
     for (int i = 0; i < dataSize; i++) {
         fputc(dataString[i], fp);

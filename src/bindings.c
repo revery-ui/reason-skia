@@ -167,6 +167,15 @@ CAMLprim value resk_typeface_create_from_file(value vPath, value vIndex) {
 
 }
 
+CAMLprim value resk_typeface_get_units_per_em(value vTypeface) {
+    sk_typeface_W* wrappedTypeface = (sk_typeface_W*)Data_custom_val(vTypeface);
+
+    sk_typeface_t *typeface = wrappedTypeface->v;
+    int unitsPerEM = sk_typeface_get_units_per_em(typeface);
+
+    return Val_int(unitsPerEM);
+}
+
 CAMLprim value resk_paint_make() {
     CAMLparam0();
     CAMLlocal1(v);

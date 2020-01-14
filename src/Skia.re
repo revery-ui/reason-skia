@@ -17,6 +17,7 @@ module Typeface {
   type t;
 
   external createFromFile: (string, int) => option(t) = "resk_typeface_create_from_file";
+  [@noalloc] external getUnitsPerEm: t => int = "resk_typeface_get_units_per_em";
 };
 
 module Paint {

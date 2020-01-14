@@ -18,6 +18,7 @@ module Typeface: {
   type t;
 
   let createFromFile: (string, int) => option(t);
+  let getUnitsPerEm: (t) => int;
 };
 
 module Paint: {

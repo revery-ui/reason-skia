@@ -119,6 +119,13 @@ let () = {
     prerr_endline ("loading a different typeface");
     assert(validTypeface != None);
 
+    switch (validTypeface) {
+    | Some(typeFace) =>
+      let unitsPerEm = Typeface.getUnitsPerEm(typeface);
+      print_endline ("Units per typeface: " ++ string_of_int(unitsPerEm));
+    | None => failwith("Typeface should've loaded");
+    }
+
   Canvas.drawPaint(canvas, paint);
   draw(canvas);
   testApi(canvas, paint);

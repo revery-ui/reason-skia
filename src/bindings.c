@@ -62,6 +62,24 @@ void test_typeface() {
   //let maybeTypeface = Typeface.makeFromFile(filePath, 0);
 }
 
+typedef struct _surface {
+    sk_surface_t *v;
+} sk_surface_W;
+
+void resk_finalize_sk_surface(value vSurface) {
+    sk_surface_W *surface = (sk_surface_W*)Data_custom_val(vSurface);
+    sk_surface_unref(surface->v);
+};
+
+static struct custom_operations sk_surface_custom_ops= {
+    identifier: "sk_surface_t",
+    finalize: resk_finalize_sk_surface,
+    compare: custom_compare_default,
+    hash: custom_hash_default,
+    serialize: custom_serialize_default,
+    deserialize: custom_deserialize_default
+};
+
 static struct custom_operations sk_imageinfo_custom_ops = {
     identifier: "sk_imageinfo_t",
     finalize: custom_finalize_default,
@@ -93,6 +111,7 @@ CAMLprim value resk_imageinfo_make(value vWidth, value vHeight) {
 
 CAMLprim value resk_surface_new_raster(value vImageInfo) {
     CAMLparam1(vImageInfo);
+    CAMLlocal1(v);
 
     sk_imageinfo_t* imageInfo = (sk_imageinfo_t*)Data_custom_val(vImageInfo);
     
@@ -104,14 +123,21 @@ CAMLprim value resk_surface_new_raster(value vImageInfo) {
         imageInfo,
         0,
         surfaceProps);
+
+    sk_surface_W surfaceWrapper;
+    surfaceWrapper.v = surface;
+    v = caml_alloc_custom(&sk_surface_custom_ops, sizeof(sk_surface_W), 0, 1);
+    memcpy(Data_custom_val(v), &surfaceWrapper, sizeof(sk_surface_W));
     printf("Surface created: %d\n", surface);
-    CAMLreturn((value)surface);
+    CAMLreturn(v);
 }
 
 CAMLprim value resk_surface_get_canvas(value vSurface) {
     CAMLparam1(vSurface);
 
-    sk_surface_t *pSurface = (sk_surface_t*)vSurface;
+    sk_surface_W *wrapper = ((sk_surface_W*)Data_custom_val(vSurface));
+    sk_surface_t *pSurface = wrapper->v;
+    printf("Surface created: %d\n", pSurface);
     sk_canvas_t *pCanvas = sk_surface_get_canvas(pSurface);
     printf("Canvas created: %d\n", pCanvas);
     CAMLreturn((value)pCanvas);
@@ -168,7 +194,8 @@ CAMLprim value test_api(value vCanvas, value vBackground) {
 
 CAMLprim value test_write_surface(value vSurface) {
     CAMLparam1(vSurface);
-    sk_surface_t *surface = (sk_surface_t*)vSurface;
+    sk_surface_W *wrapper = ((sk_surface_W*)Data_custom_val(vSurface));
+    sk_surface_t *surface = wrapper->v;
     sk_image_t *image = sk_surface_new_image_snapshot(surface);
     printf("Created image snapshot: %d\n", image);
 

@@ -50,6 +50,17 @@ typedef struct _paint {
    sk_paint_t *v; 
 } sk_paint_W;
 
+typedef struct _typeface {
+   sk_typeface_t *v; 
+} sk_typeface_W;
+
+void resk_finalize_sk_typeface(value vTypeface) {
+    sk_typeface_W *typeface = (sk_typeface_W*)Data_custom_val(vTypeface);
+    printf("Finalizing typeface: %d\n", typeface->v);
+    sk_surface_unref(typeface->v);
+    printf("Typeface finalized!\n");
+};
+
 void resk_finalize_sk_surface(value vSurface) {
     sk_surface_W *surface = (sk_surface_W*)Data_custom_val(vSurface);
     printf("Finalizing surface: %d\n", surface->v);
@@ -63,6 +74,16 @@ void resk_finalize_sk_paint(value vPaint) {
     sk_paint_delete(paint->v);
     printf("Paint finalized!\n");
 };
+
+static struct custom_operations sk_typeface_custom_ops= {
+    identifier: "sk_typeface_t",
+    finalize: resk_finalize_sk_typeface,
+    compare: custom_compare_default,
+    hash: custom_hash_default,
+    serialize: custom_serialize_default,
+    deserialize: custom_deserialize_default
+};
+
 static struct custom_operations sk_surface_custom_ops= {
     identifier: "sk_surface_t",
     finalize: resk_finalize_sk_surface,

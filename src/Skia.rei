@@ -8,8 +8,26 @@ module ImageInfo: {
   let make: (int, int) => t;
 };
 
+module Canvas: {
+  type t;
+};
+
+module Color: {
+  type t;
+
+  let makeArgb: (int, int, int, int) => t;
+};
+
+module Surface: {
+  type t;
+
+  let makeRaster: (ImageInfo.t) => t;
+  let getCanvas: t => Canvas.t;
+}
+
 let testTypeface: unit => unit;
-let testApi: ImageInfo.t => unit;
+let testApi: (Canvas.t, Color.t) => unit;
+let testWriteSurface: Surface.t => unit;
 
 /*module Color: {
   type t;

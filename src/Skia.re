@@ -7,8 +7,26 @@ module ImageInfo {
   
 };
 
+module Canvas {
+  type t;
+}
 
-external testApi: ImageInfo.t => unit = "test_api";
+module Color {
+  type t = int;
+
+  [@noalloc] external makeArgb: (int, int, int, int) => t = "resk_color_set_argb";
+}
+
+module Surface {
+  type t;
+
+  external makeRaster: (ImageInfo.t) => t = "resk_surface_new_raster";
+  external getCanvas: (t) => Canvas.t = "resk_surface_get_canvas";
+}
+
+
+external testApi: (Canvas.t, Color.t) => unit = "test_api";
+external testWriteSurface: Surface.t => unit = "test_write_surface";
 
 /*module Color = {
   type t = SkiaWrapped.Color.t;

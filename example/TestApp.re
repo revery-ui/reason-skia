@@ -101,8 +101,17 @@ Printf.printf("Starting C API tests...\n");
 flush(stdout);
 
 testTypeface();
-let imageInfo = ImageInfo.make(256, 256);
-testApi(imageInfo);
+let () = {
+  let imageInfo = ImageInfo.make(256, 256);
+  let surface = Surface.makeRaster(imageInfo);
+  let canvas = Surface.getCanvas(surface);
+  let color = Color.makeArgb(0xFF, 0xFF, 0x00, 0x00);
+  testApi(canvas, color);
+
+  testWriteSurface(surface);
+};
+
+Gc.full_major();
 
 Printf.printf("C API tests complete!\n");
 

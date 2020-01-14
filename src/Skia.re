@@ -16,7 +16,7 @@ module Color {
 module Typeface {
   type t;
 
-  external createFromFile: (string, int) => option(t) = "resk_typeface_create_from_file";
+  external makeFromFile: (string, int) => option(t) = "resk_typeface_create_from_file";
   [@noalloc] external getUnitsPerEm: t => int = "resk_typeface_get_units_per_em";
 };
 
@@ -33,6 +33,8 @@ module Paint {
   [@noalloc] external setAntiAlias: (t, bool) => unit = "resk_paint_set_antialias";
   [@noalloc] external setLcdRenderText: (t, bool) => unit = "resk_paint_set_lcd_render_text";
   [@noalloc] external setSubpixelText: (t, bool) => unit = "resk_paint_set_subpixel_text";
+  [@noalloc] external setTextSize: (t, float) => unit = "resk_paint_set_text_size";
+  [@noalloc] external setTypeface: (t, Typeface.t) => unit = "resk_paint_set_typeface";
 };
 
 module Canvas {
@@ -40,6 +42,7 @@ module Canvas {
 
   [@noalloc] external drawPaint: (t, Paint.t) => unit = "resk_canvas_draw_paint";
   [@noalloc] external drawRect: (t, Rect.t, Paint.t) => unit = "resk_canvas_draw_rect";
+  [@noalloc] external drawOval: (t, Rect.t, Paint.t) => unit = "resk_canvas_draw_oval";
 };
 
 

@@ -75,7 +75,7 @@ let draw = canvas => {
       None,
       None,
     ),
-  );
+  ); */
   let rect2 = Rect.makeLtrb(120., 120., 520., 360.);
   Canvas.drawOval(canvas, rect2, fill);
 
@@ -91,10 +91,8 @@ let draw = canvas => {
   | Some(typeFace) =>
     print_endline("Loaded!");
     Paint.setTypeface(fill3, typeFace);
-    Canvas.drawText(canvas, "Hello, world!", 30., 30., fill3);
+    //Canvas.drawText(canvas, "Hello, world!", 30., 30., fill3);
   };
-  */
-  ();
 };
 
 Printf.printf("Starting C API tests...\n");
@@ -102,7 +100,7 @@ flush(stdout);
 
 testTypeface();
 let () = {
-  let imageInfo = ImageInfo.make(256, 256);
+  let imageInfo = ImageInfo.make(640, 480);
   let surface = Surface.makeRaster(imageInfo);
   let canvas = Surface.getCanvas(surface);
   let color = Color.makeArgb(0xFF, 0x00, 0x00, 0x00);
@@ -111,11 +109,11 @@ let () = {
 
 
     prerr_endline("Loading invalid typeface...");
-    let typeface = Typeface.createFromFile("non-existent.ttf", 0);
+    let typeface = Typeface.makeFromFile("non-existent.ttf", 0);
     assert(typeface == None);
     prerr_endline("Invalid font passed");
   let filePath = Sys.getcwd() ++ "/example/Orbitron-Medium.ttf";
-    let validTypeface = Typeface.createFromFile(filePath, 0);
+    let validTypeface = Typeface.makeFromFile(filePath, 0);
     prerr_endline ("loading a different typeface");
     assert(validTypeface != None);
 

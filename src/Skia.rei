@@ -17,7 +17,7 @@ module Color: {
 module Typeface: {
   type t;
 
-  let createFromFile: (string, int) => option(t);
+  let makeFromFile: (string, int) => option(t);
   let getUnitsPerEm: (t) => int;
 };
 
@@ -35,6 +35,8 @@ module Paint: {
   let setAntiAlias: (t, bool) => unit;
   let setLcdRenderText: (t, bool) => unit;
   let setSubpixelText: (t, bool) => unit;
+  let setTextSize: (t, float) => unit;
+  let setTypeface: (t, Typeface.t) => unit;
 };
 
 module Canvas: {
@@ -42,6 +44,7 @@ module Canvas: {
 
   let drawPaint: (t, Paint.t) => unit;
   let drawRect: (t, Rect.t, Paint.t) => unit;
+  let drawOval: (t, Rect.t, Paint.t) => unit;
 };
 
 module Surface: {

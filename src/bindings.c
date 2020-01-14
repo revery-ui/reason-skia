@@ -70,9 +70,11 @@ void test_typeface() {
     
 #define STRUCT_VAL(TYPENAME, VALUE) (TYPENAME*)Data_custom_val(VALUE)
 
+#define POINTER_VAL(TYPENAME, VALUE) (TYPENAME*)((CONCAT(TYPENAME, __wrapped)*)(void *)Data_custom_val(VALUE))->v
+
 typedef struct _surface {
     sk_surface_t *v;
-} sk_surface_W;
+} sk_surface_t__wrapped;
 
 typedef struct _paint {
    sk_paint_t *v; 
@@ -80,19 +82,19 @@ typedef struct _paint {
 
 typedef struct _typeface {
    sk_typeface_t *v; 
-} sk_typeface_W;
+} sk_typeface_t__wrapped;
 
 void resk_finalize_sk_typeface(value vTypeface) {
-    sk_typeface_W *typeface = (sk_typeface_W*)Data_custom_val(vTypeface);
-    printf("Finalizing typeface: %d\n", typeface->v);
-    sk_surface_unref(typeface->v);
+    sk_typeface_t *typeface = POINTER_VAL(sk_typeface_t, vTypeface);
+    printf("Finalizing typeface: %d\n", typeface);
+    sk_typeface_unref(typeface);
     printf("Typeface finalized!\n");
 };
 
 void resk_finalize_sk_surface(value vSurface) {
-    sk_surface_W *surface = (sk_surface_W*)Data_custom_val(vSurface);
-    printf("Finalizing surface: %d\n", surface->v);
-    sk_surface_unref(surface->v);
+    sk_surface_t *surface = POINTER_VAL(sk_surface_t, vSurface);
+    printf("Finalizing surface: %d\n", surface);
+    sk_surface_unref(surface);
     printf("Surface finalized!\n");
 };
 
@@ -182,11 +184,11 @@ CAMLprim value resk_typeface_create_from_file(value vPath, value vIndex) {
     if (!pTypeface) {
         v = Val_none;
     } else {
-        sk_typeface_W typefaceWrapper;
+        sk_typeface_t__wrapped typefaceWrapper;
         typefaceWrapper.v = pTypeface;
 
-        font = caml_alloc_custom(&sk_typeface_custom_ops, sizeof(sk_typeface_W), 0, 1);
-        memcpy(Data_custom_val(font), &typefaceWrapper, sizeof(sk_typeface_W));
+        font = caml_alloc_custom(&sk_typeface_custom_ops, sizeof(sk_typeface_t__wrapped), 0, 1);
+        memcpy(Data_custom_val(font), &typefaceWrapper, sizeof(sk_typeface_t__wrapped));
         v = Val_some(font);
     }
     
@@ -195,9 +197,7 @@ CAMLprim value resk_typeface_create_from_file(value vPath, value vIndex) {
 }
 
 CAMLprim value resk_typeface_get_units_per_em(value vTypeface) {
-    sk_typeface_W* wrappedTypeface = (sk_typeface_W*)Data_custom_val(vTypeface);
-
-    sk_typeface_t *typeface = wrappedTypeface->v;
+    sk_typeface_t *typeface = POINTER_VAL(sk_typeface_t, vTypeface);
     int unitsPerEM = sk_typeface_get_units_per_em(typeface);
 
     return Val_int(unitsPerEM);
@@ -225,7 +225,7 @@ CAMLprim value resk_paint_set_color(value vPaint, value vColor) {
 }
 
 CAMLprim value resk_paint_set_antialias(value vPaint, value vAntialias) {
-    int antialias = Val_bool(vAntialias);
+    int antialias = Bool_val(vAntialias);
     sk_paint_W* wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
 
     sk_paint_t *paint = wrappedPaint->v;
@@ -234,7 +234,7 @@ CAMLprim value resk_paint_set_antialias(value vPaint, value vAntialias) {
 }
 
 CAMLprim value resk_paint_set_lcd_render_text(value vPaint, value vLCD) {
-    int lcd = Val_bool(vLCD);
+    int lcd = Bool_val(vLCD);
     sk_paint_W* wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
 
     sk_paint_t *paint = wrappedPaint->v;
@@ -243,11 +243,30 @@ CAMLprim value resk_paint_set_lcd_render_text(value vPaint, value vLCD) {
 }
 
 CAMLprim value resk_paint_set_subpixel_text(value vPaint, value vSubpixel) {
-    int subpixel = Val_bool(vSubpixel);
+    int subpixel = Bool_val(vSubpixel);
     sk_paint_W* wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
 
     sk_paint_t *paint = wrappedPaint->v;
     sk_paint_set_subpixel_text(paint, subpixel);
+    return Val_unit;
+}
+
+CAMLprim value resk_paint_set_text_size(value vPaint, value vTextSize) {
+    float textSize = Double_val(vTextSize);
+    sk_paint_W* wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
+
+    sk_paint_t *paint = wrappedPaint->v;
+    sk_paint_set_textsize(paint, textSize);
+    return Val_unit;
+}
+
+CAMLprim value resk_paint_set_typeface(value vPaint, value vTypeface) {
+    sk_paint_W* wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
+
+    sk_paint_t *paint = wrappedPaint->v;
+
+    sk_typeface_t *typeface = POINTER_VAL(sk_typeface_t, vTypeface);
+    sk_paint_set_typeface(paint, typeface);
     return Val_unit;
 }
 
@@ -266,10 +285,10 @@ CAMLprim value resk_surface_new_raster(value vImageInfo) {
         0,
         surfaceProps);
 
-    sk_surface_W surfaceWrapper;
+    sk_surface_t__wrapped surfaceWrapper;
     surfaceWrapper.v = surface;
-    v = caml_alloc_custom(&sk_surface_custom_ops, sizeof(sk_surface_W), 0, 1);
-    memcpy(Data_custom_val(v), &surfaceWrapper, sizeof(sk_surface_W));
+    v = caml_alloc_custom(&sk_surface_custom_ops, sizeof(sk_surface_t__wrapped), 0, 1);
+    memcpy(Data_custom_val(v), &surfaceWrapper, sizeof(sk_surface_t__wrapped));
     printf("Surface created: %d\n", surface);
     CAMLreturn(v);
 }
@@ -277,8 +296,7 @@ CAMLprim value resk_surface_new_raster(value vImageInfo) {
 CAMLprim value resk_surface_get_canvas(value vSurface) {
     CAMLparam1(vSurface);
 
-    sk_surface_W *wrapper = ((sk_surface_W*)Data_custom_val(vSurface));
-    sk_surface_t *pSurface = wrapper->v;
+    sk_surface_t *pSurface = POINTER_VAL(sk_surface_t, vSurface);
     sk_canvas_t *pCanvas = sk_surface_get_canvas(pSurface);
     printf("Canvas created: %d\n", pCanvas);
     CAMLreturn((value)pCanvas);
@@ -302,6 +320,16 @@ CAMLprim value resk_canvas_draw_rect(value vCanvas, value vRect, value vPaint) {
     sk_rect_t *rect = STRUCT_VAL(sk_rect_t, vRect);
 
     sk_canvas_draw_rect(canvas, rect, paint);
+    return Val_unit;
+}
+
+CAMLprim value resk_canvas_draw_oval(value vCanvas, value vRect, value vPaint) {
+    sk_canvas_t *canvas = (sk_canvas_t *)vCanvas;
+    sk_paint_W *wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
+    sk_paint_t *paint = wrappedPaint->v;
+    sk_rect_t *rect = STRUCT_VAL(sk_rect_t, vRect);
+
+    sk_canvas_draw_oval(canvas, rect, paint);
     return Val_unit;
 }
 
@@ -354,8 +382,7 @@ CAMLprim value test_api(value vCanvas) {
 
 CAMLprim value test_write_surface(value vSurface) {
     CAMLparam1(vSurface);
-    sk_surface_W *wrapper = ((sk_surface_W*)Data_custom_val(vSurface));
-    sk_surface_t *surface = wrapper->v;
+    sk_surface_t *surface = POINTER_VAL(sk_surface_t, vSurface);
     sk_image_t *image = sk_surface_new_image_snapshot(surface);
     printf("Created image snapshot: %d\n", image);
 

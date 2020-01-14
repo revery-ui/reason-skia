@@ -105,8 +105,10 @@ let () = {
   let imageInfo = ImageInfo.make(256, 256);
   let surface = Surface.makeRaster(imageInfo);
   let canvas = Surface.getCanvas(surface);
-  let color = Color.makeArgb(0xFF, 0xFF, 0x00, 0x00);
-  testApi(canvas, color);
+  let color = Color.makeArgb(0xFF, 0x00, 0x00, 0x00);
+  let paint = Paint.make();
+  Paint.setColor(paint, color);
+  testApi(canvas, paint);
 
   testWriteSurface(surface);
 };

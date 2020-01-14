@@ -18,6 +18,13 @@ module Color: {
   let makeArgb: (int, int, int, int) => t;
 };
 
+module Paint: {
+  type t;
+
+  let make: unit => t;
+  let setColor: (t, Color.t) => unit;
+};
+
 module Surface: {
   type t;
 
@@ -26,7 +33,7 @@ module Surface: {
 }
 
 let testTypeface: unit => unit;
-let testApi: (Canvas.t, Color.t) => unit;
+let testApi: (Canvas.t, Paint.t) => unit;
 let testWriteSurface: Surface.t => unit;
 
 /*module Color: {

@@ -34,26 +34,6 @@ sk_color_t resk_color_set_argb(value vAlpha, value vRed, value vGreen, value vBl
     return Val_int(sk_color_set_argb(alpha, red, green, blue));
 }
 
-/*uint32_t reason_skia_stub_sk_color_get_a(sk_color_t color)
-{
-    return sk_color_get_a(color);
-}
-
-uint32_t reason_skia_stub_sk_color_get_r(sk_color_t color)
-{
-    return sk_color_get_r(color);
-}
-
-uint32_t reason_skia_stub_sk_color_get_g(sk_color_t color)
-{
-    return sk_color_get_g(color);
-}
-
-uint32_t reason_skia_stub_sk_color_get_b(sk_color_t color)
-{
-    return sk_color_get_b(color);
-}*/
-
 void test_typeface() {
     printf("Hello, world!\n");
   sk_typeface_t *typeface = sk_typeface_create_from_file("/Users/bryphe/reason-skia/example/Orbitron-Medium.ttf", 0); 
@@ -66,14 +46,35 @@ typedef struct _surface {
     sk_surface_t *v;
 } sk_surface_W;
 
+typedef struct _paint {
+   sk_paint_t *v; 
+} sk_paint_W;
+
 void resk_finalize_sk_surface(value vSurface) {
     sk_surface_W *surface = (sk_surface_W*)Data_custom_val(vSurface);
+    printf("Finalizing surface: %d\n", surface->v);
     sk_surface_unref(surface->v);
+    printf("Surface finalized!\n");
 };
 
+void resk_finalize_sk_paint(value vPaint) {
+    sk_paint_W *paint = (sk_paint_W*)Data_custom_val(vPaint);
+    printf("Finalizing paint: %d\n", paint->v);
+    sk_paint_delete(paint->v);
+    printf("Paint finalized!\n");
+};
 static struct custom_operations sk_surface_custom_ops= {
     identifier: "sk_surface_t",
     finalize: resk_finalize_sk_surface,
+    compare: custom_compare_default,
+    hash: custom_hash_default,
+    serialize: custom_serialize_default,
+    deserialize: custom_deserialize_default
+};
+
+static struct custom_operations sk_paint_custom_ops= {
+    identifier: "sk_paint_t",
+    finalize: resk_finalize_sk_paint,
     compare: custom_compare_default,
     hash: custom_hash_default,
     serialize: custom_serialize_default,
@@ -109,6 +110,26 @@ CAMLprim value resk_imageinfo_make(value vWidth, value vHeight) {
     CAMLreturn(v);
 };
 
+CAMLprim value resk_paint_make() {
+    CAMLparam0();
+    CAMLlocal1(v);
+
+    sk_paint_W paintWrapper;
+    paintWrapper.v = sk_paint_new();
+
+    v = caml_alloc_custom(&sk_paint_custom_ops, sizeof(sk_paint_W), 0, 1);
+    memcpy(Data_custom_val(v), &paintWrapper, sizeof(sk_paint_W));
+    CAMLreturn(v);
+}
+
+CAMLprim value resk_paint_set_color(value vPaint, value vColor) {
+    sk_color_t color = (sk_color_t)Int_val(vColor);
+    sk_paint_W* wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
+
+    sk_paint_t *paint = wrappedPaint->v;
+    sk_paint_set_color(paint, color);
+}
+
 CAMLprim value resk_surface_new_raster(value vImageInfo) {
     CAMLparam1(vImageInfo);
     CAMLlocal1(v);
@@ -137,14 +158,13 @@ CAMLprim value resk_surface_get_canvas(value vSurface) {
 
     sk_surface_W *wrapper = ((sk_surface_W*)Data_custom_val(vSurface));
     sk_surface_t *pSurface = wrapper->v;
-    printf("Surface created: %d\n", pSurface);
     sk_canvas_t *pCanvas = sk_surface_get_canvas(pSurface);
     printf("Canvas created: %d\n", pCanvas);
     CAMLreturn((value)pCanvas);
 };
 
-CAMLprim value test_api(value vCanvas, value vBackground) {
-    CAMLparam2(vCanvas, vBackground);
+CAMLprim value test_api(value vCanvas, value vPaint) {
+    CAMLparam2(vCanvas, vPaint);
 
     // Check if freetype supports LCD rendering...
     FT_Library library;
@@ -165,10 +185,11 @@ CAMLprim value test_api(value vCanvas, value vBackground) {
     //sk_canvas_t *canvas = sk_surface_get_canvas(surface);
     sk_canvas_t *canvas = (sk_canvas_t *)vCanvas;
 
-    sk_paint_t *paint = sk_paint_new();
-    sk_color_t color = (sk_color_t)Int_val(vBackground);
+    sk_paint_W *wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
+    sk_paint_t *paint = wrappedPaint->v;
+
+    //sk_paint_t *paint = sk_paint_new();
     sk_color_t colorWhite = sk_color_set_argb(255, 255, 255, 255);
-    sk_paint_set_color(paint, color);
 
     sk_canvas_draw_paint(canvas, paint);
     printf("Painted background\n");

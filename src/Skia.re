@@ -17,6 +17,12 @@ module Color {
   [@noalloc] external makeArgb: (int, int, int, int) => t = "resk_color_set_argb";
 }
 
+module Paint {
+  type t;
+  external make: unit => t = "resk_paint_make";
+  [@noalloc] external setColor: (t, Color.t) => unit = "resk_paint_set_color";
+};
+
 module Surface {
   type t;
 
@@ -25,7 +31,7 @@ module Surface {
 }
 
 
-external testApi: (Canvas.t, Color.t) => unit = "test_api";
+external testApi: (Canvas.t, Paint.t) => unit = "test_api";
 external testWriteSurface: Surface.t => unit = "test_write_surface";
 
 /*module Color = {

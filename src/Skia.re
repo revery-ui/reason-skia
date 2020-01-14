@@ -5,10 +5,19 @@ module Gr = {
 
       external makeNative: unit => option(t) = "resk_gr_glinterface_make";
     };
+
+    module FramebufferInfo = {
+      type t;
+
+      external make: unit => t = "resk_gr_gl_framebufferinfo_make";
+    };
   };
 
   module Context = {
     type t;
+
+    external makeGl: option(Gl.Interface.t) => option(t) =
+      "resk_gr_context_make_gl";
   };
 };
 

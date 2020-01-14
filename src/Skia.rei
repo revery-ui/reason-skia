@@ -7,8 +7,17 @@ module Gr: {
 
       let makeNative: unit => option(t);
     };
+    module FramebufferInfo: {
+      type t;
+
+      let make: unit => t;
+    };
   };
-  module Context: {type t;};
+  module Context: {
+    type t;
+
+    let makeGl: option(Gl.Interface.t) => option(t);
+  };
 };
 
 module Matrix: {

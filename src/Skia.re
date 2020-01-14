@@ -110,8 +110,6 @@ module Surface = {
   external getCanvas: t => Canvas.t = "resk_surface_get_canvas";
 };
 
-external testWriteSurface: Surface.t => unit = "test_write_surface";
-
 /*
  module FontMetrics = {
    type t = SkiaWrapped.FontMetrics.t;

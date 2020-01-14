@@ -299,6 +299,10 @@ CAMLprim value resk_canvas_draw_rect(value vCanvas, value vRect, value vPaint) {
     sk_canvas_t *canvas = (sk_canvas_t *)vCanvas;
     sk_paint_W *wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
     sk_paint_t *paint = wrappedPaint->v;
+    sk_rect_t *rect = STRUCT_VAL(sk_rect_t, vRect);
+
+    sk_canvas_draw_rect(canvas, rect, paint);
+    return Val_unit;
 }
 
 CAMLprim value test_api(value vCanvas) {

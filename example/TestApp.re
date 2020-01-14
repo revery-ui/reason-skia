@@ -108,6 +108,8 @@ let () = {
   let color = Color.makeArgb(0xFF, 0x00, 0x00, 0x00);
   let paint = Paint.make();
   Paint.setColor(paint, color);
+
+  Canvas.drawPaint(canvas, paint);
   testApi(canvas, paint);
 
   testWriteSurface(surface);

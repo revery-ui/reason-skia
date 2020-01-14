@@ -8,10 +8,6 @@ module ImageInfo: {
   let make: (int, int) => t;
 };
 
-module Canvas: {
-  type t;
-};
-
 module Color: {
   type t;
 
@@ -23,6 +19,15 @@ module Paint: {
 
   let make: unit => t;
   let setColor: (t, Color.t) => unit;
+  let setAntialias: (t, bool) => unit;
+  let setLcdRenderText: (t, bool) => unit;
+  let setSubpixelText: (t, bool) => unit;
+};
+
+module Canvas: {
+  type t;
+
+  let drawPaint: (t, Paint.t) => unit;
 };
 
 module Surface: {

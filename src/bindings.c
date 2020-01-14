@@ -128,6 +128,34 @@ CAMLprim value resk_paint_set_color(value vPaint, value vColor) {
 
     sk_paint_t *paint = wrappedPaint->v;
     sk_paint_set_color(paint, color);
+    return Val_unit;
+}
+
+CAMLprim value resk_paint_set_antialias(value vPaint, value vAntialias) {
+    int antialias = Val_bool(vAntialias);
+    sk_paint_W* wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
+
+    sk_paint_t *paint = wrappedPaint->v;
+    sk_paint_set_antialias(paint, antialias);
+    return Val_unit;
+}
+
+CAMLprim value resk_paint_set_lcd_render_text(value vPaint, value vLCD) {
+    int lcd = Val_bool(vLCD);
+    sk_paint_W* wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
+
+    sk_paint_t *paint = wrappedPaint->v;
+    sk_paint_set_lcd_render_text(paint, lcd);
+    return Val_unit;
+}
+
+CAMLprim value resk_paint_set_subpixel_text(value vPaint, value vSubpixel) {
+    int subpixel = Val_bool(vSubpixel);
+    sk_paint_W* wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
+
+    sk_paint_t *paint = wrappedPaint->v;
+    sk_paint_set_subpixel_text(paint, subpixel);
+    return Val_unit;
 }
 
 CAMLprim value resk_surface_new_raster(value vImageInfo) {
@@ -163,8 +191,19 @@ CAMLprim value resk_surface_get_canvas(value vSurface) {
     CAMLreturn((value)pCanvas);
 };
 
-CAMLprim value test_api(value vCanvas, value vPaint) {
-    CAMLparam2(vCanvas, vPaint);
+CAMLprim value resk_canvas_draw_paint(value vCanvas, value vPaint) {
+
+    sk_canvas_t *canvas = (sk_canvas_t *)vCanvas;
+    sk_paint_W *wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
+    sk_paint_t *paint = wrappedPaint->v;
+
+    sk_canvas_draw_paint(canvas, paint);
+
+    return Val_unit;
+}
+
+CAMLprim value test_api(value vCanvas) {
+    CAMLparam1(vCanvas);
 
     // Check if freetype supports LCD rendering...
     FT_Library library;
@@ -185,13 +224,10 @@ CAMLprim value test_api(value vCanvas, value vPaint) {
     //sk_canvas_t *canvas = sk_surface_get_canvas(surface);
     sk_canvas_t *canvas = (sk_canvas_t *)vCanvas;
 
-    sk_paint_W *wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
-    sk_paint_t *paint = wrappedPaint->v;
-
     //sk_paint_t *paint = sk_paint_new();
     sk_color_t colorWhite = sk_color_set_argb(255, 255, 255, 255);
 
-    sk_canvas_draw_paint(canvas, paint);
+    //sk_canvas_draw_paint(canvas, paint);
     printf("Painted background\n");
 
     //sk_typeface_t *typeface = sk_typeface_create_from_file("/Users/bryphe/reason-skia/example/Orbitron-Medium.ttf", 0); 

@@ -40,12 +40,12 @@ let emitPng = (_path, _surface) => {
   ();
 };
 
-let draw = _canvas => {
-  /*let fill = Paint.make();
+let draw = canvas => {
+  let fill = Paint.make();
   Paint.setColor(fill, Color.makeArgb(0xFF, 0x00, 0x00, 0xFF));
   Canvas.drawPaint(canvas, fill);
 
-  Paint.setColor(fill, Color.makeArgb(0xFF, 0x00, 0xFF, 0xFF));
+  /*Paint.setColor(fill, Color.makeArgb(0xFF, 0x00, 0xFF, 0xFF));
   let rect = Rect.makeLtrb(100., 100., 540., 380.);
   Canvas.drawRect(canvas, rect, fill);
 
@@ -120,6 +120,7 @@ let () = {
     assert(validTypeface != None);
 
   Canvas.drawPaint(canvas, paint);
+  draw(canvas);
   testApi(canvas, paint);
 
   testWriteSurface(surface);

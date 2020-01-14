@@ -13,6 +13,12 @@ module Color {
   [@noalloc] external makeArgb: (int, int, int, int) => t = "resk_color_set_argb";
 }
 
+module Typeface {
+  type t;
+
+  external createFromFile: (string, int) => option(t) = "resk_typeface_create_from_file";
+};
+
 module Paint {
   type t;
   external make: unit => t = "resk_paint_make";

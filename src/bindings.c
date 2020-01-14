@@ -24,6 +24,17 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#define Val_none Val_int(0)
+
+static value
+Val_some( value v )
+{   
+    CAMLparam1( v );
+    CAMLlocal1( some );
+    some = caml_alloc(1, 0);
+    Store_field( some, 0, v );
+    CAMLreturn( some );
+}
 
 sk_color_t resk_color_set_argb(value vAlpha, value vRed, value vGreen, value vBlue)
 {
@@ -130,6 +141,31 @@ CAMLprim value resk_imageinfo_make(value vWidth, value vHeight) {
 
     CAMLreturn(v);
 };
+
+CAMLprim value resk_typeface_create_from_file(value vPath, value vIndex) {
+    CAMLparam2(vPath, vIndex);
+    CAMLlocal2(v, font);
+
+    char *szPath = String_val(vPath);
+    int index = Int_val(vIndex);
+
+    sk_typeface_t *pTypeface = sk_typeface_create_from_file(szPath, index);
+
+
+    if (!pTypeface) {
+        v = Val_none;
+    } else {
+        sk_typeface_W typefaceWrapper;
+        typefaceWrapper.v = pTypeface;
+
+        font = caml_alloc_custom(&sk_typeface_custom_ops, sizeof(sk_typeface_W), 0, 1);
+        memcpy(Data_custom_val(font), &typefaceWrapper, sizeof(sk_typeface_W));
+        v = Val_some(font);
+    }
+    
+    CAMLreturn(v);
+
+}
 
 CAMLprim value resk_paint_make() {
     CAMLparam0();

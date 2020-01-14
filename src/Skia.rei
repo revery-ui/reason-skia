@@ -14,6 +14,12 @@ module Color: {
   let makeArgb: (int, int, int, int) => t;
 };
 
+module Typeface: {
+  type t;
+
+  let createFromFile: (string, int) => option(t);
+};
+
 module Paint: {
   type t;
 

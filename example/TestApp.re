@@ -109,6 +109,16 @@ let () = {
   let paint = Paint.make();
   Paint.setColor(paint, color);
 
+
+    prerr_endline("Loading invalid typeface...");
+    let typeface = Typeface.createFromFile("non-existent.ttf", 0);
+    assert(typeface == None);
+    prerr_endline("Invalid font passed");
+  let filePath = Sys.getcwd() ++ "/example/Orbitron-Medium.ttf";
+    let validTypeface = Typeface.createFromFile(filePath, 0);
+    prerr_endline ("loading a different typeface");
+    assert(validTypeface != None);
+
   Canvas.drawPaint(canvas, paint);
   testApi(canvas, paint);
 

@@ -22,18 +22,33 @@ module Matrix44 = {
   type t;
 
   external make: unit => t = "resk_matrix44_make";
+  [@noalloc] external set: (t, int, int, float) => unit = "resk_matrix44_set";
+  external toMatrix: t => Matrix.t = "resk_matrix44_to_matrix";
+};
+
+module IRect = {
+  type t;
+};
+
+module Rect = {
+  type t;
+
+  external makeLtrb: (float, float, float, float) => t = "resk_rect_make";
 };
 
 module Data = {
   type t;
 
   external makeString: t => string = "resk_data_make_string";
+  external makeFromFileName: string => t = "resk_data_make_from_filename";
 };
 
 module Image = {
   type t;
 
   external encodeToData: t => Data.t = "resk_image_encode";
+  external makeFromEncoded: (Data.t, option(IRect.t)) => option(t) =
+    "resk_image_make_from_encoded";
 };
 
 module ImageInfo = {
@@ -76,12 +91,6 @@ module Typeface = {
     "resk_typeface_create_from_file";
   [@noalloc]
   external getUnitsPerEm: t => int = "resk_typeface_get_units_per_em";
-};
-
-module Rect = {
-  type t;
-
-  external makeLtrb: (float, float, float, float) => t = "resk_rect_make";
 };
 
 module PaintStyle = {

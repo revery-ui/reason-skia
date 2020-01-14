@@ -91,6 +91,7 @@ static struct custom_operations CONCAT(TYPENAME, __ptr_custom_ops)= { \
 #define POINTER_VAL(TYPENAME, VALUE) (TYPENAME*)((CONCAT(TYPENAME, __wrapped)*)(void *)Data_custom_val(VALUE))->v
 
 INIT_STRUCT(sk_imageinfo_t)
+INIT_STRUCT(sk_irect_t)
 INIT_STRUCT(sk_matrix_t)
 INIT_STRUCT(sk_rect_t)
 
@@ -260,6 +261,24 @@ CAMLprim value resk_image_encode(value vImage) {
 
     ALLOC_POINTER(sk_data_t, data, v);
     CAMLreturn(v);
+}
+
+CAMLprim value resk_image_make_from_encoded(value vData, value vRect) {
+    CAMLparam2(vData, vRect);
+    CAMLlocal2(v, ret);
+
+    // TODO: Use rect
+    sk_data_t *data = POINTER_VAL(sk_data_t, vData);
+    sk_irect_t *rect = NULL;
+
+    sk_image_t *pImage = sk_image_new_from_encoded(data, rect);
+    if (!pImage) {
+        ret = Val_none;
+    } else {
+        ALLOC_POINTER(sk_image_t, pImage, v);
+        ret = Val_some(v);
+    }
+    CAMLreturn(ret);
 }
 
 CAMLprim value resk_gr_glinterface_make() {
@@ -451,6 +470,16 @@ CAMLprim value resk_data_make_string(value vData) {
     CAMLreturn(v);
 }
 
+CAMLprim value resk_data_make_from_filename(value vFilename) {
+    CAMLparam1(vFilename);
+    CAMLlocal1(v);
+
+    sk_data_t* pData = sk_data_new_from_file(String_val(vFilename));
+    ALLOC_POINTER(sk_data_t, pData, v);
+
+    CAMLreturn(v);
+}
+
 CAMLprim value resk_matrix_make() {
     CAMLparam0();
     CAMLlocal1(v);
@@ -470,4 +499,25 @@ CAMLprim value resk_matrix44_make() {
 
     ALLOC_POINTER(sk_matrix44_t, pMat, v);
     CAMLreturn(v);
+}
+
+CAMLprim value resk_matrix44_set(value vMatrix, value vRow, value vCol, value vVal) {
+    sk_matrix44_t *pMat = POINTER_VAL(sk_matrix44_t, vMatrix);
+    int row = Int_val(vRow);
+    int col = Int_val(vCol);
+    float v = Double_val(vVal);
+    sk_matrix44_set(pMat, row, col, v);
+    return Val_unit;
+}
+
+CAMLprim value resk_matrix44_to_matrix(value vMatrix) {
+   CAMLparam1(vMatrix); 
+   CAMLlocal1(v);
+   sk_matrix44_t *pMat = POINTER_VAL(sk_matrix44_t, vMatrix);
+    
+   sk_matrix_t out;
+   sk_matrix44_to_matrix(pMat, &out);
+   ALLOC_STRUCT(sk_matrix_t, out, v);
+
+   CAMLreturn(v);
 }

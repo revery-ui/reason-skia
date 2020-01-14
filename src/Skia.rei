@@ -21,20 +21,31 @@ module Matrix44: {
   type t;
 
   let make: unit => t;
+
+  let set: (t, int, int, float) => unit;
+  let toMatrix: t => Matrix.t;
+};
+
+module IRect: {type t;};
+
+module Rect: {
+  type t;
+
+  let makeLtrb: (float, float, float, float) => t;
 };
 
 module Data: {
   type t;
 
-  /*  let makeFromFileName: string => t; */
-
   let makeString: t => string;
+  let makeFromFileName: string => t;
 };
 
 module Image: {
   type t;
 
   let encodeToData: t => Data.t;
+  let makeFromEncoded: (Data.t, option(IRect.t)) => option(t);
 };
 
 module ImageInfo: {
@@ -63,12 +74,6 @@ module Typeface: {
 
   let makeFromFile: (string, int) => option(t);
   let getUnitsPerEm: t => int;
-};
-
-module Rect: {
-  type t;
-
-  let makeLtrb: (float, float, float, float) => t;
 };
 
 module PaintStyle: {

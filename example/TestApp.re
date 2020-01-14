@@ -57,9 +57,7 @@ let draw = canvas => {
   let path = Path.make();
   Path.moveTo(path, 50., 50.);
   Path.lineTo(path, 590., 50.);
-  /*
   Path.cubicTo(path, -490., 50., 1130., 430., 50., 430.);
-  */
   Path.lineTo(path, 590., 430.);
   Canvas.drawPath(canvas, path, stroke);
 

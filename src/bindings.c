@@ -215,6 +215,21 @@ CAMLprim value resk_path_line_to(value vPath, value vX, value vY) {
     return Val_unit;
 }
 
+CAMLprim value resk_path_cubic_to(value vPath, double f0, double f1, double f2, double f3, double f4, double f5) {
+    sk_path_t *path = POINTER_VAL(sk_path_t, vPath);
+    sk_path_cubic_to(path, f0, f1, f2, f3, f4, f5);
+}
+
+CAMLprim value resk_path_cubic_to_byte(value vPath, value v0, value v1, value v2, value v3, value v4, value v5) {
+   double f0 = Double_val(v0); 
+   double f1 = Double_val(v1); 
+   double f2 = Double_val(v2); 
+   double f3 = Double_val(v3); 
+   double f4 = Double_val(v4); 
+   double f5 = Double_val(v5); 
+   resk_path_cubic_to(vPath, f0, f1, f2, f3, f4, f5);
+}
+
 CAMLprim value resk_typeface_get_units_per_em(value vTypeface) {
     sk_typeface_t *typeface = POINTER_VAL(sk_typeface_t, vTypeface);
     int unitsPerEM = sk_typeface_get_units_per_em(typeface);
@@ -311,14 +326,14 @@ CAMLprim value resk_surface_new_raster(value vImageInfo) {
 
     sk_imageinfo_t* imageInfo = STRUCT_VAL(sk_imageinfo_t, vImageInfo);
     
-    /*sk_surfaceprops_t* surfaceProps = sk_surfaceprops_new(0,
+    sk_surfaceprops_t* surfaceProps = sk_surfaceprops_new(0,
         RGB_H_SK_PIXELGEOMETRY
-        );*/
+        );
 
     sk_surface_t *surface = sk_surface_new_raster(
         imageInfo,
         0,
-        NULL);
+        surfaceProps);
 
     ALLOC_POINTER(sk_surface_t, surface, v);
     printf("Surface created: %d\n", surface);

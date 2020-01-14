@@ -12,6 +12,7 @@ let prologue = "
 #include \"sk_surface.h\"
 #include \"sk_rrect.h\"
 #include \"sk_matrix.h\"
+#include \"sk_typeface.h\"
 "
 
 let () =

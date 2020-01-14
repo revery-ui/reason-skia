@@ -1,9 +1,8 @@
 open Skia;
 
-let makeSurface = (_width, _height) => {
-  /*let imageInfo = ImageInfo.make(width, height, Rgba8888, Premul, None);
-  Surface.makeRaster(imageInfo, 0, None);*/
-  ();
+let makeSurface = (width, height) => {
+  let imageInfo = ImageInfo.make(width, height);
+  Surface.makeRaster(imageInfo);
 };
 
 // TODO we will need additional tools for setting up an OpenGL context for this to work.
@@ -105,8 +104,7 @@ flush(stdout);
 
 testTypeface();
 let () = {
-  let imageInfo = ImageInfo.make(640, 480);
-  let surface = Surface.makeRaster(imageInfo);
+  let surface = makeSurface(640, 480);
   let canvas = Surface.getCanvas(surface);
   let color = Color.makeArgb(0xFF, 0x00, 0x00, 0x00);
   let paint = Paint.make();
@@ -129,9 +127,7 @@ let () = {
     | None => failwith("Typeface should've loaded");
     }
 
-  //Canvas.drawPaint(canvas, paint);
   draw(canvas);
-
   testWriteSurface(surface);
 };
 
@@ -139,7 +135,6 @@ Gc.full_major();
 
 Printf.printf("C API tests complete!\n");
 
-//let surface = makeSurface(640l, 480l);
 //let canvas = Surface.getCanvas(surface);
 //draw(canvas);
 //emitPng("skia-c-example.png", surface);

@@ -19,6 +19,7 @@ module Path = {
   external make: unit => t = "resk_path_make";
   [@noalloc] external moveTo: (t, float, float) => unit = "resk_path_move_to";
   [@noalloc] external lineTo: (t, float, float) => unit = "resk_path_line_to";
+  [@noalloc] external cubicTo: (t, float, float, float, float, float, float) => unit = "resk_path_cubic_to_byte" "resk_path_cubic_to";
 }
 
 module Typeface {

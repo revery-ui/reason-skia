@@ -29,14 +29,13 @@ let makeSurface = (width, height) => {
 //     };
 // };
 
-let emitPng = (_path, _surface) => {
-  ();
-    /*    let image = Surface.makeImageSnapshot(surface);
-          let data = Image.encodeToData(image);
-          let dataString = Data.makeString(data);
-          let fileOutputChannel = open_out_bin(path);
-          output_string(fileOutputChannel, dataString);
-          close_out(fileOutputChannel);*/
+let emitPng = (path, surface) => {
+  let image = Surface.makeImageSnapshot(surface);
+  let data = Image.encodeToData(image);
+  let dataString = Data.makeString(data);
+  let fileOutputChannel = open_out_bin(path);
+  output_string(fileOutputChannel, dataString);
+  close_out(fileOutputChannel);
 };
 
 let draw = canvas => {
@@ -124,7 +123,7 @@ let () = {
   };
 
   draw(canvas);
-  testWriteSurface(surface);
+  emitPng("skia-c-example.png", surface);
 };
 
 Gc.full_major();
@@ -133,7 +132,6 @@ prerr_endline("C API tests complete!\n");
 
 //let canvas = Surface.getCanvas(surface);
 //draw(canvas);
-//emitPng("skia-c-example.png", surface);
 
 // let surfaceOption = makeGpuSurface(640, 480);
 // switch (surfaceOption) {

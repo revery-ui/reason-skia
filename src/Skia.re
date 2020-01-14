@@ -1,3 +1,15 @@
+module Data = {
+  type t;
+
+  external makeString: t => string = "resk_data_make_string";
+};
+
+module Image = {
+  type t;
+
+  external encodeToData: t => Data.t = "resk_image_encode";
+};
+
 module ImageInfo = {
   type t;
 
@@ -93,6 +105,7 @@ module Canvas = {
 module Surface = {
   type t;
 
+  external makeImageSnapshot: t => Image.t = "resk_surface_new_image_snapshot";
   external makeRaster: ImageInfo.t => t = "resk_surface_new_raster";
   external getCanvas: t => Canvas.t = "resk_surface_get_canvas";
 };

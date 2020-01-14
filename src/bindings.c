@@ -93,10 +93,26 @@ static struct custom_operations CONCAT(TYPENAME, __ptr_custom_ops)= { \
 INIT_STRUCT(sk_imageinfo_t)
 INIT_STRUCT(sk_rect_t)
 
+INIT_POINTER(sk_data_t, resk_finalize_sk_data);
+INIT_POINTER(sk_image_t, resk_finalize_sk_image);
 INIT_POINTER(sk_paint_t, resk_finalize_sk_paint);
 INIT_POINTER(sk_path_t, resk_finalize_sk_path);
 INIT_POINTER(sk_surface_t, resk_finalize_sk_surface);
 INIT_POINTER(sk_typeface_t, resk_finalize_sk_typeface);
+
+void resk_finalize_sk_data(value vData) {
+    sk_data_t *data = POINTER_VAL(sk_data_t, vData);
+    printf("Finalizing data: %d\n", data);
+    sk_data_unref(data);
+    printf("Data finalized!\n");
+};
+
+void resk_finalize_sk_image(value vImage) {
+    sk_typeface_t *image = POINTER_VAL(sk_image_t, vImage);
+    printf("Finalizing image: %d\n", image);
+    sk_image_unref(image);
+    printf("Image finalized!\n");
+};
 
 void resk_finalize_sk_typeface(value vTypeface) {
     sk_typeface_t *typeface = POINTER_VAL(sk_typeface_t, vTypeface);
@@ -236,6 +252,16 @@ CAMLprim value resk_paint_make() {
     CAMLreturn(v);
 }
 
+CAMLprim value resk_image_encode(value vImage) {
+    CAMLparam1(vImage);
+    CAMLlocal1(v);
+    sk_image_t *image = POINTER_VAL(sk_image_t, vImage);
+    sk_data_t *data = sk_image_encode(image);
+
+    ALLOC_POINTER(sk_data_t, data, v);
+    CAMLreturn(v);
+}
+
 CAMLprim value resk_paint_set_color(value vPaint, value vColor) {
     sk_color_t color = (sk_color_t)Int32_val(vColor);
     sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
@@ -332,6 +358,17 @@ CAMLprim value resk_surface_new_raster(value vImageInfo) {
     CAMLreturn(v);
 }
 
+CAMLprim value resk_surface_new_image_snapshot(value vSurface) {
+    CAMLparam1(vSurface);
+    CAMLlocal1(v);
+
+    sk_surface_t *pSurface = POINTER_VAL(sk_surface_t, vSurface);
+
+    sk_image_t* pImage = sk_surface_new_image_snapshot(pSurface);
+    ALLOC_POINTER(sk_image_t, pImage, v);
+    CAMLreturn(v);
+}
+
 CAMLprim value resk_surface_get_canvas(value vSurface) {
     CAMLparam1(vSurface);
 
@@ -388,25 +425,16 @@ CAMLprim value resk_canvas_draw_text(value vCanvas, value vStr, value vX, value 
     return Val_unit;
 }
 
-CAMLprim value test_write_surface(value vSurface) {
-    CAMLparam1(vSurface);
-    sk_surface_t *surface = POINTER_VAL(sk_surface_t, vSurface);
-    sk_image_t *image = sk_surface_new_image_snapshot(surface);
-    printf("Created image snapshot: %d\n", image);
+CAMLprim value resk_data_make_string(value vData) {
+    CAMLparam1(vData);
+    CAMLlocal1(v);
 
-    sk_data_t *data = sk_image_encode(image);
-    printf("Encoded image\n");
+    sk_data_t *pData = POINTER_VAL(sk_data_t, vData);
+    void* bytes = sk_data_get_bytes(pData);
 
-    char* dataString = (char *)sk_data_get_data(data);
-    size_t dataSize = sk_data_get_size(data);
-    printf("Datastring: %d (size: %d)\n", dataString, dataSize);
-    FILE* fp = fopen("skia-c-example.png", "wb");
-    printf("Opened file...\n");
-    for (int i = 0; i < dataSize; i++) {
-        fputc(dataString[i], fp);
-    }
-    //fprintf(fp, "%s", dataString);
-    fclose(fp);
-    
-    CAMLreturn(Val_unit);
+    size_t len = sk_data_get_size(pData);
+    v = caml_alloc_string(len);
+    memcpy(String_val(v), bytes, len);
+
+    CAMLreturn(v);
 }

@@ -1,6 +1,20 @@
 //type colorType = SkiaWrapped.colorType;
 //type alphaType = SkiaWrapped.alphaType;
 
+module Data: {
+  type t;
+
+  /*  let makeFromFileName: string => t; */
+
+  let makeString: t => string;
+};
+
+module Image: {
+  type t;
+
+  let encodeToData: t => Data.t;
+};
+
 module ImageInfo: {
   type t;
 
@@ -69,6 +83,7 @@ module Canvas: {
 module Surface: {
   type t;
 
+  let makeImageSnapshot: t => Image.t;
   let makeRaster: ImageInfo.t => t;
   let getCanvas: t => Canvas.t;
 };

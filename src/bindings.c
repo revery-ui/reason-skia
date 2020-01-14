@@ -85,12 +85,12 @@ static struct custom_operations CONCAT(TYPENAME, __ptr_custom_ops)= { \
 
 #define POINTER_VAL(TYPENAME, VALUE) (TYPENAME*)((CONCAT(TYPENAME, __wrapped)*)(void *)Data_custom_val(VALUE))->v
 
-typedef struct _paint {
-   sk_paint_t *v; 
-} sk_paint_W;
+INIT_STRUCT(sk_imageinfo_t)
+INIT_STRUCT(sk_rect_t)
 
 INIT_POINTER(sk_typeface_t, resk_finalize_sk_typeface);
 INIT_POINTER(sk_surface_t, resk_finalize_sk_surface);
+INIT_POINTER(sk_paint_t, resk_finalize_sk_paint);
 
 void resk_finalize_sk_typeface(value vTypeface) {
     sk_typeface_t *typeface = POINTER_VAL(sk_typeface_t, vTypeface);
@@ -107,41 +107,11 @@ void resk_finalize_sk_surface(value vSurface) {
 };
 
 void resk_finalize_sk_paint(value vPaint) {
-    sk_paint_W *paint = (sk_paint_W*)Data_custom_val(vPaint);
-    printf("Finalizing paint: %d\n", paint->v);
-    sk_paint_delete(paint->v);
+    sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
+    printf("Finalizing paint: %d\n", paint);
+    sk_paint_delete(paint);
     printf("Paint finalized!\n");
 };
-
-/*static struct custom_operations sk_typeface_custom_ops= {
-    identifier: "sk_typeface_t",
-    finalize: resk_finalize_sk_typeface,
-    compare: custom_compare_default,
-    hash: custom_hash_default,
-    serialize: custom_serialize_default,
-    deserialize: custom_deserialize_default
-};*/
-
-/*static struct custom_operations sk_surface_custom_ops= {
-    identifier: "sk_surface_t",
-    finalize: resk_finalize_sk_surface,
-    compare: custom_compare_default,
-    hash: custom_hash_default,
-    serialize: custom_serialize_default,
-    deserialize: custom_deserialize_default
-};*/
-
-static struct custom_operations sk_paint_custom_ops= {
-    identifier: "sk_paint_t",
-    finalize: resk_finalize_sk_paint,
-    compare: custom_compare_default,
-    hash: custom_hash_default,
-    serialize: custom_serialize_default,
-    deserialize: custom_deserialize_default
-};
-
-INIT_STRUCT(sk_imageinfo_t)
-INIT_STRUCT(sk_rect_t)
 
 CAMLprim value resk_imageinfo_make(value vWidth, value vHeight) {
     CAMLparam2(vWidth, vHeight);
@@ -215,64 +185,53 @@ CAMLprim value resk_paint_make() {
     CAMLparam0();
     CAMLlocal1(v);
 
-    sk_paint_W paintWrapper;
+    sk_paint_t__wrapped paintWrapper;
     paintWrapper.v = sk_paint_new();
 
-    v = caml_alloc_custom(&sk_paint_custom_ops, sizeof(sk_paint_W), 0, 1);
-    memcpy(Data_custom_val(v), &paintWrapper, sizeof(sk_paint_W));
+    v = caml_alloc_custom(&sk_paint_t__ptr_custom_ops, sizeof(sk_paint_t__wrapped), 0, 1);
+    memcpy(Data_custom_val(v), &paintWrapper, sizeof(sk_paint_t__wrapped));
     CAMLreturn(v);
 }
 
 CAMLprim value resk_paint_set_color(value vPaint, value vColor) {
     sk_color_t color = (sk_color_t)Int_val(vColor);
-    sk_paint_W* wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
-
-    sk_paint_t *paint = wrappedPaint->v;
+    sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
+    
     sk_paint_set_color(paint, color);
     return Val_unit;
 }
 
 CAMLprim value resk_paint_set_antialias(value vPaint, value vAntialias) {
     int antialias = Bool_val(vAntialias);
-    sk_paint_W* wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
-
-    sk_paint_t *paint = wrappedPaint->v;
+    sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
     sk_paint_set_antialias(paint, antialias);
     return Val_unit;
 }
 
 CAMLprim value resk_paint_set_lcd_render_text(value vPaint, value vLCD) {
     int lcd = Bool_val(vLCD);
-    sk_paint_W* wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
-
-    sk_paint_t *paint = wrappedPaint->v;
+    sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
     sk_paint_set_lcd_render_text(paint, lcd);
     return Val_unit;
 }
 
 CAMLprim value resk_paint_set_subpixel_text(value vPaint, value vSubpixel) {
     int subpixel = Bool_val(vSubpixel);
-    sk_paint_W* wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
-
-    sk_paint_t *paint = wrappedPaint->v;
+    sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
     sk_paint_set_subpixel_text(paint, subpixel);
     return Val_unit;
 }
 
 CAMLprim value resk_paint_set_text_size(value vPaint, value vTextSize) {
     float textSize = Double_val(vTextSize);
-    sk_paint_W* wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
-
-    sk_paint_t *paint = wrappedPaint->v;
+    sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
+    
     sk_paint_set_textsize(paint, textSize);
     return Val_unit;
 }
 
 CAMLprim value resk_paint_set_typeface(value vPaint, value vTypeface) {
-    sk_paint_W* wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
-
-    sk_paint_t *paint = wrappedPaint->v;
-
+    sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
     sk_typeface_t *typeface = POINTER_VAL(sk_typeface_t, vTypeface);
     sk_paint_set_typeface(paint, typeface);
     return Val_unit;
@@ -311,20 +270,16 @@ CAMLprim value resk_surface_get_canvas(value vSurface) {
 };
 
 CAMLprim value resk_canvas_draw_paint(value vCanvas, value vPaint) {
-
     sk_canvas_t *canvas = (sk_canvas_t *)vCanvas;
-    sk_paint_W *wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
-    sk_paint_t *paint = wrappedPaint->v;
+    sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
 
     sk_canvas_draw_paint(canvas, paint);
-
     return Val_unit;
 }
 
 CAMLprim value resk_canvas_draw_rect(value vCanvas, value vRect, value vPaint) {
     sk_canvas_t *canvas = (sk_canvas_t *)vCanvas;
-    sk_paint_W *wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
-    sk_paint_t *paint = wrappedPaint->v;
+    sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
     sk_rect_t *rect = STRUCT_VAL(sk_rect_t, vRect);
 
     sk_canvas_draw_rect(canvas, rect, paint);
@@ -333,8 +288,7 @@ CAMLprim value resk_canvas_draw_rect(value vCanvas, value vRect, value vPaint) {
 
 CAMLprim value resk_canvas_draw_oval(value vCanvas, value vRect, value vPaint) {
     sk_canvas_t *canvas = (sk_canvas_t *)vCanvas;
-    sk_paint_W *wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
-    sk_paint_t *paint = wrappedPaint->v;
+    sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
     sk_rect_t *rect = STRUCT_VAL(sk_rect_t, vRect);
 
     sk_canvas_draw_oval(canvas, rect, paint);

@@ -1,3 +1,17 @@
+module Gr = {
+  module Gl = {
+    module Interface = {
+      type t;
+
+      external makeNative: unit => option(t) = "resk_gr_glinterface_make";
+    };
+  };
+
+  module Context = {
+    type t;
+  };
+};
+
 module Data = {
   type t;
 

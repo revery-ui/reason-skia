@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "gr_context.h"
 #include "sk_canvas.h"
 #include "sk_colorspace.h"
 #include "sk_data.h"
@@ -93,12 +94,20 @@ static struct custom_operations CONCAT(TYPENAME, __ptr_custom_ops)= { \
 INIT_STRUCT(sk_imageinfo_t)
 INIT_STRUCT(sk_rect_t)
 
+INIT_POINTER(gr_glinterface_t, resk_finalize_gr_glinterface);
 INIT_POINTER(sk_data_t, resk_finalize_sk_data);
 INIT_POINTER(sk_image_t, resk_finalize_sk_image);
 INIT_POINTER(sk_paint_t, resk_finalize_sk_paint);
 INIT_POINTER(sk_path_t, resk_finalize_sk_path);
 INIT_POINTER(sk_surface_t, resk_finalize_sk_surface);
 INIT_POINTER(sk_typeface_t, resk_finalize_sk_typeface);
+
+void resk_finalize_gr_glinterface(value vInterface) {
+    gr_glinterface_t *pInterface = POINTER_VAL(gr_glinterface_t, vInterface);
+    printf("Finalizing interface: %d\n", pInterface);
+    gr_glinterface_unref(pInterface);
+    printf("Interface finalized!\n");
+};
 
 void resk_finalize_sk_data(value vData) {
     sk_data_t *data = POINTER_VAL(sk_data_t, vData);
@@ -261,6 +270,26 @@ CAMLprim value resk_image_encode(value vImage) {
     ALLOC_POINTER(sk_data_t, data, v);
     CAMLreturn(v);
 }
+
+CAMLprim value resk_gr_glinterface_make() {
+    CAMLparam0();
+    CAMLlocal2(v, ret);
+
+    printf("Creating interface...\n");
+
+    gr_glinterface_t* pInterface = gr_glinterface_create_native_interface();
+    printf("Created?\n");
+    if (!pInterface) {
+        printf("Unable to create interface...\n");
+        ret = Val_none; 
+    } else {
+    printf("Created interface: %d\n", pInterface);
+        ALLOC_POINTER(gr_glinterface_t, pInterface, v);
+        ret = Val_some(v);
+    }
+
+    CAMLreturn(ret);
+};
 
 CAMLprim value resk_paint_set_color(value vPaint, value vColor) {
     sk_color_t color = (sk_color_t)Int32_val(vColor);

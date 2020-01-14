@@ -1,5 +1,15 @@
 //type colorType = SkiaWrapped.colorType;
 //type alphaType = SkiaWrapped.alphaType;
+module Gr: {
+  module Gl: {
+    module Interface: {
+      type t;
+
+      let makeNative: unit => option(t);
+    };
+  };
+  module Context: {type t;};
+};
 
 module Data: {
   type t;

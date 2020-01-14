@@ -8,7 +8,7 @@ let makeSurface = (width, height) => {
 // TODO we will need additional tools for setting up an OpenGL context for this to work.
 // See /tools/gpu inside the skia codebase
 //
-// let makeGpuSurface = (width, height) => {
+//let makeGpuSurface = (_width, _height) => {
 //     let glInterfaceOption = Gr.Gl.Interface.makeNative();
 //     if (glInterfaceOption === None) {
 //         print_endline("GL Interface Creation failed");
@@ -124,6 +124,7 @@ let () = {
 
   draw(canvas);
   emitPng("skia-c-example.png", surface);
+  //let _surfaceOption = makeGpuSurface(640, 480);
 };
 
 Gc.full_major();

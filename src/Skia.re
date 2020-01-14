@@ -20,6 +20,12 @@ module Typeface {
   [@noalloc] external getUnitsPerEm: t => int = "resk_typeface_get_units_per_em";
 };
 
+module Rect = {
+  type t;
+
+  external makeLtrb: (float, float, float, float) => t = "resk_rect_make";
+};
+
 module Paint {
   type t;
   external make: unit => t = "resk_paint_make";
@@ -33,6 +39,7 @@ module Canvas {
   type t;
 
   [@noalloc] external drawPaint: (t, Paint.t) => unit = "resk_canvas_draw_paint";
+  [@noalloc] external drawRect: (t, Rect.t, Paint.t) => unit = "resk_canvas_draw_rect";
 };
 
 
@@ -47,12 +54,7 @@ module Surface {
 external testApi: (Canvas.t, Paint.t) => unit = "test_api";
 external testWriteSurface: Surface.t => unit = "test_write_surface";
 
-/*module Color = {
-  type t = SkiaWrapped.Color.t;
-
-  let makeArgb = SkiaWrapped.Color.makeArgb;
-};
-
+/*
 module FontMetrics = {
   type t = SkiaWrapped.FontMetrics.t;
 };
@@ -265,13 +267,6 @@ module IRect = {
 
   let makeEmpty = SkiaWrapped.IRect.makeEmpty;
   let makeLtrb = SkiaWrapped.IRect.makeLtrb;
-};
-
-module Rect = {
-  type t = SkiaWrapped.Rect.t;
-
-  let makeEmpty = SkiaWrapped.Rect.makeEmpty;
-  let makeLtrb = SkiaWrapped.Rect.makeLtrb;
 };
 
 module FontStyle = {

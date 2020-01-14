@@ -53,6 +53,23 @@ void test_typeface() {
   //let maybeTypeface = Typeface.makeFromFile(filePath, 0);
 }
 
+#define CONCAT_(a, b) a ## b
+#define CONCAT(a, b) CONCAT_(a, b)
+
+#define INIT_STRUCT(TYPENAME) static struct custom_operations CONCAT(TYPENAME, __custom_ops)= { \
+    identifier: #TYPENAME, \
+    finalize: custom_finalize_default, \
+    compare: custom_compare_default, \
+    hash: custom_hash_default, \
+    serialize: custom_serialize_default, \
+    deserialize: custom_deserialize_default \
+};
+
+#define ALLOC_STRUCT(TYPENAME, INSTANCE) v = caml_alloc_custom(&CONCAT(TYPENAME, __custom_ops), sizeof(TYPENAME), 0, 1); \
+    memcpy(Data_custom_val(v), &INSTANCE, sizeof(TYPENAME));
+    
+#define STRUCT_VAL(TYPENAME, VALUE) (TYPENAME*)Data_custom_val(VALUE)
+
 typedef struct _surface {
     sk_surface_t *v;
 } sk_surface_W;
@@ -113,14 +130,8 @@ static struct custom_operations sk_paint_custom_ops= {
     deserialize: custom_deserialize_default
 };
 
-static struct custom_operations sk_imageinfo_custom_ops = {
-    identifier: "sk_imageinfo_t",
-    finalize: custom_finalize_default,
-    compare: custom_compare_default,
-    hash: custom_hash_default,
-    serialize: custom_serialize_default,
-    deserialize: custom_deserialize_default
-};
+INIT_STRUCT(sk_imageinfo_t)
+INIT_STRUCT(sk_rect_t)
 
 CAMLprim value resk_imageinfo_make(value vWidth, value vHeight) {
     CAMLparam2(vWidth, vHeight);
@@ -136,11 +147,28 @@ CAMLprim value resk_imageinfo_make(value vWidth, value vHeight) {
     imageInfo.alphaType = PREMUL_SK_ALPHATYPE;
     imageInfo.colorspace = NULL;
 
-    v = caml_alloc_custom(&sk_imageinfo_custom_ops, sizeof(sk_imageinfo_t), 0, 1);
-    memcpy(Data_custom_val(v), &imageInfo, sizeof(sk_imageinfo_t));
-
+    v = ALLOC_STRUCT(sk_imageinfo_t, imageInfo);
     CAMLreturn(v);
 };
+
+CAMLprim value resk_rect_make(value vLeft, value vTop, value vRight, value vBot) {
+    CAMLparam4(vLeft, vTop, vRight, vBot);
+    CAMLlocal1(v);
+    
+    float left = Double_val(vLeft);
+    float top = Double_val(vTop);
+    float right = Double_val(vRight);
+    float bot = Double_val(vBot);
+
+    sk_rect_t rect;
+    rect.left = left;
+    rect.top = top;
+    rect.right = right;
+    rect.bottom = bot;
+
+    v = ALLOC_STRUCT(sk_rect_t, rect);
+    CAMLreturn(v);
+}
 
 CAMLprim value resk_typeface_create_from_file(value vPath, value vIndex) {
     CAMLparam2(vPath, vIndex);
@@ -150,7 +178,6 @@ CAMLprim value resk_typeface_create_from_file(value vPath, value vIndex) {
     int index = Int_val(vIndex);
 
     sk_typeface_t *pTypeface = sk_typeface_create_from_file(szPath, index);
-
 
     if (!pTypeface) {
         v = Val_none;
@@ -228,7 +255,7 @@ CAMLprim value resk_surface_new_raster(value vImageInfo) {
     CAMLparam1(vImageInfo);
     CAMLlocal1(v);
 
-    sk_imageinfo_t* imageInfo = (sk_imageinfo_t*)Data_custom_val(vImageInfo);
+    sk_imageinfo_t* imageInfo = STRUCT_VAL(sk_imageinfo_t, vImageInfo);
     
     sk_surfaceprops_t* surfaceProps = sk_surfaceprops_new(0,
         RGB_H_SK_PIXELGEOMETRY
@@ -266,6 +293,12 @@ CAMLprim value resk_canvas_draw_paint(value vCanvas, value vPaint) {
     sk_canvas_draw_paint(canvas, paint);
 
     return Val_unit;
+}
+
+CAMLprim value resk_canvas_draw_rect(value vCanvas, value vRect, value vPaint) {
+    sk_canvas_t *canvas = (sk_canvas_t *)vCanvas;
+    sk_paint_W *wrappedPaint = (sk_paint_W*)Data_custom_val(vPaint);
+    sk_paint_t *paint = wrappedPaint->v;
 }
 
 CAMLprim value test_api(value vCanvas) {

@@ -45,9 +45,9 @@ let draw = canvas => {
   Paint.setColor(fill, Color.makeArgb(0xFF, 0x00, 0x00, 0xFF));
   Canvas.drawPaint(canvas, fill);
 
-  /*Paint.setColor(fill, Color.makeArgb(0xFF, 0x00, 0xFF, 0xFF));
-  let rect = Rect.makeLtrb(100., 100., 540., 380.);
-  Canvas.drawRect(canvas, rect, fill);
+  Paint.setColor(fill, Color.makeArgb(0xFF, 0x00, 0xFF, 0xFF));
+  let _rect = Rect.makeLtrb(100., 100., 540., 380.);
+  /*Canvas.drawRect(canvas, rect, fill);
 
   let stroke = Paint.make();
   Paint.setColor(stroke, Color.makeArgb(0xFF, 0xFF, 0x00, 0x00));
@@ -120,9 +120,9 @@ let () = {
     assert(validTypeface != None);
 
     switch (validTypeface) {
-    | Some(typeFace) =>
+    | Some(typeface) =>
       let unitsPerEm = Typeface.getUnitsPerEm(typeface);
-      print_endline ("Units per typeface: " ++ string_of_int(unitsPerEm));
+      print_endline ("Units per EM: " ++ string_of_int(unitsPerEm));
     | None => failwith("Typeface should've loaded");
     }
 

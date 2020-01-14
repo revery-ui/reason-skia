@@ -21,6 +21,12 @@ module Typeface: {
   let getUnitsPerEm: (t) => int;
 };
 
+module Rect: {
+  type t;
+
+  let makeLtrb: (float, float, float, float) => t;
+};
+
 module Paint: {
   type t;
 
@@ -35,6 +41,7 @@ module Canvas: {
   type t;
 
   let drawPaint: (t, Paint.t) => unit;
+  let drawRect: (t, Rect.t, Paint.t) => unit;
 };
 
 module Surface: {

@@ -228,10 +228,38 @@ CAMLprim value resk_paint_set_text_size(value vPaint, value vTextSize) {
     return Val_unit;
 }
 
+CAMLprim value resk_paint_set_stroke_width(value vPaint, value vStrokeWidth) {
+    float strokeWidth = Double_val(vStrokeWidth);
+    sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
+    
+    sk_paint_set_stroke_width(paint, strokeWidth);
+    return Val_unit;
+}
+
 CAMLprim value resk_paint_set_typeface(value vPaint, value vTypeface) {
     sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
     sk_typeface_t *typeface = POINTER_VAL(sk_typeface_t, vTypeface);
     sk_paint_set_typeface(paint, typeface);
+    return Val_unit;
+}
+
+sk_paint_style_t Enum_sk_paint_style_val(value vStyle) {
+    switch (Int_val(vStyle)) {
+    case 0: 
+        return FILL_SK_PAINT_STYLE;
+    case 1:
+        return STROKE_SK_PAINT_STYLE;
+    case 2:
+    default:
+        return STROKE_AND_FILL_SK_PAINT_STYLE;
+    }
+}
+
+CAMLprim value resk_paint_set_style(value vPaint, value vStyle) {
+    sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
+    sk_paint_style_t style = Enum_sk_paint_style_val(vStyle);
+
+    sk_paint_set_style(paint, style);
     return Val_unit;
 }
 

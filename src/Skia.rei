@@ -27,6 +27,13 @@ module Rect: {
   let makeLtrb: (float, float, float, float) => t;
 };
 
+module PaintStyle: {
+  type t =
+  | Fill
+  | Stroke
+  | StrokeAndFill;
+}
+
 module Paint: {
   type t;
 
@@ -34,6 +41,8 @@ module Paint: {
   let setColor: (t, Color.t) => unit;
   let setAntiAlias: (t, bool) => unit;
   let setLcdRenderText: (t, bool) => unit;
+  let setStrokeWidth: (t, float) => unit;
+  let setStyle: (t, PaintStyle.t) => unit;
   let setSubpixelText: (t, bool) => unit;
   let setTextSize: (t, float) => unit;
   let setTypeface: (t, Typeface.t) => unit;

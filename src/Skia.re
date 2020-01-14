@@ -26,12 +26,21 @@ module Rect = {
   external makeLtrb: (float, float, float, float) => t = "resk_rect_make";
 };
 
+module PaintStyle {
+  type t =
+  | Fill
+  | Stroke
+  | StrokeAndFill;
+}
+
 module Paint {
   type t;
   external make: unit => t = "resk_paint_make";
   [@noalloc] external setColor: (t, Color.t) => unit = "resk_paint_set_color";
   [@noalloc] external setAntiAlias: (t, bool) => unit = "resk_paint_set_antialias";
   [@noalloc] external setLcdRenderText: (t, bool) => unit = "resk_paint_set_lcd_render_text";
+  [@noalloc] external setStyle: (t, PaintStyle.t) => unit = "resk_paint_set_style";
+  [@noalloc] external setStrokeWidth: (t, float) => unit = "resk_paint_set_stroke_width";
   [@noalloc] external setSubpixelText: (t, bool) => unit = "resk_paint_set_subpixel_text";
   [@noalloc] external setTextSize: (t, float) => unit = "resk_paint_set_text_size";
   [@noalloc] external setTypeface: (t, Typeface.t) => unit = "resk_paint_set_typeface";

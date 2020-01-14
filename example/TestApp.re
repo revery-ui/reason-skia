@@ -52,10 +52,10 @@ let draw = canvas => {
   let stroke = Paint.make();
   Paint.setColor(stroke, Color.makeArgb(0xFF, 0xFF, 0x00, 0x00));
   Paint.setAntiAlias(stroke, true);
- /* Paint.setStyle(stroke, Stroke);
+  Paint.setStyle(stroke, Stroke);
   Paint.setStrokeWidth(stroke, 5.);
 
-  let path = Path.make();
+ /* let path = Path.make();
   Path.moveTo(path, 50., 50.);
   Path.lineTo(path, 590., 50.);
   Path.cubicTo(path, -490., 50., 1130., 430., 50., 430.);

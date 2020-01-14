@@ -290,52 +290,17 @@ CAMLprim value resk_canvas_draw_oval(value vCanvas, value vRect, value vPaint) {
     return Val_unit;
 }
 
-CAMLprim value test_api(value vCanvas) {
-    CAMLparam1(vCanvas);
-
-    // Check if freetype supports LCD rendering...
-    FT_Library library;
-    FT_Init_FreeType(&library);
-    int result = FT_Library_SetLcdFilter(library, 1);
-    printf("FreeType initialization result: %d\n", result);
-
-    //sk_imageinfo_t* imageInfo = (sk_imageinfo_t*)Data_custom_val(vImageInfo);
-    /*printf("Creating image info...\n");
-    sk_imageinfo_t* imageInfo= (sk_imageinfo_t *)malloc(sizeof(sk_imageinfo_t));
-    imageInfo->height = 256l;
-    imageInfo->width = 256l;
-    imageInfo->colorType = RGBA_8888_SK_COLORTYPE;
-    imageInfo->alphaType = PREMUL_SK_ALPHATYPE;
-    imageInfo->colorspace = NULL;
-    printf("ImageInfo created\n");*/
-
-    //sk_canvas_t *canvas = sk_surface_get_canvas(surface);
+CAMLprim value resk_canvas_draw_text(value vCanvas, value vStr, value vX, value vY, value vPaint) {
     sk_canvas_t *canvas = (sk_canvas_t *)vCanvas;
+    sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
+    float x = Double_val(vX);
+    float y = Double_val(vY);
+    char *str = String_val(vStr);
+    int length = strlen(str);
 
-    //sk_paint_t *paint = sk_paint_new();
-    sk_color_t colorWhite = sk_color_set_argb(255, 255, 255, 255);
-
-    //sk_canvas_draw_paint(canvas, paint);
-    printf("Painted background\n");
-
-    //sk_typeface_t *typeface = sk_typeface_create_from_file("/Users/bryphe/reason-skia/example/Orbitron-Medium.ttf", 0); 
-    sk_fontstyle_t *fontstyle = sk_fontstyle_new(0, 0, 0);
-    sk_typeface_t *typeface = sk_typeface_create_from_name_with_font_style("Menlo", fontstyle);
-    int unitsPerEM = sk_typeface_get_units_per_em(typeface);
-    printf("Units per EM: %d\n", unitsPerEM);
-
-    sk_paint_t *paintText = sk_paint_new();
-    sk_paint_set_color(paintText, colorWhite);
-    sk_paint_set_antialias(paintText, true);
-    sk_paint_set_lcd_render_text(paintText, true);
-    sk_paint_set_subpixel_text(paintText, true);
-    sk_paint_set_typeface(paintText, typeface);
-    sk_paint_set_textsize(paintText, 15.0);
-    char *sz = "Hello, world!";
-    sk_canvas_draw_text(canvas, sz, strlen(sz), 50.0, 100.0, paintText);
-
-    CAMLreturn(Val_unit);
-};
+    sk_canvas_draw_text(canvas, str, length, x, y, paint);
+    return Val_unit;
+}
 
 CAMLprim value test_write_surface(value vSurface) {
     CAMLparam1(vSurface);

@@ -43,6 +43,7 @@ module Canvas {
   [@noalloc] external drawPaint: (t, Paint.t) => unit = "resk_canvas_draw_paint";
   [@noalloc] external drawRect: (t, Rect.t, Paint.t) => unit = "resk_canvas_draw_rect";
   [@noalloc] external drawOval: (t, Rect.t, Paint.t) => unit = "resk_canvas_draw_oval";
+  [@noalloc] external drawText: (t, string, float, float, Paint.t) => unit = "resk_canvas_draw_text";
 };
 
 
@@ -54,7 +55,6 @@ module Surface {
 }
 
 
-external testApi: (Canvas.t, Paint.t) => unit = "test_api";
 external testWriteSurface: Surface.t => unit = "test_write_surface";
 
 /*

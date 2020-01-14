@@ -45,6 +45,7 @@ module Canvas: {
   let drawPaint: (t, Paint.t) => unit;
   let drawRect: (t, Rect.t, Paint.t) => unit;
   let drawOval: (t, Rect.t, Paint.t) => unit;
+  let drawText: (t, string, float, float, Paint.t) => unit;
 };
 
 module Surface: {
@@ -55,7 +56,6 @@ module Surface: {
 }
 
 let testTypeface: unit => unit;
-let testApi: (Canvas.t, Paint.t) => unit;
 let testWriteSurface: Surface.t => unit;
 
 /*module Color: {

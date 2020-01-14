@@ -91,7 +91,7 @@ let draw = canvas => {
   | Some(typeFace) =>
     print_endline("Loaded!");
     Paint.setTypeface(fill3, typeFace);
-    //Canvas.drawText(canvas, "Hello, world!", 30., 30., fill3);
+    Canvas.drawText(canvas, "Hello, world!", 30., 30., fill3);
   };
 };
 
@@ -126,7 +126,6 @@ let () = {
 
   Canvas.drawPaint(canvas, paint);
   draw(canvas);
-  testApi(canvas, paint);
 
   testWriteSurface(surface);
 };

@@ -32,7 +32,7 @@ module Paint: {
 
   let make: unit => t;
   let setColor: (t, Color.t) => unit;
-  let setAntialias: (t, bool) => unit;
+  let setAntiAlias: (t, bool) => unit;
   let setLcdRenderText: (t, bool) => unit;
   let setSubpixelText: (t, bool) => unit;
 };

@@ -30,7 +30,7 @@ module Paint {
   type t;
   external make: unit => t = "resk_paint_make";
   [@noalloc] external setColor: (t, Color.t) => unit = "resk_paint_set_color";
-  [@noalloc] external setAntialias: (t, bool) => unit = "resk_paint_set_antialias";
+  [@noalloc] external setAntiAlias: (t, bool) => unit = "resk_paint_set_antialias";
   [@noalloc] external setLcdRenderText: (t, bool) => unit = "resk_paint_set_lcd_render_text";
   [@noalloc] external setSubpixelText: (t, bool) => unit = "resk_paint_set_subpixel_text";
 };

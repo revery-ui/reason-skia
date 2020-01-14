@@ -46,13 +46,13 @@ let draw = canvas => {
   Canvas.drawPaint(canvas, fill);
 
   Paint.setColor(fill, Color.makeArgb(0xFF, 0x00, 0xFF, 0xFF));
-  let _rect = Rect.makeLtrb(100., 100., 540., 380.);
-  /*Canvas.drawRect(canvas, rect, fill);
+  let rect = Rect.makeLtrb(100., 100., 540., 380.);
+  Canvas.drawRect(canvas, rect, fill);
 
   let stroke = Paint.make();
   Paint.setColor(stroke, Color.makeArgb(0xFF, 0xFF, 0x00, 0x00));
   Paint.setAntiAlias(stroke, true);
-  Paint.setStyle(stroke, Stroke);
+ /* Paint.setStyle(stroke, Stroke);
   Paint.setStrokeWidth(stroke, 5.);
 
   let path = Path.make();

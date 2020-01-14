@@ -78,8 +78,13 @@ static struct custom_operations CONCAT(TYPENAME, __ptr_custom_ops)= { \
     deserialize: custom_deserialize_default \ 
 };
 
-#define ALLOC_STRUCT(TYPENAME, INSTANCE) v = caml_alloc_custom(&CONCAT(TYPENAME, __custom_ops), sizeof(TYPENAME), 0, 1); \
-    memcpy(Data_custom_val(v), &INSTANCE, sizeof(TYPENAME));
+#define ALLOC_STRUCT(TYPENAME, INSTANCE, OUTNAME) OUTNAME = caml_alloc_custom(&CONCAT(TYPENAME, __custom_ops), sizeof(TYPENAME), 0, 1); \
+    memcpy(Data_custom_val(OUTNAME), &INSTANCE, sizeof(TYPENAME));
+
+#define ALLOC_POINTER(TYPENAME, INSTANCE, OUTNAME) OUTNAME = caml_alloc_custom(&CONCAT(TYPENAME, __ptr_custom_ops), sizeof(CONCAT(TYPENAME, __wrapped)), 0, 1); \
+        CONCAT(TYPENAME, __wrapped) __internal_wrapper; \
+        __internal_wrapper.v = INSTANCE; \
+        memcpy(Data_custom_val(OUTNAME), &__internal_wrapper, sizeof(CONCAT(TYPENAME, __wrapped)));
     
 #define STRUCT_VAL(TYPENAME, VALUE) (TYPENAME*)Data_custom_val(VALUE)
 
@@ -127,7 +132,7 @@ CAMLprim value resk_imageinfo_make(value vWidth, value vHeight) {
     imageInfo.alphaType = PREMUL_SK_ALPHATYPE;
     imageInfo.colorspace = NULL;
 
-    v = ALLOC_STRUCT(sk_imageinfo_t, imageInfo);
+    ALLOC_STRUCT(sk_imageinfo_t, imageInfo, v);
     CAMLreturn(v);
 };
 
@@ -146,7 +151,7 @@ CAMLprim value resk_rect_make(value vLeft, value vTop, value vRight, value vBot)
     rect.right = right;
     rect.bottom = bot;
 
-    v = ALLOC_STRUCT(sk_rect_t, rect);
+    ALLOC_STRUCT(sk_rect_t, rect, v);
     CAMLreturn(v);
 }
 

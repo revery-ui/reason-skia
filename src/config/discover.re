@@ -82,6 +82,7 @@ let () =
           "-lfontconfig",
           "-lz",
           "-lbz2",
+          "-lstdc++",
           "-L" ++ Sys.getenv("SKIA_LIB_PATH"),
           "-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"),
         ]

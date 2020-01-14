@@ -14,6 +14,14 @@ module Color: {
   let makeArgb: (int, int, int, int) => t;
 };
 
+module Path: {
+  type t;
+  let make: unit => t;
+
+  let moveTo: (t, float, float) => unit;
+  let lineTo: (t, float, float) => unit;
+};
+
 module Typeface: {
   type t;
 
@@ -52,6 +60,7 @@ module Canvas: {
   type t;
 
   let drawPaint: (t, Paint.t) => unit;
+  let drawPath: (t, Path.t, Paint.t) => unit;
   let drawRect: (t, Rect.t, Paint.t) => unit;
   let drawOval: (t, Rect.t, Paint.t) => unit;
   let drawText: (t, string, float, float, Paint.t) => unit;

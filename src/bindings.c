@@ -6,9 +6,11 @@
 #include <stdio.h>
 
 #include "sk_canvas.h"
+#include "sk_colorspace.h"
 #include "sk_data.h"
 #include "sk_image.h"
 #include "sk_paint.h"
+#include "sk_path.h"
 #include "sk_surface.h"
 #include "sk_types.h"
 #include "sk_typeface.h"
@@ -36,13 +38,19 @@ Val_some( value v )
     CAMLreturn( some );
 }
 
-sk_color_t resk_color_set_argb(value vAlpha, value vRed, value vGreen, value vBlue)
+CAMLprim value resk_color_set_argb(value vAlpha, value vRed, value vGreen, value vBlue)
 {
+    CAMLparam4(vAlpha, vRed, vGreen, vBlue);
+    CAMLlocal1(v);
     int alpha = Int_val(vAlpha);
+    printf("SETTING ALPHA: %d\n", alpha);
     int red = Int_val(vRed);
     int blue = Int_val(vBlue);
     int green = Int_val(vGreen);
-    return Val_int(sk_color_set_argb(alpha, red, green, blue));
+    sk_color_t color =sk_color_set_argb(alpha, red, green, blue) ;
+    v = caml_copy_int32(color);
+    printf("COLOR IS: %d\n", color);
+    CAMLreturn(v);
 }
 
 void test_typeface() {
@@ -93,9 +101,10 @@ static struct custom_operations CONCAT(TYPENAME, __ptr_custom_ops)= { \
 INIT_STRUCT(sk_imageinfo_t)
 INIT_STRUCT(sk_rect_t)
 
-INIT_POINTER(sk_typeface_t, resk_finalize_sk_typeface);
-INIT_POINTER(sk_surface_t, resk_finalize_sk_surface);
 INIT_POINTER(sk_paint_t, resk_finalize_sk_paint);
+INIT_POINTER(sk_path_t, resk_finalize_sk_path);
+INIT_POINTER(sk_surface_t, resk_finalize_sk_surface);
+INIT_POINTER(sk_typeface_t, resk_finalize_sk_typeface);
 
 void resk_finalize_sk_typeface(value vTypeface) {
     sk_typeface_t *typeface = POINTER_VAL(sk_typeface_t, vTypeface);
@@ -116,6 +125,13 @@ void resk_finalize_sk_paint(value vPaint) {
     printf("Finalizing paint: %d\n", paint);
     sk_paint_delete(paint);
     printf("Paint finalized!\n");
+};
+
+void resk_finalize_sk_path(value vPath) {
+    sk_path_t *path = POINTER_VAL(sk_path_t, vPath);
+    printf("Finalizing path: %d\n", path);
+    sk_path_delete(path);
+    printf("Path finalized!\n");
 };
 
 CAMLprim value resk_imageinfo_make(value vWidth, value vHeight) {
@@ -172,7 +188,31 @@ CAMLprim value resk_typeface_create_from_file(value vPath, value vIndex) {
     }
     
     CAMLreturn(v);
+}
 
+CAMLprim value resk_path_make() {
+    CAMLparam0();
+    CAMLlocal1(v);
+    sk_path_t *path = sk_path_new();
+    printf("Creating path: %d\n", path);
+    ALLOC_POINTER(sk_path_t, path, v);
+    CAMLreturn(v);
+}
+
+CAMLprim value resk_path_move_to(value vPath, value vX, value vY) {
+    sk_path_t *path = POINTER_VAL(sk_path_t, vPath);
+    float x = Double_val(vX);
+    float y = Double_val(vY);
+    sk_path_move_to(path, x, y);
+    return Val_unit;
+}
+
+CAMLprim value resk_path_line_to(value vPath, value vX, value vY) {
+    sk_path_t *path = POINTER_VAL(sk_path_t, vPath);
+    float x = Double_val(vX);
+    float y = Double_val(vY);
+    sk_path_line_to(path, x, y);
+    return Val_unit;
 }
 
 CAMLprim value resk_typeface_get_units_per_em(value vTypeface) {
@@ -185,15 +225,17 @@ CAMLprim value resk_typeface_get_units_per_em(value vTypeface) {
 CAMLprim value resk_paint_make() {
     CAMLparam0();
     CAMLlocal1(v);
-
     ALLOC_POINTER(sk_paint_t, sk_paint_new(), v);
-
     CAMLreturn(v);
 }
 
 CAMLprim value resk_paint_set_color(value vPaint, value vColor) {
-    sk_color_t color = (sk_color_t)Int_val(vColor);
+    sk_color_t color = (sk_color_t)Int32_val(vColor);
     sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
+
+    int a = sk_color_get_a(color);
+    int b = sk_color_get_b(color);
+    printf("Setting color - a: %d b: %d (color: %d)\n", a, b, color);
     
     sk_paint_set_color(paint, color);
     return Val_unit;
@@ -269,14 +311,14 @@ CAMLprim value resk_surface_new_raster(value vImageInfo) {
 
     sk_imageinfo_t* imageInfo = STRUCT_VAL(sk_imageinfo_t, vImageInfo);
     
-    sk_surfaceprops_t* surfaceProps = sk_surfaceprops_new(0,
+    /*sk_surfaceprops_t* surfaceProps = sk_surfaceprops_new(0,
         RGB_H_SK_PIXELGEOMETRY
-        );
+        );*/
 
     sk_surface_t *surface = sk_surface_new_raster(
         imageInfo,
         0,
-        surfaceProps);
+        NULL);
 
     ALLOC_POINTER(sk_surface_t, surface, v);
     printf("Surface created: %d\n", surface);
@@ -291,6 +333,15 @@ CAMLprim value resk_surface_get_canvas(value vSurface) {
     printf("Canvas created: %d\n", pCanvas);
     CAMLreturn((value)pCanvas);
 };
+
+CAMLprim value resk_canvas_draw_path(value vCanvas, value vPath, value vPaint) {
+    sk_canvas_t *canvas = (sk_canvas_t *)vCanvas;
+    sk_paint_t *paint = POINTER_VAL(sk_paint_t, vPaint);
+    sk_path_t *path = POINTER_VAL(sk_path_t, vPath);
+
+    sk_canvas_draw_path(canvas, path, paint);
+    return Val_unit;
+}
 
 CAMLprim value resk_canvas_draw_paint(value vCanvas, value vPaint) {
     sk_canvas_t *canvas = (sk_canvas_t *)vCanvas;
@@ -342,7 +393,7 @@ CAMLprim value test_write_surface(value vSurface) {
     char* dataString = (char *)sk_data_get_data(data);
     size_t dataSize = sk_data_get_size(data);
     printf("Datastring: %d (size: %d)\n", dataString, dataSize);
-    FILE* fp = fopen("test_out.png", "w");
+    FILE* fp = fopen("test_out2.png", "wb");
     printf("Opened file...\n");
     for (int i = 0; i < dataSize; i++) {
         fputc(dataString[i], fp);

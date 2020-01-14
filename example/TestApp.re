@@ -55,15 +55,17 @@ let draw = canvas => {
   Paint.setStyle(stroke, Stroke);
   Paint.setStrokeWidth(stroke, 5.);
 
- /* let path = Path.make();
+  let path = Path.make();
   Path.moveTo(path, 50., 50.);
   Path.lineTo(path, 590., 50.);
+  /*
   Path.cubicTo(path, -490., 50., 1130., 430., 50., 430.);
+  */
   Path.lineTo(path, 590., 430.);
   Canvas.drawPath(canvas, path, stroke);
 
   Paint.setColor(fill, Color.makeArgb(0xCC, 0x00, 0xFF, 0x00));
-  Paint.setImageFilter(
+  /*Paint.setImageFilter(
     fill,
     ImageFilter.makeDropShadow(
       10.,
@@ -82,6 +84,9 @@ let draw = canvas => {
   let fill3 = Paint.make();
   Paint.setColor(fill3, Color.makeArgb(0xFF, 0xFF, 0xFF, 0xFF));
   Paint.setTextSize(fill3, 30.);
+  Paint.setAntiAlias(fill3, true);
+  Paint.setSubpixelText(fill3, true);
+  Paint.setLcdRenderText(fill3, true);
 
   let filePath = Sys.getcwd() ++ "/example/Orbitron-Medium.ttf";
   print_endline("Loading font: " ++ filePath);
@@ -124,7 +129,7 @@ let () = {
     | None => failwith("Typeface should've loaded");
     }
 
-  Canvas.drawPaint(canvas, paint);
+  //Canvas.drawPaint(canvas, paint);
   draw(canvas);
 
   testWriteSurface(surface);

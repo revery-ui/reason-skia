@@ -8,9 +8,17 @@ module ImageInfo {
 };
 
 module Color {
-  type t = int;
+  type t = int32;
 
-  [@noalloc] external makeArgb: (int, int, int, int) => t = "resk_color_set_argb";
+  external makeArgb: (int, int, int, int) => t = "resk_color_set_argb";
+}
+
+module Path = {
+  type t;
+
+  external make: unit => t = "resk_path_make";
+  [@noalloc] external moveTo: (t, float, float) => unit = "resk_path_move_to";
+  [@noalloc] external lineTo: (t, float, float) => unit = "resk_path_line_to";
 }
 
 module Typeface {
@@ -50,6 +58,7 @@ module Canvas {
   type t;
 
   [@noalloc] external drawPaint: (t, Paint.t) => unit = "resk_canvas_draw_paint";
+  [@noalloc] external drawPath: (t, Path.t, Paint.t) => unit = "resk_canvas_draw_path";
   [@noalloc] external drawRect: (t, Rect.t, Paint.t) => unit = "resk_canvas_draw_rect";
   [@noalloc] external drawOval: (t, Rect.t, Paint.t) => unit = "resk_canvas_draw_oval";
   [@noalloc] external drawText: (t, string, float, float, Paint.t) => unit = "resk_canvas_draw_text";

@@ -59,8 +59,8 @@ let () =
       | _ => []
       };
 
-    let cflags = conf.cflags
-    @ ["-I" ++ Sys.getenv("FREETYPE2_INCLUDE_PATH")];
+    let cflags =
+      conf.cflags @ ["-I" ++ Sys.getenv("FREETYPE2_INCLUDE_PATH")];
 
     let libs =
       switch (get_os) {
@@ -71,7 +71,7 @@ let () =
           "-lz",
           "-lbz2",
           "-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"),
-          ]
+        ]
       | Linux =>
         conf.libs
         @ [

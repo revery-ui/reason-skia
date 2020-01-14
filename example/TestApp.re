@@ -30,13 +30,13 @@ let makeSurface = (width, height) => {
 // };
 
 let emitPng = (_path, _surface) => {
-/*    let image = Surface.makeImageSnapshot(surface);
-  let data = Image.encodeToData(image);
-  let dataString = Data.makeString(data);
-  let fileOutputChannel = open_out_bin(path);
-  output_string(fileOutputChannel, dataString);
-  close_out(fileOutputChannel);*/
   ();
+    /*    let image = Surface.makeImageSnapshot(surface);
+          let data = Image.encodeToData(image);
+          let dataString = Data.makeString(data);
+          let fileOutputChannel = open_out_bin(path);
+          output_string(fileOutputChannel, dataString);
+          close_out(fileOutputChannel);*/
 };
 
 let draw = canvas => {
@@ -64,18 +64,18 @@ let draw = canvas => {
   Paint.setColor(fill, Color.makeArgb(0xCC, 0x00, 0xFF, 0x00));
   // TODO: Implement image filter
   /*Paint.setImageFilter(
-    fill,
-    ImageFilter.makeDropShadow(
-      10.,
-      10.,
-      3.,
-      3.,
-      Color.makeArgb(0xAA, 0x00, 0x00, 0x00),
-      DrawShadowAndForeground,
-      None,
-      None,
-    ),
-  ); */
+      fill,
+      ImageFilter.makeDropShadow(
+        10.,
+        10.,
+        3.,
+        3.,
+        Color.makeArgb(0xAA, 0x00, 0x00, 0x00),
+        DrawShadowAndForeground,
+        None,
+        None,
+      ),
+    ); */
   let rect2 = Rect.makeLtrb(120., 120., 520., 360.);
   Canvas.drawOval(canvas, rect2, fill);
 
@@ -109,22 +109,21 @@ let () = {
   let paint = Paint.make();
   Paint.setColor(paint, color);
 
-
-    prerr_endline("Loading invalid typeface...");
-    let typeface = Typeface.makeFromFile("non-existent.ttf", 0);
-    assert(typeface == None);
-    prerr_endline("Invalid font passed");
+  prerr_endline("Loading invalid typeface...");
+  let typeface = Typeface.makeFromFile("non-existent.ttf", 0);
+  assert(typeface == None);
+  prerr_endline("Invalid font passed");
   let filePath = Sys.getcwd() ++ "/example/Orbitron-Medium.ttf";
-    let validTypeface = Typeface.makeFromFile(filePath, 0);
-    prerr_endline ("loading a different typeface");
-    assert(validTypeface != None);
+  let validTypeface = Typeface.makeFromFile(filePath, 0);
+  prerr_endline("loading a different typeface");
+  assert(validTypeface != None);
 
-    switch (validTypeface) {
-    | Some(typeface) =>
-      let unitsPerEm = Typeface.getUnitsPerEm(typeface);
-      print_endline ("Units per EM: " ++ string_of_int(unitsPerEm));
-    | None => failwith("Typeface should've loaded");
-    }
+  switch (validTypeface) {
+  | Some(typeface) =>
+    let unitsPerEm = Typeface.getUnitsPerEm(typeface);
+    print_endline("Units per EM: " ++ string_of_int(unitsPerEm));
+  | None => failwith("Typeface should've loaded")
+  };
 
   draw(canvas);
   testWriteSurface(surface);

@@ -62,6 +62,7 @@ let draw = canvas => {
   Canvas.drawPath(canvas, path, stroke);
 
   Paint.setColor(fill, Color.makeArgb(0xCC, 0x00, 0xFF, 0x00));
+  // TODO: Implement image filter
   /*Paint.setImageFilter(
     fill,
     ImageFilter.makeDropShadow(

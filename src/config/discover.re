@@ -61,7 +61,7 @@ let () =
         @ ccopt("-I" ++ Sys.getenv("SKIA_INCLUDE_PATH"))
         @ cclib("-ljpeg")
         @ ccopt("-I/usr/include")
-        @ cclib("-lpthread")
+        @ cclib("-pthread")
         @ cclib("-lstdc++")
       | _ => []
       };
@@ -77,7 +77,7 @@ let () =
         @ ["-L" ++ Sys.getenv("SKIA_LIB_PATH")]
         @ ["-L" ++ Sys.getenv("JPEG_LIB_PATH")]
         @ ["-ljpeg"]
-        @ ["-lpthread"]
+        @ ["-pthread"]
         @ ["-lstdc++"]
       | _ => conf.cflags
       };
@@ -95,6 +95,7 @@ let () =
           "-lbz2",
           "-L" ++ Sys.getenv("JPEG_LIB_PATH"),
           "-ljpeg",
+          "-pthread",
           "-lstdc++",
           "-L" ++ Sys.getenv("SKIA_LIB_PATH"),
           "-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"),

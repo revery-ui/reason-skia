@@ -54,6 +54,7 @@ let () =
         @ cclib("-lz")
         @ cclib("-lbz2")
         @ ccopt("-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"))
+        @ ccopt("-L" ++ Sys.getenv("SKIA_LIB_PATH"))
         @ ccopt("-I" ++ Sys.getenv("FREETYPE2_INCLUDE_PATH"))
         @ ccopt("-I" ++ Sys.getenv("SKIA_INCLUDE_PATH"))
         @ ccopt("-I/usr/include")
@@ -63,7 +64,12 @@ let () =
 
     let cflags =
       switch (get_os) {
-      | Linux => conf.cflags @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH")]
+      | Linux =>
+        conf.cflags
+        @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH")]
+        @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH") ++ "/c"]
+        @ ["-L" ++ Sys.getenv("SKIA_LIB_PATH")]
+	@ ["-lstdc++"]
       | _ => conf.cflags
       };
 
@@ -72,11 +78,13 @@ let () =
       | Linux =>
         conf.libs
         @ [
+          "-lskia",
           "-lfreetype",
           "-lfontconfig",
           "-lz",
           "-lbz2",
           "-lstdc++",
+          "-L" ++ Sys.getenv("SKIA_LIB_PATH"),
           "-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"),
         ]
       | _ => conf.libs

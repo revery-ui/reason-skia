@@ -60,7 +60,7 @@ let () =
         @ ccopt("-I" ++ Sys.getenv("FREETYPE2_INCLUDE_PATH"))
         @ ccopt("-I" ++ Sys.getenv("SKIA_INCLUDE_PATH"))
         @ ccopt("-I/usr/include")
-        @ cclib["-lpthread"]
+        @ cclib("-lpthread")
         @ cclib("-lstdc++")
       | _ => []
       };

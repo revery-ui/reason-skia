@@ -76,6 +76,26 @@ let draw = canvas => {
   );
   let rect2 = Rect.makeLtrb(120., 120., 520., 360.);
   Canvas.drawOval(canvas, rect2, fill);
+
+  let fill3 = Paint.make();
+  Paint.setColor(fill3, Color.makeArgb(0xFF, 0xFF, 0xFF, 0xFF));
+  Paint.setTextSize(fill3, 30.);
+
+  let nonExistentTypeface = Typeface.makeFromFile("non-existent-font.ttf", 0);
+  assert(nonExistentTypeface == None);
+
+  let filePath = Sys.getcwd() ++ "/example/Orbitron Medium.ttf";
+  print_endline("Loading font: " ++ filePath);
+  let maybeTypeface = Typeface.makeFromFile(filePath, 0);
+  switch (maybeTypeface) {
+  | None => failwith("Unable to load font: " ++ filePath)
+  | Some(typeFace) =>
+    print_endline(__LOC__ ++ ": we will set.");
+    Paint.setTypeface(fill3, typeFace);
+    print_endline(__LOC__ ++ ": setTypeface is OK.");
+    Canvas.drawText(canvas, "Hello, world!", 30., 30., fill3);
+    print_endline(__LOC__ ++ ": We return.");
+  };
 };
 
 let surface = makeSurface(640l, 480l);

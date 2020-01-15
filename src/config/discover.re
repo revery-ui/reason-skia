@@ -53,11 +53,14 @@ let () =
         @ cclib("-lfreetype")
         @ cclib("-lz")
         @ cclib("-lbz2")
+        @ cclib("-ljpeg")
         @ ccopt("-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"))
         @ ccopt("-L" ++ Sys.getenv("SKIA_LIB_PATH"))
+        @ ccopt("-L" ++ Sys.getenv("JPEG_LIB_PATH"))
         @ ccopt("-I" ++ Sys.getenv("FREETYPE2_INCLUDE_PATH"))
         @ ccopt("-I" ++ Sys.getenv("SKIA_INCLUDE_PATH"))
         @ ccopt("-I/usr/include")
+        @ cclib["-lpthread"]
         @ cclib("-lstdc++")
       | _ => []
       };
@@ -69,6 +72,8 @@ let () =
         @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH")]
         @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH") ++ "/c"]
         @ ["-L" ++ Sys.getenv("SKIA_LIB_PATH")]
+        @ ["-L" ++ Sys.getenv("JPEG_LIB_PATH")]
+        @ ["-lpthread"]
         @ ["-lstdc++"]
       | _ => conf.cflags
       };
@@ -83,7 +88,9 @@ let () =
           "-lfontconfig",
           "-lz",
           "-lbz2",
+	  "-ljpeg",
           "-lstdc++",
+	  "-L" ++ Sys.getenv("JPEG_LIB_PATH"),
           "-L" ++ Sys.getenv("SKIA_LIB_PATH"),
           "-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"),
         ]

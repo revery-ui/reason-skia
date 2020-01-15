@@ -32,7 +32,7 @@
     "@opam/lwt": "*",
     "refmterr": "*",
     "yarn-pkg-config": "*",
-    "esy-freetype2": "*"
+    "esy-freetype2": "^2.9.1007"
   },
   "devDependencies": {
     "@esy-ocaml/merlin": "*",

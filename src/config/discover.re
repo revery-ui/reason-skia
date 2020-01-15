@@ -69,7 +69,7 @@ let () =
         @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH")]
         @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH") ++ "/c"]
         @ ["-L" ++ Sys.getenv("SKIA_LIB_PATH")]
-	@ ["-lstdc++"]
+        @ ["-lstdc++"]
       | _ => conf.cflags
       };
 

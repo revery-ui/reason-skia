@@ -54,6 +54,7 @@ let () =
         @ cclib("-lz")
         @ cclib("-lbz2")
         @ cclib("-ljpeg")
+        @ cclib("-lskia")
         @ ccopt("-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"))
         @ ccopt("-L" ++ Sys.getenv("SKIA_LIB_PATH"))
         @ ccopt("-L" ++ Sys.getenv("JPEG_LIB_PATH"))
@@ -70,6 +71,7 @@ let () =
       | Linux =>
         //conf.cflags
         []
+        @ ["-lskia"]
         @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH")]
         @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH") ++ "/c"]
         @ ["-L" ++ Sys.getenv("SKIA_LIB_PATH")]

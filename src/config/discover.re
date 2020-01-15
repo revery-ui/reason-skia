@@ -57,6 +57,7 @@ let () =
         @ ccopt("-I" ++ Sys.getenv("FREETYPE2_INCLUDE_PATH"))
         @ ccopt("-I" ++ Sys.getenv("SKIA_INCLUDE_PATH"))
         @ ccopt("-I/usr/include")
+        @ cclib("-lstdc++")
       | _ => []
       };
 
@@ -75,6 +76,7 @@ let () =
           "-lfontconfig",
           "-lz",
           "-lbz2",
+          "-lstdc++",
           "-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"),
         ]
       | _ => conf.libs

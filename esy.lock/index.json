@@ -1,5 +1,5 @@
 {
-  "checksum": "554a8f07ad52a144630965b14b4d5f5d",
+  "checksum": "9571c7daac7a1349fface141170eb158",
   "root": "reason-skia@link-dev:./package.json",
   "node": {
     "yarn-pkg-config@github:esy-ocaml/yarn-pkg-config#34947ac97f898c8a94b1731df45aea16f8fc7b3c@d41d8cd9": {
@@ -52,6 +52,7 @@
         "yarn-pkg-config@github:esy-ocaml/yarn-pkg-config#34947ac97f898c8a94b1731df45aea16f8fc7b3c@d41d8cd9",
         "refmterr@3.3.0@d41d8cd9", "ocaml@4.6.1000@d41d8cd9",
         "esy-skia@github:revery-ui/esy-skia#f17ebcc@d41d8cd9",
+        "esy-libjpeg-turbo@github:revery-ui/libjpeg-turbo#5699d39@d41d8cd9",
         "esy-freetype2@2.9.1007@d41d8cd9", "@opam/lwt@opam:5.1.1@6f0a0b20",
         "@opam/lambda-term@opam:2.0.3@9465cf1c",
         "@opam/dune@opam:1.11.4@a7ccb7ae",

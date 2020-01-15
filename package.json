@@ -32,7 +32,8 @@
     "@opam/lwt": "*",
     "refmterr": "*",
     "yarn-pkg-config": "*",
-    "esy-freetype2": "*"
+    "esy-freetype2": "*",
+    "esy-libjpeg-turbo": "*"
   },
   "devDependencies": {
     "@esy-ocaml/merlin": "*",

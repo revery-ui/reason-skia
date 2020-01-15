@@ -88,9 +88,9 @@ let () =
           "-lfontconfig",
           "-lz",
           "-lbz2",
-	  "-ljpeg",
+          "-ljpeg",
           "-lstdc++",
-	  "-L" ++ Sys.getenv("JPEG_LIB_PATH"),
+          "-L" ++ Sys.getenv("JPEG_LIB_PATH"),
           "-L" ++ Sys.getenv("SKIA_LIB_PATH"),
           "-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"),
         ]

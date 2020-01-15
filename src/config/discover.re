@@ -68,7 +68,8 @@ let () =
     let cflags =
       switch (get_os) {
       | Linux =>
-        conf.cflags
+        //conf.cflags
+        []
         @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH")]
         @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH") ++ "/c"]
         @ ["-L" ++ Sys.getenv("SKIA_LIB_PATH")]
@@ -81,7 +82,8 @@ let () =
     let libs =
       switch (get_os) {
       | Linux =>
-        conf.libs
+        //conf.libs
+        []
         @ [
           "-lskia",
           "-lfreetype",

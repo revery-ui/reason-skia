@@ -2,10 +2,11 @@ source /opt/rh/llvm-toolset-7.0/enable
 clang -v
 clang++ -v
 
+esy install
+
 esy echo '#{esy-libjpeg-turbo.lib}'
 esy ls '#{esy-libjpeg-turbo.lib}'
 
-esy install
 esy build
 
 esy @example install

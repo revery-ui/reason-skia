@@ -429,7 +429,6 @@ module Canvas = {
       | Intersect => "Intersect"
       | Difference => "Difference"
       };
-    print_endline("clipOp: " ++ output);
     SkiaWrapped.Canvas.clipRRect(canvas, rrect, clipOp, antiAlias);
   };
 

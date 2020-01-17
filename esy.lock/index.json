@@ -1,5 +1,5 @@
 {
-  "checksum": "3b24d62af3102005336fd06098950347",
+  "checksum": "090bbc2219bd308637c0449d90ee56a4",
   "root": "reason-skia@link-dev:./package.json",
   "node": {
     "yarn-pkg-config@github:esy-ocaml/yarn-pkg-config#34947ac97f898c8a94b1731df45aea16f8fc7b3c@d41d8cd9": {
@@ -52,7 +52,7 @@
         "yarn-pkg-config@github:esy-ocaml/yarn-pkg-config#34947ac97f898c8a94b1731df45aea16f8fc7b3c@d41d8cd9",
         "refmterr@3.3.0@d41d8cd9", "ocaml@4.6.1000@d41d8cd9",
         "esy-skia@github:revery-ui/esy-skia#f17ebcc@d41d8cd9",
-        "esy-libjpeg-turbo@github:revery-ui/libjpeg-turbo#5699d39@d41d8cd9",
+        "esy-libjpeg-turbo@github:revery-ui/libjpeg-turbo#61e031fd@d41d8cd9",
         "esy-freetype2@2.9.1007@d41d8cd9", "@opam/lwt@opam:5.1.1@6f0a0b20",
         "@opam/lambda-term@opam:2.0.3@9465cf1c",
         "@opam/dune@opam:1.11.4@a7ccb7ae",
@@ -88,7 +88,7 @@
       },
       "overrides": [],
       "dependencies": [
-        "esy-libjpeg-turbo@github:revery-ui/libjpeg-turbo#5699d39@d41d8cd9",
+        "esy-libjpeg-turbo@github:revery-ui/libjpeg-turbo#61e031fd@d41d8cd9",
         "@esy-cross/ninja-build@1.8.2001@d41d8cd9"
       ],
       "devDependencies": []
@@ -105,14 +105,14 @@
       "dependencies": [],
       "devDependencies": []
     },
-    "esy-libjpeg-turbo@github:revery-ui/libjpeg-turbo#5699d39@d41d8cd9": {
+    "esy-libjpeg-turbo@github:revery-ui/libjpeg-turbo#61e031fd@d41d8cd9": {
       "id":
-        "esy-libjpeg-turbo@github:revery-ui/libjpeg-turbo#5699d39@d41d8cd9",
+        "esy-libjpeg-turbo@github:revery-ui/libjpeg-turbo#61e031fd@d41d8cd9",
       "name": "esy-libjpeg-turbo",
-      "version": "github:revery-ui/libjpeg-turbo#5699d39",
+      "version": "github:revery-ui/libjpeg-turbo#61e031fd",
       "source": {
         "type": "install",
-        "source": [ "github:revery-ui/libjpeg-turbo#5699d39" ]
+        "source": [ "github:revery-ui/libjpeg-turbo#61e031fd" ]
       },
       "overrides": [],
       "dependencies": [

@@ -19,7 +19,7 @@
       "esy-installer skia.install"
     ],
     "buildEnv": {
-      "PKG_CONFIG_PATH": "#{$PKG_CONFIG_PATH : esy-libjpeg-turbo.install '/' 'lib64' '/' 'pkgconfig'}"
+      "PKG_CONFIG_PATH": "#{$PKG_CONFIG_PATH : esy-libjpeg-turbo.lib '/' 'pkgconfig'}"
     }
   },
   "peerDependencies": {
@@ -34,7 +34,6 @@
     "esy-skia": "github:revery-ui/esy-skia#f17ebcc",
     "@opam/lwt": "*",
     "refmterr": "*",
-    "esy-libjpeg-turbo": "revery-ui/libjpeg-turbo#a494a2c",
     "yarn-pkg-config": "*",
     "esy-freetype2": "*",
     "esy-libjpeg-turbo": "*"
@@ -47,7 +46,7 @@
     "@opam/ocaml-migrate-parsetree": "1.1.0",
     "yarn-pkg-config": "esy-ocaml/yarn-pkg-config#34947ac97f898c8a94b1731df45aea16f8fc7b3c",
     "@esy-ocaml/libffi": "esy-ocaml/libffi#599bc3567ecf839240977b6d9aaf0b80f983b5aa",
-    "esy-cmake": "prometheansacrifice/esy-cmake#2a47392def",
-    "esy-libjpeg-turbo": "revery-ui/libjpeg-turbo#5699d39"
+    "esy-libjpeg-turbo": "revery-ui/libjpeg-turbo#61e031fd",
+    "esy-cmake": "prometheansacrifice/esy-cmake#2a47392def"
   }
 }

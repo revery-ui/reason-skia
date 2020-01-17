@@ -424,12 +424,6 @@ module Canvas = {
   let clipRect = SkiaWrapped.Canvas.clipRect;
   let clipPath = SkiaWrapped.Canvas.clipPath;
   let clipRRect = (canvas, rrect, clipOp: clipOp, antiAlias) => {
-    let output =
-      switch (clipOp) {
-      | Intersect => "Intersect"
-      | Difference => "Difference"
-      };
-    print_endline("clipOp: " ++ output);
     SkiaWrapped.Canvas.clipRRect(canvas, rrect, clipOp, antiAlias);
   };
 

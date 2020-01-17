@@ -1,5 +1,5 @@
 {
-  "checksum": "30d6981e5e3bae9b6569aac0e83a4c58",
+  "checksum": "4cb0840f7defb538b422331df03e031a",
   "root": "reason-skia@link-dev:./package.json",
   "node": {
     "yarn-pkg-config@github:esy-ocaml/yarn-pkg-config#34947ac97f898c8a94b1731df45aea16f8fc7b3c@d41d8cd9": {
@@ -52,7 +52,8 @@
         "yarn-pkg-config@github:esy-ocaml/yarn-pkg-config#34947ac97f898c8a94b1731df45aea16f8fc7b3c@d41d8cd9",
         "refmterr@3.3.0@d41d8cd9", "ocaml@4.6.1000@d41d8cd9",
         "esy-skia@github:revery-ui/esy-skia#f17ebcc@d41d8cd9",
-        "esy-freetype2@2.9.1006@d41d8cd9", "@opam/lwt@opam:5.1.1@6f0a0b20",
+        "esy-libjpeg-turbo@github:revery-ui/libjpeg-turbo#a494a2c@d41d8cd9",
+        "esy-freetype2@2.9.1007@d41d8cd9", "@opam/lwt@opam:5.1.1@6f0a0b20",
         "@opam/lambda-term@opam:2.0.3@9465cf1c",
         "@opam/dune@opam:1.11.4@a7ccb7ae",
         "@opam/ctypes-foreign@opam:0.4.0@72ef8de2",
@@ -121,14 +122,14 @@
       ],
       "devDependencies": []
     },
-    "esy-freetype2@2.9.1006@d41d8cd9": {
-      "id": "esy-freetype2@2.9.1006@d41d8cd9",
+    "esy-freetype2@2.9.1007@d41d8cd9": {
+      "id": "esy-freetype2@2.9.1007@d41d8cd9",
       "name": "esy-freetype2",
-      "version": "2.9.1006",
+      "version": "2.9.1007",
       "source": {
         "type": "install",
         "source": [
-          "archive:https://registry.npmjs.org/esy-freetype2/-/esy-freetype2-2.9.1006.tgz#sha1:6c32a49543c273b427bbfb56c563e148006978bc"
+          "archive:https://registry.npmjs.org/esy-freetype2/-/esy-freetype2-2.9.1007.tgz#sha1:6ef0ac0142837e44cc6e845868b0fb592dd72b74"
         ]
       },
       "overrides": [],

@@ -59,6 +59,7 @@ let () =
         @ ccopt("-I" ++ Sys.getenv("SKIA_INCLUDE_PATH"))
         @ ccopt("-I/usr/include")
         @ cclib("-lstdc++")
+        @ cclib("-ljpeg")
       | _ => []
       };
 

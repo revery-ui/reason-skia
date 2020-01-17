@@ -17,7 +17,10 @@
     ],
     "install": [
       "esy-installer skia.install"
-    ]
+    ],
+    "buildEnv": {
+      "PKG_CONFIG_PATH": "#{$PKG_CONFIG_PATH : esy-libjpeg-turbo.install '/' 'lib64' '/' 'pkgconfig'}"
+    }
   },
   "peerDependencies": {
     "ocaml": "~4.6.0"
@@ -31,6 +34,7 @@
     "esy-skia": "github:revery-ui/esy-skia#f17ebcc",
     "@opam/lwt": "*",
     "refmterr": "*",
+    "esy-libjpeg-turbo": "revery-ui/libjpeg-turbo#a494a2c",
     "yarn-pkg-config": "*",
     "esy-freetype2": "*"
   },

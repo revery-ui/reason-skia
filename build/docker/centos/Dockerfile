@@ -27,4 +27,3 @@ RUN rpm -U https://centos7.iuscommunity.org/ius-release.rpm
 RUN yum -y install git2u
 
 RUN yum -y install nasm
-RUN yum -y install libjpeg-turbo-devel

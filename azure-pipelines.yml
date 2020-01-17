@@ -110,4 +110,8 @@ jobs:
   - script: docker run --rm --mount src=`pwd`,target=/reason-skia,type=bind centos /bin/bash -c 'which ragel'
   - script: docker run --rm --mount src=`pwd`,target=/reason-skia,type=bind centos /bin/bash -c 'cd reason-skia && ls -a'
   - script: docker run --cap-add SYS_ADMIN --device /dev/fuse --security-opt apparmor:unconfined --rm --mount src=`pwd`,target=/reason-skia,type=bind centos /bin/bash -c 'cd reason-skia && ./build/docker-build.sh'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: 'skia-c-example.png'
+      artifactName: 'skia-c-example-centos7.png'
 

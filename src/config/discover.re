@@ -43,7 +43,6 @@ let () =
 
     let ccopt = s => ["-ccopt", s];
     let cclib = s => ["-cclib", s];
-
     let flags =
       switch (get_os) {
       | Linux =>
@@ -53,29 +52,57 @@ let () =
         @ cclib("-lfreetype")
         @ cclib("-lz")
         @ cclib("-lbz2")
+        @ cclib("-lskia")
         @ ccopt("-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"))
+        @ ccopt("-L" ++ Sys.getenv("SKIA_LIB_PATH"))
+        @ ccopt("-L" ++ Sys.getenv("JPEG_LIB_PATH"))
         @ ccopt("-I" ++ Sys.getenv("FREETYPE2_INCLUDE_PATH"))
+        @ ccopt("-I" ++ Sys.getenv("SKIA_INCLUDE_PATH"))
+        @ cclib("-ljpeg")
         @ ccopt("-I/usr/include")
+        @ ccopt("-lstdc++")
       | _ => []
+      };
+
+    let cflags =
+      switch (get_os) {
+      | Linux =>
+        //conf.cflags
+        []
+        @ ["-lskia"]
+        @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH")]
+        @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH") ++ "/c"]
+        @ ["-L" ++ Sys.getenv("SKIA_LIB_PATH")]
+        @ ["-L" ++ Sys.getenv("JPEG_LIB_PATH")]
+        @ ["-lstdc++"]
+        @ ["-ljpeg"]
+      | _ => conf.cflags
       };
 
     let libs =
       switch (get_os) {
       | Linux =>
-        conf.libs
+        //conf.libs
+        []
         @ [
+          "-lskia",
           "-lfreetype",
           "-lfontconfig",
           "-lz",
           "-lbz2",
+          "-L" ++ Sys.getenv("JPEG_LIB_PATH"),
+          "-ljpeg",
+          "-lpthread",
+          "-lstdc++",
+          "-L" ++ Sys.getenv("SKIA_LIB_PATH"),
           "-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"),
         ]
       | _ => conf.libs
       };
 
     write_sexp("flags.sexp", flags);
-    write_lines("c_flags.txt", conf.cflags);
-    write_sexp("c_flags.sexp", conf.cflags);
+    write_lines("c_flags.txt", cflags);
+    write_sexp("c_flags.sexp", cflags);
     write_sexp("c_library_flags.sexp", libs);
     write_lines("c_library_flags.txt", libs);
     write_sexp(

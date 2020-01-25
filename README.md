@@ -17,3 +17,7 @@ See [the official Skia page](https://skia.org/) for information
 - `esy '@example' install`
 - `esy '@example' build`
 - `esy '@example' run`
+
+## Acknowledgements
+
+- The test image (`uv.png`) is from @Arahnoid's [UVChecker-map](https://github.com/Arahnoid/UVChecker-map) repo.

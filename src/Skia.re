@@ -412,6 +412,7 @@ module Canvas = {
     );
   };
   let drawImage = SkiaWrapped.Canvas.drawImage;
+  let drawImageRect = SkiaWrapped.Canvas.drawImageRect;
 
   let concat = SkiaWrapped.Canvas.concat;
   let setMatrix = SkiaWrapped.Canvas.setMatrix;

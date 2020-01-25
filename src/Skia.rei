@@ -271,6 +271,8 @@ module Canvas: {
   let drawPath: (t, Path.t, Paint.t) => unit;
   let drawText: (t, string, float, float, Paint.t) => unit;
   let drawImage: (t, Image.t, float, float, option(Paint.t)) => unit;
+  let drawImageRect:
+    (t, Image.t, option(Rect.t), Rect.t, option(Paint.t)) => unit;
 
   let concat: (t, Matrix.t) => unit;
   let setMatrix: (t, Matrix.t) => unit;

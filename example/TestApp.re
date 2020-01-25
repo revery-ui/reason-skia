@@ -96,6 +96,31 @@ let draw = canvas => {
     Canvas.drawText(canvas, "Hello, world!", 30., 30., fill3);
     print_endline(__LOC__ ++ ": We return.");
   };
+
+  // Load and draw image
+  let imgPath = Sys.getcwd() ++ "/assets/uv.png";
+  print_endline("Loading image: " ++ imgPath);
+  let imgData = Data.makeFromFileName(imgPath);
+  let strLen = String.length(Data.makeString(imgData));
+  print_endline("Bytes loaded: " ++ string_of_int(strLen));
+  let maybeImg = Image.makeFromEncoded(imgData, None);
+
+  switch (maybeImg) {
+  | None => failwith("Unable to load image: uv.png")
+  | Some(img) =>
+    let imgFill = Paint.make();
+    Canvas.drawImage(canvas, img, 250., 250., Some(imgFill));
+
+    let sourceRect = Rect.makeLtrb(0., 0., 128., 128.);
+    let destRect = Rect.makeLtrb(200., 200., 264., 264.);
+    Canvas.drawImageRect(
+      canvas,
+      img,
+      Some(sourceRect),
+      destRect,
+      Some(imgFill),
+    );
+  };
 };
 
 let surface = makeSurface(640l, 480l);

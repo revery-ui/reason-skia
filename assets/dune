@@ -1,0 +1,4 @@
+(install
+    (package skia-example)
+    (section bin)
+    (files uv.png))

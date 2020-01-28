@@ -84,6 +84,7 @@ let draw = canvas => {
   let nonExistentTypeface = Typeface.makeFromFile("non-existent-font.ttf", 0);
   assert(nonExistentTypeface == None);
 
+  // Draw text
   let filePath = Sys.getcwd() ++ "/example/Orbitron Medium.ttf";
   print_endline("Loading font: " ++ filePath);
   let maybeTypeface = Typeface.makeFromFile(filePath, 0);
@@ -94,6 +95,17 @@ let draw = canvas => {
     Paint.setTypeface(fill3, typeFace);
     print_endline(__LOC__ ++ ": setTypeface is OK.");
     Canvas.drawText(canvas, "Hello, world!", 30., 30., fill3);
+    let metrics = FontMetrics.make();
+    let _ret: float = Paint.getFontMetrics(fill3, metrics, 1.0);
+
+    print_endline(
+      "-- Top: " ++ string_of_float(FontMetrics.getTop(metrics)),
+    );
+    print_endline(
+      "-- Bottom: " ++ string_of_float(FontMetrics.getBottom(metrics)),
+    );
+    print_endline("-- Ret: " ++ string_of_float(_ret));
+
     print_endline(__LOC__ ++ ": We return.");
   };
 
@@ -120,6 +132,45 @@ let draw = canvas => {
       destRect,
       Some(imgFill),
     );
+  };
+
+  // Draw text w/ ligature
+  let filePath = Sys.getcwd() ++ "/example/FiraCode-Regular.ttf";
+  print_endline("Loading font: " ++ filePath);
+  let maybeTypeface = Typeface.makeFromFile(filePath, 0);
+  switch (maybeTypeface) {
+  | None => failwith("Unable to load font: " ++ filePath)
+  | Some(typeFace) =>
+    let fill = Paint.make();
+    Paint.setColor(fill, Color.makeArgb(0xFF, 0xFF, 0xFF, 0xFF));
+    Paint.setTextSize(fill, 30.);
+    Paint.setTypeface(fill, typeFace);
+    Paint.setTextEncoding(fill, GlyphId);
+
+    let glyphsToString = glyphs => {
+      let len = List.length(glyphs);
+      let bytes = Bytes.create(len * 2);
+
+      let rec loop = (glyphs, idx) => {
+        switch (glyphs) {
+        | [hd, ...tail] =>
+          let lowerBit = hd land 255;
+          let highBit = (hd land 255 lsl 8) lsr 8;
+          Bytes.set(bytes, idx * 2 + 0, Char.chr(lowerBit));
+          Bytes.set(bytes, idx * 2 + 1, Char.chr(highBit));
+          loop(tail, idx + 1);
+        | [] => ()
+        };
+      };
+
+      loop(glyphs, 0);
+
+      Bytes.to_string(bytes);
+    };
+
+    // For FiraCode, this is a==>b
+    let str = glyphsToString([136, 1624, 1624, 1495, 148]);
+    Canvas.drawText(canvas, str, 50., 100., fill);
   };
 };
 

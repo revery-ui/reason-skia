@@ -14,6 +14,8 @@ module FontStyle: {
   let make: (int, int, slant) => t;
 };
 
+module TextEncoding: {type t = SkiaWrapped.TextEncoding.t;};
+
 module Typeface: {
   type t;
 
@@ -21,7 +23,15 @@ module Typeface: {
   let makeFromFile: (string, int) => option(t);
 };
 
-module FontMetrics: {type t = SkiaWrapped.FontMetrics.t;};
+module FontMetrics: {
+  type t = SkiaWrapped.FontMetrics.t;
+
+  let make: unit => t;
+  let getAscent: t => float;
+  let getDescent: t => float;
+  let getTop: t => float;
+  let getBottom: t => float;
+};
 
 module ImageFilter: {
   type t;
@@ -73,7 +83,10 @@ module Paint: {
   let setTypeface: (t, Typeface.t) => unit;
   let setLcdRenderText: (t, bool) => unit;
   let setTextSize: (t, float) => unit;
-  let getFontMetrics: (t, option(FontMetrics.t), float) => float;
+  let getFontMetrics: (t, FontMetrics.t, float) => float;
+
+  let setTextEncoding: (t, TextEncoding.t) => unit;
+  let getTextEncoding: t => TextEncoding.t;
 };
 
 module Point: {

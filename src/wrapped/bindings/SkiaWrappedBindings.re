@@ -40,6 +40,11 @@ module M = (F: FOREIGN) => {
       foreign("sk_fontstyle_new", int @-> int @-> slant @-> returning(t));
   };
 
+  module TextEncoding = {
+    type t = SkiaTypes.TextEncoding.t;
+    let t = SkiaTypes.TextEncoding.t;
+  };
+
   module Typeface = {
     type t = ptr(structure(SkiaTypes.Typeface.t));
     let t = ptr(SkiaTypes.Typeface.t);
@@ -60,6 +65,14 @@ module M = (F: FOREIGN) => {
   module FontMetrics = {
     type t = ptr(structure(SkiaTypes.FontMetrics.t));
     let t = ptr(SkiaTypes.FontMetrics.t);
+
+    let make = () => allocate_n(~count=1, SkiaTypes.FontMetrics.t);
+
+    let getAscent = metrics => getf(!@metrics, SkiaTypes.FontMetrics.ascent);
+    let getDescent = metrics =>
+      getf(!@metrics, SkiaTypes.FontMetrics.descent);
+    let getTop = metrics => getf(!@metrics, SkiaTypes.FontMetrics.top);
+    let getBottom = metrics => getf(!@metrics, SkiaTypes.FontMetrics.bottom);
   };
 
   module ImageFilter = {
@@ -126,13 +139,22 @@ module M = (F: FOREIGN) => {
     let getFontMetrics =
       foreign(
         "sk_paint_get_fontmetrics",
-        t @-> ptr_opt(SkiaTypes.FontMetrics.t) @-> float @-> returning(float),
+        t @-> ptr(SkiaTypes.FontMetrics.t) @-> float @-> returning(float),
       );
 
     let setImageFilter =
       foreign(
         "sk_paint_set_imagefilter",
         t @-> ImageFilter.t @-> returning(void),
+      );
+
+    let getTextEncoding =
+      foreign("sk_paint_get_text_encoding", t @-> returning(TextEncoding.t));
+
+    let setTextEncoding =
+      foreign(
+        "sk_paint_set_text_encoding",
+        t @-> TextEncoding.t @-> returning(void),
       );
   };
 

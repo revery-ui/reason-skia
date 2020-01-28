@@ -142,6 +142,16 @@ module M = (F: FOREIGN) => {
         t @-> ptr(SkiaTypes.FontMetrics.t) @-> float @-> returning(float),
       );
 
+    let measureText =
+      foreign(
+        "sk_paint_measure_text",
+        t
+        @-> string
+        @-> int
+        @-> ptr_opt(SkiaTypes.Rect.t)
+        @-> returning(float),
+      );
+
     let setImageFilter =
       foreign(
         "sk_paint_set_imagefilter",

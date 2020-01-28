@@ -238,6 +238,18 @@ module M = (F: FOREIGN) => {
       setf(!@rect, SkiaTypes.Rect.bottom, bottom);
       rect;
     };
+    let getLeft = rect => {
+      getf(!@rect, SkiaTypes.Rect.left);
+    };
+    let getTop = rect => {
+      getf(!@rect, SkiaTypes.Rect.top);
+    };
+    let getRight = rect => {
+      getf(!@rect, SkiaTypes.Rect.right);
+    };
+    let getBottom = rect => {
+      getf(!@rect, SkiaTypes.Rect.bottom);
+    };
   };
 
   module Matrix = {
@@ -322,7 +334,59 @@ module M = (F: FOREIGN) => {
     let t = ptr(SkiaTypes.Matrix44.t);
 
     let allocate = foreign("sk_matrix44_new", void @-> returning(t));
+    let allocate_identity =
+      foreign("sk_matrix44_new_identity", void @-> returning(t));
     let destroy = foreign("sk_matrix44_destroy", t @-> returning(void));
+
+    let setRotateAboutDegrees =
+      foreign(
+        "sk_matrix44_set_rotate_about_degrees",
+        t @-> float @-> float @-> float @-> float @-> returning(void),
+      );
+    let setRotateAboutRadians =
+      foreign(
+        "sk_matrix44_set_rotate_about_radians",
+        t @-> float @-> float @-> float @-> float @-> returning(void),
+      );
+
+    let setTranslate =
+      foreign(
+        "sk_matrix44_set_translate",
+        t @-> float @-> float @-> float @-> returning(void),
+      );
+    let preTranslate =
+      foreign(
+        "sk_matrix44_pre_translate",
+        t @-> float @-> float @-> float @-> returning(void),
+      );
+    let postTranslate =
+      foreign(
+        "sk_matrix44_post_translate",
+        t @-> float @-> float @-> float @-> returning(void),
+      );
+
+    let setScale =
+      foreign(
+        "sk_matrix44_set_scale",
+        t @-> float @-> float @-> float @-> returning(void),
+      );
+    let preScale =
+      foreign(
+        "sk_matrix44_pre_scale",
+        t @-> float @-> float @-> float @-> returning(void),
+      );
+    let postScale =
+      foreign(
+        "sk_matrix44_post_scale",
+        t @-> float @-> float @-> float @-> returning(void),
+      );
+
+    let setConcat =
+      foreign("sk_matrix44_set_concat", t @-> t @-> t @-> returning(void));
+    let preConcat =
+      foreign("sk_matrix44_pre_concat", t @-> t @-> returning(void));
+    let postConcat =
+      foreign("sk_matrix44_post_concat", t @-> t @-> returning(void));
 
     let get =
       foreign("sk_matrix44_get", t @-> int @-> int @-> returning(float));

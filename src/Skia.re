@@ -215,14 +215,35 @@ module Matrix = {
 module Matrix44 = {
   type t = SkiaWrapped.Matrix44.t;
 
-  let make = () => {
+  let makeEmpty = () => {
     let mat = SkiaWrapped.Matrix44.allocate();
+    Gc.finalise(SkiaWrapped.Matrix44.destroy, mat);
+    mat;
+  };
+
+  let makeIdentity = () => {
+    let mat = SkiaWrapped.Matrix44.allocate_identity();
     Gc.finalise(SkiaWrapped.Matrix44.destroy, mat);
     mat;
   };
 
   let get = SkiaWrapped.Matrix44.get;
   let set = SkiaWrapped.Matrix44.set;
+  let setRotateAboutDegrees = SkiaWrapped.Matrix44.setRotateAboutDegrees;
+  let setRotateAboutRadians = SkiaWrapped.Matrix44.setRotateAboutRadians;
+
+  let setTranslate = SkiaWrapped.Matrix44.setTranslate;
+  let preTranslate = SkiaWrapped.Matrix44.preTranslate;
+  let postTranslate = SkiaWrapped.Matrix44.postTranslate;
+
+  let setScale = SkiaWrapped.Matrix44.setScale;
+  let preScale = SkiaWrapped.Matrix44.preScale;
+  let postScale = SkiaWrapped.Matrix44.postScale;
+
+  let setConcat = SkiaWrapped.Matrix44.setConcat;
+  let preConcat = SkiaWrapped.Matrix44.preConcat;
+  let postConcat = SkiaWrapped.Matrix44.postConcat;
+
   let toMatrix = SkiaWrapped.Matrix44.toMatrix;
 };
 
@@ -238,6 +259,10 @@ module Rect = {
 
   let makeEmpty = SkiaWrapped.Rect.makeEmpty;
   let makeLtrb = SkiaWrapped.Rect.makeLtrb;
+  let getLeft = SkiaWrapped.Rect.getLeft;
+  let getTop = SkiaWrapped.Rect.getTop;
+  let getRight = SkiaWrapped.Rect.getRight;
+  let getBottom = SkiaWrapped.Rect.getBottom;
 };
 
 module FontStyle = {

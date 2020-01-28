@@ -119,6 +119,11 @@ module Rect: {
 
   let makeEmpty: unit => t;
   let makeLtrb: (float, float, float, float) => t;
+
+  let getTop: t => float;
+  let getLeft: t => float;
+  let getRight: t => float;
+  let getBottom: t => float;
 };
 
 module Matrix: {
@@ -175,7 +180,23 @@ module Matrix: {
 module Matrix44: {
   type t;
 
-  let make: unit => t;
+  let makeIdentity: unit => t;
+  let makeEmpty: unit => t;
+
+  let setRotateAboutDegrees: (t, float, float, float, float) => unit;
+  let setRotateAboutRadians: (t, float, float, float, float) => unit;
+
+  let setTranslate: (t, float, float, float) => unit;
+  let preTranslate: (t, float, float, float) => unit;
+  let postTranslate: (t, float, float, float) => unit;
+
+  let setScale: (t, float, float, float) => unit;
+  let preScale: (t, float, float, float) => unit;
+  let postScale: (t, float, float, float) => unit;
+
+  let setConcat: (t, t, t) => unit;
+  let preConcat: (t, t) => unit;
+  let postConcat: (t, t) => unit;
 
   let get: (t, int, int) => float;
   let set: (t, int, int, float) => unit;

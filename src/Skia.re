@@ -1,5 +1,6 @@
 type colorType = SkiaWrapped.colorType;
 type alphaType = SkiaWrapped.alphaType;
+type textEncoding = SkiaWrapped.TextEncoding.t;
 
 module Color = {
   type t = SkiaWrapped.Color.t;

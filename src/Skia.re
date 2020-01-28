@@ -71,6 +71,10 @@ module Paint = {
     paint;
   };
 
+  let measureText = (paint, text, rectOpt) => {
+    SkiaWrapped.Paint.measureText(paint, text, String.length(text), rectOpt);
+  };
+
   let setColor = SkiaWrapped.Paint.setColor;
   let setAntiAlias = SkiaWrapped.Paint.setAntiAlias;
   let setStyle = SkiaWrapped.Paint.setStyle;

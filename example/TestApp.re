@@ -107,6 +107,15 @@ let draw = canvas => {
     print_endline("-- Ret: " ++ string_of_float(_ret));
 
     print_endline(__LOC__ ++ ": We return.");
+
+    // Measure
+    let measurement = Paint.measureText(fill3, "Hello, world!", None);
+    print_endline("Measured text: " ++ string_of_float(measurement));
+    Paint.setTextSize(fill3, 50.);
+    let largeMeasurement = Paint.measureText(fill3, "Hello, world!", None);
+    print_endline(
+      "Large measured text: " ++ string_of_float(largeMeasurement),
+    );
   };
 
   // Load and draw image

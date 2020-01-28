@@ -69,6 +69,18 @@ module ImageFilter: {
     t;
 };
 
+module Rect: {
+  type t;
+
+  let makeEmpty: unit => t;
+  let makeLtrb: (float, float, float, float) => t;
+
+  let getTop: t => float;
+  let getLeft: t => float;
+  let getRight: t => float;
+  let getBottom: t => float;
+};
+
 module Paint: {
   type t;
   type style = SkiaWrapped.Paint.style;
@@ -84,6 +96,8 @@ module Paint: {
   let setLcdRenderText: (t, bool) => unit;
   let setTextSize: (t, float) => unit;
   let getFontMetrics: (t, FontMetrics.t, float) => float;
+
+  let measureText: (t, string, option(Rect.t)) => float;
 
   let setTextEncoding: (t, TextEncoding.t) => unit;
   let getTextEncoding: t => TextEncoding.t;
@@ -112,18 +126,6 @@ module IRect: {
 
   let makeEmpty: unit => t;
   let makeLtrb: (int32, int32, int32, int32) => t;
-};
-
-module Rect: {
-  type t;
-
-  let makeEmpty: unit => t;
-  let makeLtrb: (float, float, float, float) => t;
-
-  let getTop: t => float;
-  let getLeft: t => float;
-  let getRight: t => float;
-  let getBottom: t => float;
 };
 
 module Matrix: {

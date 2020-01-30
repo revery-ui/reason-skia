@@ -158,6 +158,10 @@ let draw = canvas => {
     let str = glyphsToString([136, 1624, 1624, 1495, 148]);
     Canvas.drawText(canvas, str, 50., 100., fill);
   };
+
+  let fill = Paint.make();
+  Paint.setColor(fill, Color.makeArgb(0xFF, 0xFF, 0x00, 0xFF));
+  Canvas.drawRectLtwh(canvas, 50., 75., 100., 200., fill);
 };
 
 let surface = makeSurface(640l, 480l);

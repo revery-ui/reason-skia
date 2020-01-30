@@ -13,6 +13,6 @@
   (flags (-w -40 -w +26))
   (public_name skia.wrapped)
   (libraries skia.wrapped.types skia.wrapped.bindings ctypes ctypes.foreign)
-  (c_names skia_generated_stubs)
+  (c_names skia_generated_stubs raw_bindings)
   (c_flags (:include ../../c_flags.sexp))
   (c_library_flags (:include ../../c_library_flags.sexp)))

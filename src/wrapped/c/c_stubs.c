@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
 sk_color_t reason_skia_stub_sk_color_set_argb(int alpha, int red, int green, int blue)
 {
     return sk_color_set_argb(alpha, red, green, blue);
@@ -42,5 +41,6 @@ sk_canvas_t *canvas, float left, float top, float width, float height, sk_paint_
     rect.right = left + width;
     rect.bottom = top + height;
 
+    printf("Real Canvas: %p\n", (void *)canvas);
     sk_canvas_draw_rect(canvas, &rect, paint);
 }

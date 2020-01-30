@@ -300,6 +300,8 @@ type clipOp = SkiaWrapped.clipOp;
 
 module Canvas: {
   type t;
+let superTest: t => unit;
+
 
   let drawPaint: (t, Paint.t) => unit;
   let drawRect: (t, Rect.t, Paint.t) => unit;

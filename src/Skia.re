@@ -80,6 +80,7 @@ module Paint = {
   let setStyle = SkiaWrapped.Paint.setStyle;
   let setStrokeWidth = SkiaWrapped.Paint.setStrokeWidth;
   let setLcdRenderText = SkiaWrapped.Paint.setLcdRenderText;
+  let setSubpixelText = SkiaWrapped.Paint.setSubpixelText;
   let setTextSize = SkiaWrapped.Paint.setTextSize;
   let setTypeface = SkiaWrapped.Paint.setTypeface;
   let getFontMetrics = SkiaWrapped.Paint.getFontMetrics;

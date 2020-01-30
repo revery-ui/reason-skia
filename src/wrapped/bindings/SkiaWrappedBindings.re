@@ -133,6 +133,9 @@ module M = (F: FOREIGN) => {
         t @-> bool @-> returning(void),
       );
 
+    let setSubpixelText =
+      foreign("sk_paint_set_subpixel_text", t @-> bool @-> returning(void));
+
     let setTextSize =
       foreign("sk_paint_set_textsize", t @-> float @-> returning(void));
 

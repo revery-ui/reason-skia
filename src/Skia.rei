@@ -94,6 +94,7 @@ module Paint: {
   let setImageFilter: (t, ImageFilter.t) => unit;
   let setTypeface: (t, Typeface.t) => unit;
   let setLcdRenderText: (t, bool) => unit;
+  let setSubpixelText: (t, bool) => unit;
   let setTextSize: (t, float) => unit;
   let getFontMetrics: (t, FontMetrics.t, float) => float;
 

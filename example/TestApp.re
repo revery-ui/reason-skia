@@ -162,7 +162,7 @@ let draw = canvas => {
   let fill = Paint.make();
   Paint.setColor(fill, Color.makeArgb(0xFF, 0xFF, 0x00, 0xFF));
   Canvas.drawRectLtwh(canvas, 50., 75., 100., 200., fill);
-Skia.Canvas.superTest(canvas);
+  Skia.Canvas.superTest(canvas);
 };
 
 let surface = makeSurface(640l, 480l);

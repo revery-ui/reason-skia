@@ -438,9 +438,10 @@ module Canvas = {
     );
 
   module CI = Cstubs_internals;
-  [@noalloc] external _superTest: CI.fatptr(_) => unit = "reason_skia_raw_binding_test";
+  [@noalloc]
+  external _superTest: CI.fatptr(_) => unit = "reason_skia_raw_binding_test";
 
-  let superTest = (canvas) => _superTest(CI.cptr(canvas));
+  let superTest = canvas => _superTest(CI.cptr(canvas));
 
   let drawPaint = SkiaWrapped.Canvas.drawPaint;
   let drawRect = SkiaWrapped.Canvas.drawRect;

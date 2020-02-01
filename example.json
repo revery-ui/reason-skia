@@ -4,7 +4,7 @@
     "run": "esy '@example' x TestApp"
   },
   "override": {
-      "build": ["dune build --root . -j4"],
+      "build": ["dune build -p skia,skia-example -j4"],
       "install": [
           "esy-installer skia.install",
           "esy-installer skia-example.install"

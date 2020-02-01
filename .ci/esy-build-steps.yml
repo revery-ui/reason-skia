@@ -17,5 +17,5 @@ steps:
     displayName: 'esy @bench install'
   - script: esy @bench build
     displayName: 'esy @bench build'
-  - script: esy @example run
+  - script: esy @bench run
     displayName: 'esy @bench run'

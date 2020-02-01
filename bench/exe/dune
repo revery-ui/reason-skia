@@ -1,0 +1,6 @@
+(executable
+    (name bench)
+    (public_name SkiaBench)
+    (libraries skia-bench.lib)
+    (package skia-bench)
+)

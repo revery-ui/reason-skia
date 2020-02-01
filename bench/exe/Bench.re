@@ -1,0 +1,1 @@
+SkiaBench.BenchFramework.cli();

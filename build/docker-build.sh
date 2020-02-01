@@ -11,3 +11,8 @@ echo "-- EXAMPLE INSTALL / BUILD"
 esy @example install
 esy @example build
 esy @example run
+
+echo "-- BENCH INSTALL / BUILD"
+esy @bench install
+esy @bench build
+esy @bench run

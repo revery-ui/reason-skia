@@ -44,3 +44,12 @@ sk_canvas_t *canvas, float left, float top, float width, float height, sk_paint_
 
     sk_canvas_draw_rect(canvas, &rect, paint);
 }
+
+void* reason_skia_sdl2_get(void *ctx, const char name[]) {
+    return SDL_GL_GetProcAddress(name);
+};
+
+gr_glinterface_t* reason_skia_make_sdl2_interface() {
+	gr_glinterface_t* interface = gr_glinterface_assemble_gl_interface(0, reason_skia_sdl2_get);
+    return interface;
+}

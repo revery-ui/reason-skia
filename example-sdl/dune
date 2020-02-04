@@ -1,0 +1,8 @@
+(executables
+    (names TestSdl)
+    (package skia-example-sdl)
+    (public_names TestSdl)
+    (libraries
+        skia
+        sdl2
+            ))

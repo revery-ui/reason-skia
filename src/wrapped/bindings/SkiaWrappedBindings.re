@@ -562,6 +562,15 @@ module M = (F: FOREIGN) => {
       module Interface = {
         type t = ptr(structure(SkiaTypes.Gr.Gl.Interface.t));
         let t = ptr(SkiaTypes.Gr.Gl.Interface.t);
+
+        let makeNative =
+          foreign(
+            "gr_glinterface_create_native_interface",
+            void @-> returning(t),
+          );
+
+        let makeSdl2 =
+          foreign("reason_skia_make_sdl2_interface", void @-> returning(t));
       };
 
       module FramebufferInfo = {
@@ -621,6 +630,9 @@ module M = (F: FOREIGN) => {
   module Canvas = {
     type t = ptr(structure(SkiaTypes.Canvas.t));
     let t = ptr(SkiaTypes.Canvas.t);
+
+    let clear =
+      foreign("sk_canvas_clear", t @-> Color.t @-> returning(void));
 
     let drawPaint =
       foreign("sk_canvas_draw_paint", t @-> Paint.t @-> returning(void));

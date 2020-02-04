@@ -30,16 +30,14 @@
     "esy-skia": "github:revery-ui/esy-skia#91b10c9",
     "@opam/lwt": "*",
     "refmterr": "*",
-    "yarn-pkg-config": "*",
-    "esy-freetype2": "^2.9.1007"
+    "esy-freetype2": "^2.9.1007",
+    "esy-sdl2": "*",
+    "reason-sdl2": "^2.10.3016"
   },
   "devDependencies": {
-    "@esy-ocaml/merlin": "*",
-    "ocaml": "~4.6.0"
+    "ocaml": "~4.7.0"
   },
   "resolutions": {
-    "@opam/ocaml-migrate-parsetree": "1.1.0",
-    "yarn-pkg-config": "esy-ocaml/yarn-pkg-config#34947ac97f898c8a94b1731df45aea16f8fc7b3c",
     "@esy-ocaml/libffi": "esy-ocaml/libffi#599bc3567ecf839240977b6d9aaf0b80f983b5aa",
     "esy-cmake": "prometheansacrifice/esy-cmake#2a47392def"
   }

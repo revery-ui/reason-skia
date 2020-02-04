@@ -7,6 +7,7 @@
  (name skia_wrapped_c)
  (public_name skia.wrapped.c)
  (preprocess no_preprocessing)
+ (libraries sdl2)
  (self_build_stubs_archive (skia_wrapped_c)))
 
 (rule

@@ -274,7 +274,12 @@ module Gr: {
   type surfaceOrigin = SkiaWrapped.Gr.surfaceOrigin;
 
   module Gl: {
-    module Interface: {type t;};
+    module Interface: {
+      type t;
+
+      let makeNative: unit => t;
+      let makeSdl2: unit => t;
+    };
 
     module FramebufferInfo: {
       type t;
@@ -301,6 +306,7 @@ type clipOp = SkiaWrapped.clipOp;
 module Canvas: {
   type t;
 
+  let clear: (t, Color.t) => unit;
   let drawPaint: (t, Paint.t) => unit;
   let drawRect: (t, Rect.t, Paint.t) => unit;
   let drawRectLtwh: (t, float, float, float, float, Paint.t) => unit;

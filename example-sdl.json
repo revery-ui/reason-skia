@@ -1,0 +1,13 @@
+{
+  "source": "./package.json",
+  "scripts": {
+    "run": "esy '@example-sdl' x TestSdl"
+  },
+  "override": {
+      "build": ["dune build -p skia,skia-example-sdl -j4"],
+      "install": [
+          "esy-installer skia.install",
+          "esy-installer skia-example-sdl.install"
+      ]
+  }
+}

@@ -19,6 +19,13 @@ let makeLtrb = () => {
   ();
 };
 
+let getLeft = () => {
+  let _: float = Skia.Rect.getLeft(Data.initialRect);
+  ();
+};
+
 bench(~name="Rect: makeLtrb", ~options, ~setup=() => (), ~f=makeLtrb, ());
 
 bench(~name="Rect: setLtrb", ~options, ~setup=() => (), ~f=setLtrb, ());
+
+bench(~name="Rect: getLeft", ~options, ~setup=() => (), ~f=getLeft, ());

@@ -13,5 +13,5 @@ describe("Rect", ({test, _}) => {
     expect.float(top).toBeCloseTo(2.);
     expect.float(right).toBeCloseTo(3.);
     expect.float(bottom).toBeCloseTo(4.);
-  });
+  })
 });

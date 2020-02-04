@@ -27,7 +27,6 @@
     "@opam/ctypes": "0.15.1",
     "@opam/ctypes-foreign": "0.4.0",
     "@opam/dune": "*",
-    "@opam/lambda-term": "*",
     "esy-skia": "github:revery-ui/esy-skia#91b10c9",
     "@opam/lwt": "*",
     "refmterr": "*",

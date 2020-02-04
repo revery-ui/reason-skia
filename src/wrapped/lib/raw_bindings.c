@@ -15,6 +15,58 @@
 
 #include "ctypes_cstubs_internals.h"
 
+double reason_skia_rect_get_bottom(
+   value vRect
+) {
+   sk_rect_t *pRect = CTYPES_ADDR_OF_FATPTR(vRect);
+   return (double)pRect->bottom;
+}
+
+CAMLprim value reason_skia_rect_get_bottom_byte(
+   value vRect
+) {
+   return caml_copy_double(reason_skia_rect_get_bottom(vRect));
+}
+
+double reason_skia_rect_get_right(
+   value vRect
+) {
+   sk_rect_t *pRect = CTYPES_ADDR_OF_FATPTR(vRect);
+   return (double)pRect->right;
+}
+
+CAMLprim value reason_skia_rect_get_right_byte(
+   value vRect
+) {
+   return caml_copy_double(reason_skia_rect_get_right(vRect));
+}
+
+double reason_skia_rect_get_top(
+   value vRect
+) {
+   sk_rect_t *pRect = CTYPES_ADDR_OF_FATPTR(vRect);
+   return (double)pRect->top;
+}
+
+CAMLprim value reason_skia_rect_get_top_byte(
+   value vRect
+) {
+   return caml_copy_double(reason_skia_rect_get_top(vRect));
+}
+
+double reason_skia_rect_get_left(
+   value vRect
+) {
+   sk_rect_t *pRect = CTYPES_ADDR_OF_FATPTR(vRect);
+   return (double)pRect->left;
+}
+
+CAMLprim value reason_skia_rect_get_left_byte(
+   value vRect
+) {
+   return caml_copy_double(reason_skia_rect_get_left(vRect));
+}
+
 CAMLprim value reason_skia_rect_set(
    value vRect,
    double left,

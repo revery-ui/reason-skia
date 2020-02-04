@@ -270,10 +270,9 @@ module IRect = {
 
 module Rect = {
   type t = SkiaWrapped.Rect.t;
+  module CI = Cstubs_internals;
 
   module Mutable = {
-    module CI = Cstubs_internals;
-
     [@noalloc]
     external _set:
       (
@@ -290,12 +289,29 @@ module Rect = {
       _set(CI.cptr(out), left, top, right, bottom);
   };
 
+  [@noalloc]
+  external _getLeft: CI.fatptr(_) => [@unboxed] float =
+    "reason_skia_rect_get_left_byte" "reason_skia_rect_get_left";
+
+  [@noalloc]
+  external _getTop: CI.fatptr(_) => [@unboxed] float =
+    "reason_skia_rect_get_top_byte" "reason_skia_rect_get_top";
+
+  [@noalloc]
+  external _getRight: CI.fatptr(_) => [@unboxed] float =
+    "reason_skia_rect_get_right_byte" "reason_skia_rect_get_right";
+
+  [@noalloc]
+  external _getBottom: CI.fatptr(_) => [@unboxed] float =
+    "reason_skia_rect_get_bottom_byte" "reason_skia_rect_get_bottom";
+
+  let getLeft = rect => _getLeft(CI.cptr(rect));
+  let getTop = rect => _getTop(CI.cptr(rect));
+  let getBottom = rect => _getBottom(CI.cptr(rect));
+  let getRight = rect => _getRight(CI.cptr(rect));
+
   let makeEmpty = SkiaWrapped.Rect.makeEmpty;
   let makeLtrb = SkiaWrapped.Rect.makeLtrb;
-  let getLeft = SkiaWrapped.Rect.getLeft;
-  let getTop = SkiaWrapped.Rect.getTop;
-  let getRight = SkiaWrapped.Rect.getRight;
-  let getBottom = SkiaWrapped.Rect.getBottom;
 
   let toString = rect => {
     let left = getLeft(rect);

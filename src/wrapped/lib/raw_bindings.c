@@ -15,6 +15,36 @@
 
 #include "ctypes_cstubs_internals.h"
 
+CAMLprim value reason_skia_rect_set(
+   value vRect,
+   double left,
+   double top,
+   double right,
+   double bottom
+) {
+   sk_rect_t *pRect = CTYPES_ADDR_OF_FATPTR(vRect);
+   pRect->left = left;
+   pRect->top = top;
+   pRect->right = right;
+   pRect->bottom = bottom;
+
+   return Val_unit;
+}
+
+CAMLprim value reasion_skia_rect_set_byte(
+   value vRect,
+   value vLeft,
+   value vTop,
+   value vRight,
+   value vBottom
+) {
+   return reason_skia_rect_set(vRect,
+   Double_val(vLeft),
+   Double_val(vTop),
+   Double_val(vRight),
+   Double_val(vBottom));
+}
+
 CAMLprim value reason_skia_matrix_set_scale(
 value vMatrix,
 float scaleX,

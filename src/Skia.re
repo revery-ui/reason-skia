@@ -115,21 +115,30 @@ module Matrix = {
   let get = SkiaWrapped.Matrix.get;
   let set = SkiaWrapped.Matrix.set;
 
+  module CI = Cstubs_internals;
+
+  [@noalloc]
+  external _setScale:
+    (
+      CI.fatptr(_),
+      [@unboxed] float,
+      [@unboxed] float,
+      [@unboxed] float,
+      [@unboxed] float
+    ) =>
+    unit =
+    "reason_skia_matrix_set_scale_byte" "reason_skia_matrix_set_scale";
+
+  [@noalloc]
+  external _setTranslate:
+    (CI.fatptr(_), [@unboxed] float, [@unboxed] float) => unit =
+    "reason_skia_matrix_set_translate_byte" "reason_skia_matrix_set_translate";
+
+  let setScale = (mat, scaleX, scaleY, pivotX, pivotY) =>
+    _setScale(CI.cptr(mat), scaleX, scaleY, pivotX, pivotY);
+
   let setTranslate = (matrix, translateX, translateY) =>
-    setAll(matrix, 1., 0., translateX, 0., 1., translateY, 0., 0., 1.);
-  let setScale = (matrix, scaleX, scaleY, pivotX, pivotY) =>
-    setAll(
-      matrix,
-      scaleX,
-      0.,
-      pivotX -. scaleX *. pivotX,
-      0.,
-      scaleY,
-      pivotY -. scaleY *. pivotY,
-      0.,
-      0.,
-      1.,
-    );
+    _setTranslate(CI.cptr(matrix), translateX, translateY);
 
   let makeAll =
       (

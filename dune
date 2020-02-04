@@ -1,1 +1,1 @@
-(dirs src example bench example-sdl)
+(dirs src example bench example-sdl test)

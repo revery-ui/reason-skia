@@ -7,14 +7,18 @@ steps:
     displayName: 'esy install'
   - script: git diff --exit-code
     displayName: 'check that `esy.lock` is up-to-date. If this fails, commit `esy.lock` changes and re-submit PR.'
+  - script: esy @test
+    displayName: 'esy @test install'
+  - script: git diff --exit-code
+    displayName: 'check that `test-sdl.esy.lock` is up-to-date. If this fails, commit `test.esy.lock` changes and re-submit PR.'
   - script: esy @bench install
     displayName: 'esy @bench install'
   - script: git diff --exit-code
-    displayName: 'check that `bench.esy.lock` is up-to-date. If this fails, commit `esy.lock` changes and re-submit PR.'
+    displayName: 'check that `bench.esy.lock` is up-to-date. If this fails, commit `bench.esy.lock` changes and re-submit PR.'
   - script: esy @example install
     displayName: 'esy @example install'
   - script: git diff --exit-code
-    displayName: 'check that `example.esy.lock` is up-to-date. If this fails, commit `esy.lock` changes and re-submit PR.'
+    displayName: 'check that `example.esy.lock` is up-to-date. If this fails, commit `example.esy.lock` changes and re-submit PR.'
   - script: esy @example-sdl install
     displayName: 'esy @example-sdl install'
   - script: git diff --exit-code

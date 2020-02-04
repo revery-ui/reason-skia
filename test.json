@@ -1,0 +1,17 @@
+{
+  "source": "./package.json",
+  "scripts": {
+    "run": "esy '@test' x SkiaUnitTestRunner"
+  },
+  "override": {
+      "build": ["dune build -p skia,skia-test -j4"],
+      "dependencies": {
+	  "@opam/odoc": "*",
+          "@reason-native/rely": "2.2.0"
+      },
+      "install": [
+          "esy-installer skia.install",
+          "esy-installer skia-test.install"
+      ]
+  }
+}

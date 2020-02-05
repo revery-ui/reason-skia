@@ -15,7 +15,21 @@ describe("Color", ({describe, test}) => {
       expect.int(r).toBe(0x40);
       expect.int(g).toBe(0x80);
       expect.int(b).toBe(0xFF);
-    })
+    });
+
+    test("getA/R/G/B", ({expect}) => {
+      let color = Color.Float.makeArgb(1.0, 0.501961, 0.25099, 0.);
+
+      let a = Color.Float.getA(color);
+      let r = Color.Float.getR(color);
+      let g = Color.Float.getG(color);
+      let b = Color.Float.getB(color);
+
+      expect.float(a).toBeCloseTo(1.0);
+      expect.float(r).toBeCloseTo(0.501961);
+      expect.float(g).toBeCloseTo(0.25099);
+      expect.float(b).toBeCloseTo(0.0);
+    });
   });
   test("makeArgb", ({expect}) => {
     let color = Color.makeArgb(0x1Al, 0x1Bl, 0x1Cl, 0x1Dl);

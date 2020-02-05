@@ -10,7 +10,13 @@ module Color: {
   let getG: t => int32;
   let getB: t => int32;
 
-  module Float: {let makeArgb: (float, float, float, float) => t;};
+  module Float: {
+    let makeArgb: (float, float, float, float) => t;
+    let getA: t => float;
+    let getR: t => float;
+    let getG: t => float;
+    let getB: t => float;
+  };
 };
 
 module FontStyle: {

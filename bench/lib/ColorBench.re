@@ -23,11 +23,23 @@ let getA = () => {
   ();
 };
 
+let getAFloat = () => {
+  let _: float = Skia.Color.Float.getA(Data.initialColor);
+  ();
+};
+
 bench(
   ~name="Color: makeArgb (float)",
   ~options,
   ~setup=() => (),
   ~f=makeArgbFloat,
+  (),
+);
+bench(
+  ~name="Color: getA (float)",
+  ~options,
+  ~setup=() => (),
+  ~f=getAFloat,
   (),
 );
 bench(~name="Color: makeArgb", ~options, ~setup=() => (), ~f=makeArgb, ());

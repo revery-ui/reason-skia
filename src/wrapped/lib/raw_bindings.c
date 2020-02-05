@@ -15,6 +15,46 @@
 
 #include "ctypes_cstubs_internals.h"
 
+double reason_skia_stub_sk_color_float_get_b(int32_t color) {
+    return (double)(sk_color_get_b(color) / 255.0);
+}
+
+CAMLprim value reason_skia_stub_sk_color_float_get_b_byte(value vColor) {
+   return caml_copy_double(reason_skia_stub_sk_color_float_get_b(
+       Int_val(vColor)
+   ));
+}
+
+double reason_skia_stub_sk_color_float_get_g(int32_t color) {
+    return (double)(sk_color_get_g(color) / 255.0);
+}
+
+CAMLprim value reason_skia_stub_sk_color_float_get_g_byte(value vColor) {
+   return caml_copy_double(reason_skia_stub_sk_color_float_get_g(
+       Int_val(vColor)
+   ));
+}
+
+double reason_skia_stub_sk_color_float_get_r(int32_t color) {
+    return (double)(sk_color_get_r(color) / 255.0);
+}
+
+CAMLprim value reason_skia_stub_sk_color_float_get_r_byte(value vColor) {
+   return caml_copy_double(reason_skia_stub_sk_color_float_get_r(
+       Int_val(vColor)
+   ));
+}
+
+double reason_skia_stub_sk_color_float_get_a(int32_t color) {
+    return (double)(sk_color_get_a(color) / 255.0);
+}
+
+CAMLprim value reason_skia_stub_sk_color_float_get_a_byte(value vColor) {
+   return caml_copy_double(reason_skia_stub_sk_color_float_get_a(
+       Int_val(vColor)
+   ));
+}
+
 uint32_t reason_skia_color_float_make_argb(
 double a,
 double r,

@@ -37,6 +37,23 @@ module Color = {
       [@unboxed] int32 =
       "reason_skia_color_float_make_argb_byte"
       "reason_skia_color_float_make_argb";
+
+    [@noalloc]
+    external getA: ([@unboxed] int32) => [@unboxed] float =
+      "reason_skia_stub_sk_color_float_get_a_byte"
+      "reason_skia_stub_sk_color_float_get_a";
+
+    external getR: ([@unboxed] int32) => [@unboxed] float =
+      "reason_skia_stub_sk_color_float_get_r_byte"
+      "reason_skia_stub_sk_color_float_get_r";
+
+    external getG: ([@unboxed] int32) => [@unboxed] float =
+      "reason_skia_stub_sk_color_float_get_g_byte"
+      "reason_skia_stub_sk_color_float_get_g";
+
+    external getB: ([@unboxed] int32) => [@unboxed] float =
+      "reason_skia_stub_sk_color_float_get_b_byte"
+      "reason_skia_stub_sk_color_float_get_b";
   };
 };
 

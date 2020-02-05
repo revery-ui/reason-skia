@@ -27,6 +27,26 @@ module M = (F: FOREIGN) => {
         "reason_skia_stub_sk_color_set_argb",
         int @-> int @-> int @-> int @-> returning(uint32_t),
       );
+
+    let getA = foreign(
+      "reason_skia_stub_sk_color_get_a",
+      uint32_t @-> returning(int)
+    );
+
+    let getR = foreign(
+      "reason_skia_stub_sk_color_get_r",
+      uint32_t @-> returning(int)
+    );
+    
+    let getG = foreign(
+      "reason_skia_stub_sk_color_get_g",
+      uint32_t @-> returning(int)
+    );
+
+    let getB = foreign(
+      "reason_skia_stub_sk_color_get_b",
+      uint32_t @-> returning(int)
+    );
   };
 
   module FontStyle = {

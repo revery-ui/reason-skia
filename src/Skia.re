@@ -5,6 +5,10 @@ module Color = {
   type t = SkiaWrapped.Color.t;
 
   let makeArgb = SkiaWrapped.Color.makeArgb;
+  let getA = SkiaWrapped.Color.getA;
+  let getR = SkiaWrapped.Color.getR;
+  let getG = SkiaWrapped.Color.getG;
+  let getB = SkiaWrapped.Color.getB;
 };
 
 module FontMetrics = {

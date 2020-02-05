@@ -5,6 +5,10 @@ module Color: {
   type t;
 
   let makeArgb: (int, int, int, int) => t;
+  let getA: t => int;
+  let getR: t => int;
+  let getG: t => int;
+  let getB: t => int;
 };
 
 module FontStyle: {

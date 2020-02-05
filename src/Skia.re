@@ -2,13 +2,29 @@ type colorType = SkiaWrapped.colorType;
 type alphaType = SkiaWrapped.alphaType;
 
 module Color = {
-  type t = SkiaWrapped.Color.t;
+  type t = int32;
+  [@noalloc]
+  external makeArgb:
+    ([@unboxed] int32, [@unboxed] int32, [@unboxed] int32, [@unboxed] int32) =>
+    [@unboxed] int32 =
+    "reason_skia_stub_sk_color_set_argb_byte"
+    "reason_skia_stub_sk_color_set_argb";
 
-  let makeArgb = SkiaWrapped.Color.makeArgb;
-  let getA = SkiaWrapped.Color.getA;
-  let getR = SkiaWrapped.Color.getR;
-  let getG = SkiaWrapped.Color.getG;
-  let getB = SkiaWrapped.Color.getB;
+  [@noalloc]
+  external getA: ([@unboxed] int32) => [@unboxed] int32 =
+    "reason_skia_stub_sk_color_get_a_byte" "reason_skia_stub_sk_color_get_a";
+
+  [@noalloc]
+  external getR: ([@unboxed] int32) => [@unboxed] int32 =
+    "reason_skia_stub_sk_color_get_r_byte" "reason_skia_stub_sk_color_get_r";
+
+  [@noalloc]
+  external getG: ([@unboxed] int32) => [@unboxed] int32 =
+    "reason_skia_stub_sk_color_get_g_byte" "reason_skia_stub_sk_color_get_g";
+
+  [@noalloc]
+  external getB: ([@unboxed] int32) => [@unboxed] int32 =
+    "reason_skia_stub_sk_color_get_b_byte" "reason_skia_stub_sk_color_get_b";
 };
 
 module FontMetrics = {
@@ -52,7 +68,8 @@ module ImageFilter = {
           dy,
           sigmaX,
           sigmaY,
-          color,
+          // TODO: Make fast
+          Unsigned.UInt32.of_int32(color),
           shadowMode,
           inputOption,
           cropRectOption,
@@ -79,7 +96,9 @@ module Paint = {
     SkiaWrapped.Paint.measureText(paint, text, String.length(text), rectOpt);
   };
 
-  let setColor = SkiaWrapped.Paint.setColor;
+  // TODO: Make fast
+  let setColor = (paint, color) =>
+    SkiaWrapped.Paint.setColor(paint, Unsigned.UInt32.of_int32(color));
   let setAntiAlias = SkiaWrapped.Paint.setAntiAlias;
   let setStyle = SkiaWrapped.Paint.setStyle;
   let setStrokeWidth = SkiaWrapped.Paint.setStrokeWidth;
@@ -503,7 +522,9 @@ module Canvas = {
       Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Canvas.t),
     );
 
-  let clear = SkiaWrapped.Canvas.clear;
+  // TODO: Make fast
+  let clear = (canvas, color) =>
+    SkiaWrapped.Canvas.clear(canvas, Unsigned.UInt32.of_int32(color));
 
   let drawPaint = SkiaWrapped.Canvas.drawPaint;
   let drawRect = SkiaWrapped.Canvas.drawRect;

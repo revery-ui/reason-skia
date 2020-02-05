@@ -15,6 +15,70 @@
 
 #include "ctypes_cstubs_internals.h"
 
+uint32_t reason_skia_stub_sk_color_get_a(int32_t color) {
+    return (uint32_t)sk_color_get_a(color);
+}
+
+CAMLprim value reason_skia_stub_sk_color_get_a_byte(value vColor) {
+   return Val_int(reason_skia_stub_sk_color_get_a(
+       Int_val(vColor)
+   ));
+}
+
+uint32_t reason_skia_stub_sk_color_get_r(int32_t color) {
+    return (uint32_t)sk_color_get_r(color);
+}
+
+CAMLprim value reason_skia_stub_sk_color_get_r_byte(value vColor) {
+   return Val_int(reason_skia_stub_sk_color_get_r(
+       Int_val(vColor)
+   ));
+}
+
+uint32_t reason_skia_stub_sk_color_get_g(int32_t color) {
+    return (uint32_t)sk_color_get_g(color);
+}
+
+CAMLprim value reason_skia_stub_sk_color_get_g_byte(value vColor) {
+   return Val_int(reason_skia_stub_sk_color_get_g(
+       Int_val(vColor)
+   ));
+}
+
+uint32_t reason_skia_stub_sk_color_get_b(int32_t color) {
+    return (uint32_t)sk_color_get_b(color);
+}
+
+
+CAMLprim value reason_skia_stub_sk_color_get_b_byte(value vColor) {
+   return Val_int(reason_skia_stub_sk_color_get_b(
+       Int_val(vColor)
+   ));
+}
+
+uint32_t reason_skia_stub_sk_color_set_argb(
+   int32_t alpha, 
+   int32_t red, 
+   int32_t green, 
+   int32_t blue)
+{
+    return (uint32_t)sk_color_set_argb(alpha, red, green, blue);
+}
+
+CAMLprim value reason_skia_stub_sk_color_set_argb_byte(
+   value vAlpha,
+   value vRed,
+   value vGreen,
+   value vBlue
+) {
+   return Val_int(reason_skia_stub_sk_color_set_argb(
+       Int_val(vAlpha),
+       Int_val(vRed),
+       Int_val(vGreen),
+       Int_val(vBlue)
+   ));
+}
+
 double reason_skia_rect_get_bottom(
    value vRect
 ) {

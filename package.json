@@ -38,7 +38,7 @@
     "ocaml": "~4.7.0"
   },
   "resolutions": {
-    "@esy-ocaml/libffi": "esy-ocaml/libffi#599bc3567ecf839240977b6d9aaf0b80f983b5aa",
+    "@esy-ocaml/libffi": "esy-ocaml/libffi#c61127d",
     "esy-cmake": "prometheansacrifice/esy-cmake#2a47392def"
   }
 }

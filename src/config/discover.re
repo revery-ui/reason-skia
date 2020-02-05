@@ -49,12 +49,14 @@ let () = {
       @ cclib("-ljpeg")
       @ ccopt("-I/usr/include")
       @ ccopt("-lstdc++")
+
     | Windows =>
       []
       @ cclib("-lskia")
       @ cclib("-lSDL2")
       @ ccopt("-L" ++ Sys.getenv("SDL2_LIB_PATH"))
       @ ccopt("-L" ++ Sys.getenv("SKIA_LIB_PATH"))
+
     | _ => []
     };
 
@@ -65,6 +67,7 @@ let () = {
       @ ["-I" ++ Sys.getenv("SDL2_INCLUDE_PATH")]
       @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH")]
       @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH") ++ "/c"]
+
     | Linux =>
       []
       @ ["-lSDL2"]
@@ -77,12 +80,14 @@ let () = {
       @ ["-L" ++ Sys.getenv("JPEG_LIB_PATH")]
       @ ["-lstdc++"]
       @ ["-ljpeg"]
+
     | Windows =>
       []
       @ ["-std=c++1y"]
       @ ["-I" ++ Sys.getenv("SDL2_INCLUDE_PATH")]
       @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH")]
       @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH") ++ "/c"]
+
     | _ => failwith("cflags: unknown platform")
     };
 
@@ -102,6 +107,8 @@ let () = {
       @ ["-lskia"]
       @ ["-lstdc++"]
       @ [Sys.getenv("JPEG_LIB_PATH") ++ "/libturbojpeg.a"]
+      @ [Sys.getenv("FFI_LIB_PATH") ++ "/libffi.a"]
+
     | Linux =>
       []
       @ [
@@ -119,6 +126,7 @@ let () = {
         "-L" ++ Sys.getenv("SKIA_LIB_PATH"),
         "-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"),
       ]
+
     | Windows =>
       []
       @ ["-luser32"]
@@ -127,6 +135,7 @@ let () = {
       @ ["-lstdc++"]
       @ ["-L" ++ Sys.getenv("SDL2_LIB_PATH")]
       @ ["-L" ++ Sys.getenv("SKIA_LIB_PATH")]
+
     | _ => failwith("libs: Unknown platform")
     };
 

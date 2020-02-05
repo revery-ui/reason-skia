@@ -16,15 +16,15 @@ let emitPng = (path, surface) => {
 
 let draw = canvas => {
   let fill = Paint.make();
-  Paint.setColor(fill, Color.makeArgb(0xFF, 0x00, 0x00, 0xFF));
+  Paint.setColor(fill, Color.makeArgb(0xFFl, 0x00l, 0x00l, 0xFFl));
   Canvas.drawPaint(canvas, fill);
 
-  Paint.setColor(fill, Color.makeArgb(0xFF, 0x00, 0xFF, 0xFF));
+  Paint.setColor(fill, Color.makeArgb(0xFFl, 0x00l, 0xFFl, 0xFFl));
   let rect = Rect.makeLtrb(100., 100., 540., 380.);
   Canvas.drawRect(canvas, rect, fill);
 
   let stroke = Paint.make();
-  Paint.setColor(stroke, Color.makeArgb(0xFF, 0xFF, 0x00, 0x00));
+  Paint.setColor(stroke, Color.makeArgb(0xFFl, 0xFFl, 0x00l, 0x00l));
   Paint.setAntiAlias(stroke, true);
   Paint.setStyle(stroke, Stroke);
   Paint.setStrokeWidth(stroke, 5.);
@@ -36,7 +36,7 @@ let draw = canvas => {
   Path.lineTo(path, 590., 430.);
   Canvas.drawPath(canvas, path, stroke);
 
-  Paint.setColor(fill, Color.makeArgb(0xCC, 0x00, 0xFF, 0x00));
+  Paint.setColor(fill, Color.makeArgb(0xCCl, 0x00l, 0xFFl, 0x00l));
   Paint.setImageFilter(
     fill,
     ImageFilter.makeDropShadow(
@@ -44,7 +44,7 @@ let draw = canvas => {
       10.,
       3.,
       3.,
-      Color.makeArgb(0xAA, 0x00, 0x00, 0x00),
+      Color.makeArgb(0xAAl, 0x00l, 0x00l, 0x00l),
       DrawShadowAndForeground,
       None,
       None,
@@ -54,7 +54,7 @@ let draw = canvas => {
   Canvas.drawOval(canvas, rect2, fill);
 
   let fill3 = Paint.make();
-  Paint.setColor(fill3, Color.makeArgb(0xFF, 0xFF, 0xFF, 0xFF));
+  Paint.setColor(fill3, Color.makeArgb(0xFFl, 0xFFl, 0xFFl, 0xFFl));
   Paint.setTextSize(fill3, 30.);
 
   let nonExistentTypeface = Typeface.makeFromFile("non-existent-font.ttf", 0);
@@ -127,7 +127,7 @@ let draw = canvas => {
   | None => failwith("Unable to load font: " ++ filePath)
   | Some(typeFace) =>
     let fill = Paint.make();
-    Paint.setColor(fill, Color.makeArgb(0xFF, 0xFF, 0xFF, 0xFF));
+    Paint.setColor(fill, Color.makeArgb(0xFFl, 0xFFl, 0xFFl, 0xFFl));
     Paint.setTextSize(fill, 30.);
     Paint.setTypeface(fill, typeFace);
     Paint.setSubpixelText(fill, true);
@@ -160,7 +160,7 @@ let draw = canvas => {
   };
 
   let fill = Paint.make();
-  Paint.setColor(fill, Color.makeArgb(0xFF, 0xFF, 0x00, 0xFF));
+  Paint.setColor(fill, Color.makeArgb(0xFFl, 0xFFl, 0x00l, 0xFFl));
   Canvas.drawRectLtwh(canvas, 50., 75., 100., 200., fill);
 };
 

@@ -15,6 +15,23 @@
 
 #include "ctypes_cstubs_internals.h"
 
+CAMLprim value reason_skia_paint_set_color(
+value vPaint,
+int32_t color
+) {
+   sk_paint_t* pPaint = CTYPES_ADDR_OF_FATPTR(vPaint);
+   sk_paint_set_color(pPaint, color);
+   return Val_unit;
+}
+
+CAMLprim value reason_skia_matrix_set_color_byte(
+	value vPaint,
+	value vColor) {
+	return reason_skia_paint_set_color(
+      vPaint,
+      Int_val(vColor));
+}
+
 double reason_skia_stub_sk_color_float_get_b(int32_t color) {
     return (double)(sk_color_get_b(color) / 255.0);
 }

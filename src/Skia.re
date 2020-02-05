@@ -116,6 +116,8 @@ module Paint = {
   type t = SkiaWrapped.Paint.t;
   type style = SkiaWrapped.Paint.style;
 
+  module CI = Cstubs_internals;
+
   let make = () => {
     let paint = SkiaWrapped.Paint.allocate();
     Gc.finalise(SkiaWrapped.Paint.delete, paint);
@@ -126,9 +128,12 @@ module Paint = {
     SkiaWrapped.Paint.measureText(paint, text, String.length(text), rectOpt);
   };
 
-  // TODO: Make fast
-  let setColor = (paint, color) =>
-    SkiaWrapped.Paint.setColor(paint, Unsigned.UInt32.of_int32(color));
+  [@noalloc]
+  external _setColor: (CI.fatptr(_), [@unboxed] int32) => unit =
+    "reason_skia_paint_set_color_byte" "reason_skia_paint_set_color";
+
+  let setColor = (paint, color) => _setColor(CI.cptr(paint), color);
+
   let setAntiAlias = SkiaWrapped.Paint.setAntiAlias;
   let setStyle = SkiaWrapped.Paint.setStyle;
   let setStrokeWidth = SkiaWrapped.Paint.setStrokeWidth;

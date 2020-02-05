@@ -13,10 +13,22 @@ let makeArgb = () => {
   ();
 };
 
+let makeArgbFloat = () => {
+  let _: Skia.Color.t = Skia.Color.Float.makeArgb(0.1, 0.2, 0.3, 0.4);
+  ();
+};
+
 let getA = () => {
   let _: int32 = Skia.Color.getA(Data.initialColor);
   ();
 };
 
+bench(
+  ~name="Color: makeArgb (float)",
+  ~options,
+  ~setup=() => (),
+  ~f=makeArgbFloat,
+  (),
+);
 bench(~name="Color: makeArgb", ~options, ~setup=() => (), ~f=makeArgb, ());
 bench(~name="Color: getA", ~options, ~setup=() => (), ~f=makeArgb, ());

@@ -25,6 +25,19 @@ module Color = {
   [@noalloc]
   external getB: ([@unboxed] int32) => [@unboxed] int32 =
     "reason_skia_stub_sk_color_get_b_byte" "reason_skia_stub_sk_color_get_b";
+
+  module Float = {
+    external makeArgb:
+      (
+        [@unboxed] float,
+        [@unboxed] float,
+        [@unboxed] float,
+        [@unboxed] float
+      ) =>
+      [@unboxed] int32 =
+      "reason_skia_color_float_make_argb_byte"
+      "reason_skia_color_float_make_argb";
+  };
 };
 
 module FontMetrics = {

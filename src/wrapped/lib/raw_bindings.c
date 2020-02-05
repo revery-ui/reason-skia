@@ -15,6 +15,30 @@
 
 #include "ctypes_cstubs_internals.h"
 
+uint32_t reason_skia_color_float_make_argb(
+double a,
+double r,
+double g,
+double b) {
+   int iA = (int)(255.0 * a);
+   int iR = (int)(255.0 * r);
+   int iG = (int)(255.0 * g);
+   int iB = (int)(255.0 * b);
+   return (uint32_t)sk_color_set_argb(iA, iR, iG, iB);
+}
+
+CAMLprim value reason_skia_color_float_make_argb_byte(
+	value vA,
+	value vR,
+	value vG,
+	value vB) {
+	return Val_int(reason_skia_color_float_make_argb(
+	Double_val(vA),
+	Double_val(vR),
+	Double_val(vG),
+	Double_val(vB)));
+}
+
 uint32_t reason_skia_stub_sk_color_get_a(int32_t color) {
     return (uint32_t)sk_color_get_a(color);
 }

@@ -9,6 +9,8 @@ module Color: {
   let getR: t => int32;
   let getG: t => int32;
   let getB: t => int32;
+
+  module Float: {let makeArgb: (float, float, float, float) => t;};
 };
 
 module FontStyle: {

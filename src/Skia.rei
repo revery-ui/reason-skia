@@ -2,9 +2,21 @@ type colorType = SkiaWrapped.colorType;
 type alphaType = SkiaWrapped.alphaType;
 
 module Color: {
-  type t;
+  type t = int32;
 
-  let makeArgb: (int, int, int, int) => t;
+  let makeArgb: (int32, int32, int32, int32) => t;
+  let getA: t => int32;
+  let getR: t => int32;
+  let getG: t => int32;
+  let getB: t => int32;
+
+  module Float: {
+    let makeArgb: (float, float, float, float) => t;
+    let getA: t => float;
+    let getR: t => float;
+    let getG: t => float;
+    let getB: t => float;
+  };
 };
 
 module FontStyle: {

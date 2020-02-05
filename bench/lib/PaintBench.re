@@ -6,7 +6,7 @@ let options = Reperf.Options.create(~iterations=100000, ());
 
 module Data = {
   let initialPaint = Paint.make();
-  let initialColor = Color.makeArgb(0xFF, 0xFF, 0xFF, 0xFF);
+  let initialColor = Color.makeArgb(0xFFl, 0xFFl, 0xFFl, 0xFFl);
 };
 
 let make = () => {

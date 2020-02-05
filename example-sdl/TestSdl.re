@@ -98,10 +98,16 @@ let run = () => {
     ignore(context);
     ignore(surface);
 
-    Skia.Canvas.clear(canvas, Skia.Color.makeArgb(0xFF, 0xFF, 0x00, 0x00));
+    Skia.Canvas.clear(
+      canvas,
+      Skia.Color.makeArgb(0xFFl, 0xFFl, 0x00l, 0x00l),
+    );
 
     let paint = Skia.Paint.make();
-    Skia.Paint.setColor(paint, Skia.Color.makeArgb(0xFF, 0xFF, 0xFF, 0xFF));
+    Skia.Paint.setColor(
+      paint,
+      Skia.Color.makeArgb(0xFFl, 0xFFl, 0xFFl, 0xFFl),
+    );
 
     Skia.Canvas.drawText(canvas, "Hello, world!", 50., 50., paint);
 

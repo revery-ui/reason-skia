@@ -21,12 +21,6 @@ module M = (F: FOREIGN) => {
   module Color = {
     type t = Unsigned.uint32;
     let t = uint32_t;
-
-    let makeArgb =
-      foreign(
-        "reason_skia_stub_sk_color_set_argb",
-        int @-> int @-> int @-> int @-> returning(uint32_t),
-      );
   };
 
   module FontStyle = {

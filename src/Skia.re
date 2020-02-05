@@ -2,9 +2,59 @@ type colorType = SkiaWrapped.colorType;
 type alphaType = SkiaWrapped.alphaType;
 
 module Color = {
-  type t = SkiaWrapped.Color.t;
+  type t = int32;
+  [@noalloc]
+  external makeArgb:
+    ([@unboxed] int32, [@unboxed] int32, [@unboxed] int32, [@unboxed] int32) =>
+    [@unboxed] int32 =
+    "reason_skia_stub_sk_color_set_argb_byte"
+    "reason_skia_stub_sk_color_set_argb";
 
-  let makeArgb = SkiaWrapped.Color.makeArgb;
+  [@noalloc]
+  external getA: ([@unboxed] int32) => [@unboxed] int32 =
+    "reason_skia_stub_sk_color_get_a_byte" "reason_skia_stub_sk_color_get_a";
+
+  [@noalloc]
+  external getR: ([@unboxed] int32) => [@unboxed] int32 =
+    "reason_skia_stub_sk_color_get_r_byte" "reason_skia_stub_sk_color_get_r";
+
+  [@noalloc]
+  external getG: ([@unboxed] int32) => [@unboxed] int32 =
+    "reason_skia_stub_sk_color_get_g_byte" "reason_skia_stub_sk_color_get_g";
+
+  [@noalloc]
+  external getB: ([@unboxed] int32) => [@unboxed] int32 =
+    "reason_skia_stub_sk_color_get_b_byte" "reason_skia_stub_sk_color_get_b";
+
+  module Float = {
+    external makeArgb:
+      (
+        [@unboxed] float,
+        [@unboxed] float,
+        [@unboxed] float,
+        [@unboxed] float
+      ) =>
+      [@unboxed] int32 =
+      "reason_skia_color_float_make_argb_byte"
+      "reason_skia_color_float_make_argb";
+
+    [@noalloc]
+    external getA: ([@unboxed] int32) => [@unboxed] float =
+      "reason_skia_stub_sk_color_float_get_a_byte"
+      "reason_skia_stub_sk_color_float_get_a";
+
+    external getR: ([@unboxed] int32) => [@unboxed] float =
+      "reason_skia_stub_sk_color_float_get_r_byte"
+      "reason_skia_stub_sk_color_float_get_r";
+
+    external getG: ([@unboxed] int32) => [@unboxed] float =
+      "reason_skia_stub_sk_color_float_get_g_byte"
+      "reason_skia_stub_sk_color_float_get_g";
+
+    external getB: ([@unboxed] int32) => [@unboxed] float =
+      "reason_skia_stub_sk_color_float_get_b_byte"
+      "reason_skia_stub_sk_color_float_get_b";
+  };
 };
 
 module FontMetrics = {
@@ -48,7 +98,8 @@ module ImageFilter = {
           dy,
           sigmaX,
           sigmaY,
-          color,
+          // TODO: Make fast
+          Unsigned.UInt32.of_int32(color),
           shadowMode,
           inputOption,
           cropRectOption,
@@ -65,6 +116,8 @@ module Paint = {
   type t = SkiaWrapped.Paint.t;
   type style = SkiaWrapped.Paint.style;
 
+  module CI = Cstubs_internals;
+
   let make = () => {
     let paint = SkiaWrapped.Paint.allocate();
     Gc.finalise(SkiaWrapped.Paint.delete, paint);
@@ -75,7 +128,12 @@ module Paint = {
     SkiaWrapped.Paint.measureText(paint, text, String.length(text), rectOpt);
   };
 
-  let setColor = SkiaWrapped.Paint.setColor;
+  [@noalloc]
+  external _setColor: (CI.fatptr(_), [@unboxed] int32) => unit =
+    "reason_skia_paint_set_color_byte" "reason_skia_paint_set_color";
+
+  let setColor = (paint, color) => _setColor(CI.cptr(paint), color);
+
   let setAntiAlias = SkiaWrapped.Paint.setAntiAlias;
   let setStyle = SkiaWrapped.Paint.setStyle;
   let setStrokeWidth = SkiaWrapped.Paint.setStrokeWidth;
@@ -499,7 +557,9 @@ module Canvas = {
       Ctypes.structure(SkiaWrappedBindings.SkiaTypes.Canvas.t),
     );
 
-  let clear = SkiaWrapped.Canvas.clear;
+  // TODO: Make fast
+  let clear = (canvas, color) =>
+    SkiaWrapped.Canvas.clear(canvas, Unsigned.UInt32.of_int32(color));
 
   let drawPaint = SkiaWrapped.Canvas.drawPaint;
   let drawRect = SkiaWrapped.Canvas.drawRect;

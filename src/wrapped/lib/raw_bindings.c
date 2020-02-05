@@ -99,10 +99,10 @@ CAMLprim value reasion_skia_rect_set_byte(
 
 CAMLprim value reason_skia_matrix_set_scale(
 value vMatrix,
-float scaleX,
-float scaleY,
-float pivotX,
-float pivotY) {
+double scaleX,
+double scaleY,
+double pivotX,
+double pivotY) {
    float* pMatrix = CTYPES_ADDR_OF_FATPTR(vMatrix);
    pMatrix[0] = scaleX;
    pMatrix[1] = 0.0;
@@ -131,14 +131,14 @@ CAMLprim value reason_skia_matrix_set_scale_byte(
 
 CAMLprim value reason_skia_matrix_set_translate(
 value vMatrix,
-float translateX,
-float translateY) {
+double translateX,
+double translateY) {
    float* pMatrix = CTYPES_ADDR_OF_FATPTR(vMatrix);
-   pMatrix[0] = 0.0;
+   pMatrix[0] = 1.0;
    pMatrix[1] = 0.0;
    pMatrix[2] = translateX;
    pMatrix[3] = 0.0;
-   pMatrix[4] = 0.0;
+   pMatrix[4] = 1.0;
    pMatrix[5] = translateY;
    pMatrix[6] = 0.0;
    pMatrix[7] = 0.0;

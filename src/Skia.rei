@@ -294,8 +294,8 @@ module Gr: {
     module Interface: {
       type t;
 
-      let makeNative: unit => t;
-      let makeSdl2: unit => t;
+      let makeNative: unit => option(t);
+      let makeSdl2: unit => option(t);
     };
 
     module FramebufferInfo: {

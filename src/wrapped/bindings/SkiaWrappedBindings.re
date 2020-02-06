@@ -560,11 +560,14 @@ module M = (F: FOREIGN) => {
         let makeNative =
           foreign(
             "gr_glinterface_create_native_interface",
-            void @-> returning(t),
+            void @-> returning(ptr_opt(SkiaTypes.Gr.Gl.Interface.t)),
           );
 
         let makeSdl2 =
-          foreign("reason_skia_make_sdl2_interface", void @-> returning(t));
+          foreign(
+            "reason_skia_make_sdl2_interface",
+            void @-> returning(ptr_opt(SkiaTypes.Gr.Gl.Interface.t)),
+          );
       };
 
       module FramebufferInfo = {

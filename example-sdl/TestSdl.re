@@ -2,11 +2,25 @@ open Skia;
 
 let ctx = ref(None);
 
+let printEnv = env =>
+  switch (Sys.getenv_opt(env)) {
+  | None => print_endline(env ++ " : not defined ")
+  | Some(v) => print_endline(env ++ " : " ++ v)
+  };
+
+printEnv("WAYLAND_DISPLAY");
+printEnv("XDG_SESSION_TYPE");
+
 let createSkiaGraphicsContext = (window: Sdl2.Window.t) => {
   print_endline("Creating graphics context");
+  let nativeInterface = Skia.Gr.Gl.Interface.makeNative();
+  switch (nativeInterface) {
+  | Some(_) => print_endline("Native interface created successfully.")
+  | None => print_endline("Native interface is null")
+  };
   let interface = Skia.Gr.Gl.Interface.makeSdl2();
   print_endline("Have interface...");
-  let context = Skia.Gr.Context.makeGl(Some(interface));
+  let context = Skia.Gr.Context.makeGl(interface);
 
   switch (context) {
   | None => failwith("Unable to create graphics context")

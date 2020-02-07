@@ -103,7 +103,7 @@ let () = {
       @ framework("CoreGraphics")
       @ framework("CoreText")
       @ framework("CoreFoundation")
-      @ ["-lsdl2"]
+      @ ["-lSDL2"]
       @ ["-lskia"]
       @ ["-lstdc++"]
       @ [Sys.getenv("JPEG_LIB_PATH") ++ "/libturbojpeg.a"]

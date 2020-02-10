@@ -1,7 +1,8 @@
 {
   "source": "./package.json",
   "scripts": {
-    "run": "esy '@example' x TestApp"
+    "run": "esy '@example' x TestApp",
+    "run:byte": "esy '@example' x TestApp.bc"
   },
   "override": {
       "build": ["dune build -p skia,skia-example -j4"],

@@ -1,7 +1,13 @@
 (executables
     (names TestApp)
+    (modes byte exe)
     (package skia-example)
     (public_names TestApp)
     (libraries
         skia
             ))
+
+(install
+    (section bin)
+    (package skia-example)
+    (files TestApp.bc))

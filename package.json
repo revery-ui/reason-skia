@@ -12,7 +12,7 @@
         "dune",
         "build",
         "-p",
-	"skia"
+        "skia"
       ]
     ],
     "install": [
@@ -38,6 +38,7 @@
     "ocaml": "~4.7.0"
   },
   "resolutions": {
+    "reason-sdl2": "revery-ui/reason-sdl2#e58031b",
     "@esy-ocaml/libffi": "esy-ocaml/libffi#c61127d",
     "esy-cmake": "prometheansacrifice/esy-cmake#2a47392def"
   }

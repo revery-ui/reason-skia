@@ -23,6 +23,8 @@ steps:
     displayName: 'esy @example-sdl build'
   - script: esy @example run
     displayName: 'esy @example run'
+  - script: esy @example run:byte
+    displayName: 'esy @example run:byte'
   - script: esy @bench install
     displayName: 'esy @bench install'
   - script: esy @bench build

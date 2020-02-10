@@ -1,5 +1,5 @@
 {
-  "checksum": "f162740e583abc040b54e889ce534327",
+  "checksum": "c32b76fcb28e2d6fdee91edef97d7b94",
   "root": "reason-skia@link-dev:./package.json",
   "node": {
     "yarn-pkg-config@github:esy-ocaml/yarn-pkg-config#cca65f99674ed2d954d28788edeb8c57fada5ed0@d41d8cd9": {
@@ -49,27 +49,26 @@
       },
       "overrides": [ "test.json" ],
       "dependencies": [
-        "refmterr@3.3.0@d41d8cd9", "reason-sdl2@2.10.3016@d41d8cd9",
+        "refmterr@3.3.0@d41d8cd9",
+        "reason-sdl2@github:revery-ui/reason-sdl2#e58031b@d41d8cd9",
         "esy-skia@github:revery-ui/esy-skia#91b10c9@d41d8cd9",
         "esy-sdl2@2.0.10005@d41d8cd9", "esy-freetype2@2.9.1007@d41d8cd9",
         "@reason-native/rely@2.2.0@d41d8cd9",
-        "@opam/odoc@opam:1.4.2@11b715bb", "@opam/lwt@opam:4.2.1@08ba7e51",
+        "@opam/odoc@opam:1.5.0@35218f5f", "@opam/lwt@opam:4.2.1@08ba7e51",
         "@opam/dune@opam:1.11.4@a7ccb7ae",
-        "@opam/ctypes-foreign@opam:0.4.0@72ef8de2",
-        "@opam/ctypes@opam:0.15.1@f2708d42",
+        "@opam/ctypes-foreign@opam:0.4.0@b1c8ff37",
+        "@opam/ctypes@opam:0.15.1@b0227b2f",
         "@esy-ocaml/reason@3.5.2@d41d8cd9"
       ],
       "devDependencies": [ "ocaml@4.7.1004@d41d8cd9" ]
     },
-    "reason-sdl2@2.10.3016@d41d8cd9": {
-      "id": "reason-sdl2@2.10.3016@d41d8cd9",
+    "reason-sdl2@github:revery-ui/reason-sdl2#e58031b@d41d8cd9": {
+      "id": "reason-sdl2@github:revery-ui/reason-sdl2#e58031b@d41d8cd9",
       "name": "reason-sdl2",
-      "version": "2.10.3016",
+      "version": "github:revery-ui/reason-sdl2#e58031b",
       "source": {
         "type": "install",
-        "source": [
-          "archive:https://registry.npmjs.org/reason-sdl2/-/reason-sdl2-2.10.3016.tgz#sha1:c7d00de137ab6e6d26c80da092558994b426465d"
-        ]
+        "source": [ "github:revery-ui/reason-sdl2#e58031b" ]
       },
       "overrides": [],
       "dependencies": [
@@ -556,20 +555,20 @@
         "ocaml@4.7.1004@d41d8cd9", "@opam/dune@opam:1.11.4@a7ccb7ae"
       ]
     },
-    "@opam/odoc@opam:1.4.2@11b715bb": {
-      "id": "@opam/odoc@opam:1.4.2@11b715bb",
+    "@opam/odoc@opam:1.5.0@35218f5f": {
+      "id": "@opam/odoc@opam:1.5.0@35218f5f",
       "name": "@opam/odoc",
-      "version": "opam:1.4.2",
+      "version": "opam:1.5.0",
       "source": {
         "type": "install",
         "source": [
-          "archive:https://opam.ocaml.org/cache/md5/d7/d75ce63539040cd199d22203d46fc5f3#md5:d75ce63539040cd199d22203d46fc5f3",
-          "archive:https://github.com/ocaml/odoc/archive/1.4.2.tar.gz#md5:d75ce63539040cd199d22203d46fc5f3"
+          "archive:https://opam.ocaml.org/cache/sha256/85/857759be968070bfda208add3ae2c2bc87826ca2bfc39cebab1cc1e13db7a140#sha256:857759be968070bfda208add3ae2c2bc87826ca2bfc39cebab1cc1e13db7a140",
+          "archive:https://github.com/ocaml/odoc/releases/download/1.5.0/odoc-1.5.0.tbz#sha256:857759be968070bfda208add3ae2c2bc87826ca2bfc39cebab1cc1e13db7a140"
         ],
         "opam": {
           "name": "odoc",
-          "version": "1.4.2",
-          "path": "test.esy.lock/opam/odoc.1.4.2"
+          "version": "1.5.0",
+          "path": "test.esy.lock/opam/odoc.1.5.0"
         }
       },
       "overrides": [],
@@ -582,7 +581,11 @@
         "@esy-ocaml/substs@0.0.1@d41d8cd9"
       ],
       "devDependencies": [
-        "ocaml@4.7.1004@d41d8cd9", "@opam/dune@opam:1.11.4@a7ccb7ae"
+        "ocaml@4.7.1004@d41d8cd9", "@opam/tyxml@opam:4.3.0@c1da25f1",
+        "@opam/result@opam:1.4@dc720aef", "@opam/fpath@opam:0.7.2@45477b93",
+        "@opam/dune@opam:1.11.4@a7ccb7ae",
+        "@opam/cmdliner@opam:1.0.4@93208aac",
+        "@opam/astring@opam:0.8.3@4e5e17d5"
       ]
     },
     "@opam/ocamlfind@opam:1.8.1@ff07b0f9": {
@@ -992,8 +995,8 @@
         "@opam/base-threads@opam:base@36803084"
       ]
     },
-    "@opam/ctypes-foreign@opam:0.4.0@72ef8de2": {
-      "id": "@opam/ctypes-foreign@opam:0.4.0@72ef8de2",
+    "@opam/ctypes-foreign@opam:0.4.0@b1c8ff37": {
+      "id": "@opam/ctypes-foreign@opam:0.4.0@b1c8ff37",
       "name": "@opam/ctypes-foreign",
       "version": "opam:0.4.0",
       "source": {
@@ -1005,14 +1008,20 @@
           "path": "test.esy.lock/opam/ctypes-foreign.0.4.0"
         }
       },
-      "overrides": [],
+      "overrides": [
+        {
+          "opamoverride":
+            "test.esy.lock/overrides/opam__s__ctypes_foreign_opam__c__0.4.0_opam_override"
+        }
+      ],
       "dependencies": [
-        "ocaml@4.7.1004@d41d8cd9", "@esy-ocaml/substs@0.0.1@d41d8cd9"
+        "ocaml@4.7.1004@d41d8cd9", "@esy-ocaml/substs@0.0.1@d41d8cd9",
+        "@esy-ocaml/libffi@github:esy-ocaml/libffi#c61127d@d41d8cd9"
       ],
       "devDependencies": [ "ocaml@4.7.1004@d41d8cd9" ]
     },
-    "@opam/ctypes@opam:0.15.1@f2708d42": {
-      "id": "@opam/ctypes@opam:0.15.1@f2708d42",
+    "@opam/ctypes@opam:0.15.1@b0227b2f": {
+      "id": "@opam/ctypes@opam:0.15.1@b0227b2f",
       "name": "@opam/ctypes",
       "version": "opam:0.15.1",
       "source": {
@@ -1036,11 +1045,10 @@
       "dependencies": [
         "ocaml@4.7.1004@d41d8cd9", "@opam/ocamlfind@opam:1.8.1@ff07b0f9",
         "@opam/integers@opam:0.3.0@d6eefd3a",
-        "@opam/ctypes-foreign@opam:0.4.0@72ef8de2",
-        "@opam/conf-pkg-config@opam:1.1@67c69c0c",
+        "@opam/ctypes-foreign@opam:0.4.0@b1c8ff37",
+        "@opam/conf-pkg-config@opam:1.1@5d0d3ed7",
         "@opam/base-bytes@opam:base@19d0c2ff",
-        "@esy-ocaml/substs@0.0.1@d41d8cd9",
-        "@esy-ocaml/libffi@github:esy-ocaml/libffi#c61127d@d41d8cd9"
+        "@esy-ocaml/substs@0.0.1@d41d8cd9"
       ],
       "devDependencies": [
         "ocaml@4.7.1004@d41d8cd9", "@opam/integers@opam:0.3.0@d6eefd3a",
@@ -1074,8 +1082,8 @@
         "@opam/base-unix@opam:base@87d0b2eb"
       ]
     },
-    "@opam/conf-pkg-config@opam:1.1@67c69c0c": {
-      "id": "@opam/conf-pkg-config@opam:1.1@67c69c0c",
+    "@opam/conf-pkg-config@opam:1.1@5d0d3ed7": {
+      "id": "@opam/conf-pkg-config@opam:1.1@5d0d3ed7",
       "name": "@opam/conf-pkg-config",
       "version": "opam:1.1",
       "source": {

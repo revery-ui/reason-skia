@@ -1,5 +1,7 @@
 open Skia;
 
+print_endline ("Start TestApp..");
+
 let makeSurface = (width, height) => {
   let imageInfo = ImageInfo.make(width, height, Rgba8888, Premul, None);
   Surface.makeRaster(imageInfo, 0, None);
@@ -15,6 +17,7 @@ let emitPng = (path, surface) => {
 };
 
 let draw = canvas => {
+  print_endline ("Drawing...");
   let fill = Paint.make();
   Paint.setColor(fill, Color.makeArgb(0xFFl, 0x00l, 0x00l, 0xFFl));
   Canvas.drawPaint(canvas, fill);
@@ -37,7 +40,8 @@ let draw = canvas => {
   Canvas.drawPath(canvas, path, stroke);
 
   Paint.setColor(fill, Color.makeArgb(0xCCl, 0x00l, 0xFFl, 0x00l));
-  Paint.setImageFilter(
+  // This is broken in bytecode build... not sure why.
+  /*Paint.setImageFilter(
     fill,
     ImageFilter.makeDropShadow(
       10.,
@@ -49,14 +53,16 @@ let draw = canvas => {
       None,
       None,
     ),
-  );
+  );*/
   let rect2 = Rect.makeLtrb(120., 120., 520., 360.);
   Canvas.drawOval(canvas, rect2, fill);
 
   let fill3 = Paint.make();
+  print_endline ("30")
   Paint.setColor(fill3, Color.makeArgb(0xFFl, 0xFFl, 0xFFl, 0xFFl));
   Paint.setTextSize(fill3, 30.);
 
+  print_endline ("40")
   let nonExistentTypeface = Typeface.makeFromFile("non-existent-font.ttf", 0);
   assert(nonExistentTypeface == None);
 

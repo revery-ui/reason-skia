@@ -99,10 +99,20 @@ let () = {
       @ ["-L" ++ Sys.getenv("SKIA_LIB_PATH")]
       @ ["-L" ++ Sys.getenv("FREETYPE2_LIB_PATH")]
       @ ["-L" ++ Sys.getenv("SDL2_LIB_PATH")]
+      @ framework("Carbon")
+      @ framework("Cocoa")
+      @ framework("CoreFoundation")
+      @ framework("CoreAudio")
+      @ framework("CoreVideo")
       @ framework("CoreServices")
       @ framework("CoreGraphics")
       @ framework("CoreText")
       @ framework("CoreFoundation")
+      @ framework("AudioToolbox")
+      @ framework("ForceFeedback")
+      @ framework("IOKit")
+      @ framework("Metal")
+      @ ["-liconv"]
       @ ["-lSDL2"]
       @ ["-lskia"]
       @ ["-lstdc++"]

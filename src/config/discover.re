@@ -1,5 +1,9 @@
 open Configurator.V1.Flags;
-module C = Configurator.V1;
+
+let getenv = name =>
+  try(Sys.getenv(name)) {
+  | Not_found => failwith("Error: Undefined environment variable: " ++ name)
+  };
 
 type os =
   | Windows
@@ -40,12 +44,12 @@ let () = {
       @ cclib("-lbz2")
       @ cclib("-lskia")
       @ cclib("-lSDL2")
-      @ ccopt("-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"))
-      @ ccopt("-L" ++ Sys.getenv("SDL2_LIB_PATH"))
-      @ ccopt("-L" ++ Sys.getenv("SKIA_LIB_PATH"))
-      @ ccopt("-L" ++ Sys.getenv("JPEG_LIB_PATH"))
-      @ ccopt("-I" ++ Sys.getenv("FREETYPE2_INCLUDE_PATH"))
-      @ ccopt("-I" ++ Sys.getenv("SKIA_INCLUDE_PATH"))
+      @ ccopt("-L" ++ getenv("FREETYPE2_LIB_PATH"))
+      @ ccopt("-L" ++ getenv("SDL2_LIB_PATH"))
+      @ ccopt("-L" ++ getenv("SKIA_LIB_PATH"))
+      @ ccopt("-L" ++ getenv("JPEG_LIB_PATH"))
+      @ ccopt("-I" ++ getenv("FREETYPE2_INCLUDE_PATH"))
+      @ ccopt("-I" ++ getenv("SKIA_INCLUDE_PATH"))
       @ cclib("-ljpeg")
       @ ccopt("-I/usr/include")
       @ ccopt("-lstdc++")
@@ -54,8 +58,8 @@ let () = {
       []
       @ cclib("-lskia")
       @ cclib("-lSDL2")
-      @ ccopt("-L" ++ Sys.getenv("SDL2_LIB_PATH"))
-      @ ccopt("-L" ++ Sys.getenv("SKIA_LIB_PATH"))
+      @ ccopt("-L" ++ getenv("SDL2_LIB_PATH"))
+      @ ccopt("-L" ++ getenv("SKIA_LIB_PATH"))
 
     | _ => []
     };
@@ -64,29 +68,29 @@ let () = {
     switch (get_os) {
     | Mac =>
       []
-      @ ["-I" ++ Sys.getenv("SDL2_INCLUDE_PATH")]
-      @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH")]
-      @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH") ++ "/c"]
+      @ ["-I" ++ getenv("SDL2_INCLUDE_PATH")]
+      @ ["-I" ++ getenv("SKIA_INCLUDE_PATH")]
+      @ ["-I" ++ getenv("SKIA_INCLUDE_PATH") ++ "/c"]
 
     | Linux =>
       []
       @ ["-lSDL2"]
       @ ["-lskia"]
-      @ ["-I" ++ Sys.getenv("SDL2_INCLUDE_PATH")]
-      @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH")]
-      @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH") ++ "/c"]
-      @ ["-L" ++ Sys.getenv("SKIA_LIB_PATH")]
-      @ ["-L" ++ Sys.getenv("SDL2_LIB_PATH")]
-      @ ["-L" ++ Sys.getenv("JPEG_LIB_PATH")]
+      @ ["-I" ++ getenv("SDL2_INCLUDE_PATH")]
+      @ ["-I" ++ getenv("SKIA_INCLUDE_PATH")]
+      @ ["-I" ++ getenv("SKIA_INCLUDE_PATH") ++ "/c"]
+      @ ["-L" ++ getenv("SKIA_LIB_PATH")]
+      @ ["-L" ++ getenv("SDL2_LIB_PATH")]
+      @ ["-L" ++ getenv("JPEG_LIB_PATH")]
       @ ["-lstdc++"]
       @ ["-ljpeg"]
 
     | Windows =>
       []
       @ ["-std=c++1y"]
-      @ ["-I" ++ Sys.getenv("SDL2_INCLUDE_PATH")]
-      @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH")]
-      @ ["-I" ++ Sys.getenv("SKIA_INCLUDE_PATH") ++ "/c"]
+      @ ["-I" ++ getenv("SDL2_INCLUDE_PATH")]
+      @ ["-I" ++ getenv("SKIA_INCLUDE_PATH")]
+      @ ["-I" ++ getenv("SKIA_INCLUDE_PATH") ++ "/c"]
 
     | _ => failwith("cflags: unknown platform")
     };
@@ -95,10 +99,10 @@ let () = {
     switch (get_os) {
     | Mac =>
       []
-      @ ["-L" ++ Sys.getenv("JPEG_LIB_PATH")]
-      @ ["-L" ++ Sys.getenv("SKIA_LIB_PATH")]
-      @ ["-L" ++ Sys.getenv("FREETYPE2_LIB_PATH")]
-      @ ["-L" ++ Sys.getenv("SDL2_LIB_PATH")]
+      @ ["-L" ++ getenv("JPEG_LIB_PATH")]
+      @ ["-L" ++ getenv("SKIA_LIB_PATH")]
+      @ ["-L" ++ getenv("FREETYPE2_LIB_PATH")]
+      @ ["-L" ++ getenv("SDL2_LIB_PATH")]
       @ framework("Carbon")
       @ framework("Cocoa")
       @ framework("CoreFoundation")
@@ -116,8 +120,8 @@ let () = {
       @ ["-lSDL2"]
       @ ["-lskia"]
       @ ["-lstdc++"]
-      @ [Sys.getenv("JPEG_LIB_PATH") ++ "/libturbojpeg.a"]
-      @ [Sys.getenv("FFI_LIB_PATH") ++ "/libffi.a"]
+      @ [getenv("JPEG_LIB_PATH") ++ "/libturbojpeg.a"]
+      @ [getenv("FFI_LIB_PATH") ++ "/libffi.a"]
 
     | Linux =>
       []
@@ -128,13 +132,13 @@ let () = {
         "-lfontconfig",
         "-lz",
         "-lbz2",
-        "-L" ++ Sys.getenv("JPEG_LIB_PATH"),
+        "-L" ++ getenv("JPEG_LIB_PATH"),
         "-ljpeg",
         "-lpthread",
         "-lstdc++",
-        "-L" ++ Sys.getenv("SDL2_LIB_PATH"),
-        "-L" ++ Sys.getenv("SKIA_LIB_PATH"),
-        "-L" ++ Sys.getenv("FREETYPE2_LIB_PATH"),
+        "-L" ++ getenv("SDL2_LIB_PATH"),
+        "-L" ++ getenv("SKIA_LIB_PATH"),
+        "-L" ++ getenv("FREETYPE2_LIB_PATH"),
       ]
 
     | Windows =>
@@ -143,8 +147,8 @@ let () = {
       @ ["-lskia"]
       @ ["-lSDL2"]
       @ ["-lstdc++"]
-      @ ["-L" ++ Sys.getenv("SDL2_LIB_PATH")]
-      @ ["-L" ++ Sys.getenv("SKIA_LIB_PATH")]
+      @ ["-L" ++ getenv("SDL2_LIB_PATH")]
+      @ ["-L" ++ getenv("SKIA_LIB_PATH")]
 
     | _ => failwith("libs: Unknown platform")
     };

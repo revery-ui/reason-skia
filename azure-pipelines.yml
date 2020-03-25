@@ -32,7 +32,7 @@ jobs:
   displayName: 'Hygiene Checks'
   timeoutInMinutes: 0
   pool:
-    vmImage: 'macOS 10.13'
+    vmImage: 'macOS 10.14'
 
   variables:
     STAGING_DIRECTORY: $(Build.StagingDirectory)
@@ -51,7 +51,7 @@ jobs:
 - job: MacOS
   timeoutInMinutes: 0
   pool:
-    vmImage: 'macOS 10.13'
+    vmImage: 'macOS 10.14'
 
   variables:
     STAGING_DIRECTORY: $(Build.StagingDirectory)

@@ -3,7 +3,7 @@
  (package skia)
  (modules stubgen)
  (public_name stubgen.exe)
- (libraries skia.wrapped.bindings ctypes ctypes.foreign))
+ (libraries skia.wrapped.bindings ctypes))
 
 (executable
  (name types_stubgen)

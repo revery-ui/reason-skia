@@ -25,7 +25,6 @@
   "dependencies": {
     "@esy-ocaml/reason": "*",
     "@opam/ctypes": "0.15.1",
-    "@opam/ctypes-foreign": "0.4.0",
     "@opam/dune": "*",
     "esy-skia": "github:revery-ui/esy-skia#91b10c9",
     "@opam/lwt": "*",
@@ -39,7 +38,6 @@
     "ocaml": "~4.7.0"
   },
   "resolutions": {
-    "@esy-ocaml/libffi": "esy-ocaml/libffi#c61127d",
     "esy-cmake": "prometheansacrifice/esy-cmake#2a47392def"
   }
 }

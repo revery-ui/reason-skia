@@ -121,7 +121,6 @@ let () = {
       @ ["-lskia"]
       @ ["-lstdc++"]
       @ [getenv("JPEG_LIB_PATH") ++ "/libturbojpeg.a"]
-      @ [getenv("FFI_LIB_PATH") ++ "/libffi.a"]
 
     | Linux =>
       []

@@ -113,8 +113,8 @@ module Paint: {
   let setLcdRenderText: (t, bool) => unit;
   let setSubpixelText: (t, bool) => unit;
   let setTextSize: (t, float) => unit;
+  let setAlpha: (t, float) => unit;
   let getFontMetrics: (t, FontMetrics.t, float) => float;
-
   let measureText: (t, string, option(Rect.t)) => float;
 
   let setTextEncoding: (t, TextEncoding.t) => unit;

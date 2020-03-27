@@ -132,7 +132,12 @@ module Paint = {
   external _setColor: (CI.fatptr(_), [@unboxed] int32) => unit =
     "reason_skia_paint_set_color_byte" "reason_skia_paint_set_color";
 
+  [@noalloc]
+  external _setAlphaf: (CI.fatptr(_), [@unboxed] float) => unit =
+    "reason_skia_paint_set_alphaf_byte" "reason_skia_paint_set_alphaf";
+
   let setColor = (paint, color) => _setColor(CI.cptr(paint), color);
+  let setAlpha = (paint, alpha) => _setAlphaf(CI.cptr(paint), alpha);
 
   let setAntiAlias = SkiaWrapped.Paint.setAntiAlias;
   let setStyle = SkiaWrapped.Paint.setStyle;

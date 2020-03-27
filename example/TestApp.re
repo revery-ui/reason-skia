@@ -106,6 +106,7 @@ let draw = canvas => {
   | None => failwith("Unable to load image: uv.png")
   | Some(img) =>
     let imgFill = Paint.make();
+    Paint.setAlpha(imgFill, 0.0);
     Canvas.drawImage(canvas, img, 250., 250., Some(imgFill));
 
     let sourceRect = Rect.makeLtrb(0., 0., 128., 128.);

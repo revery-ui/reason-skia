@@ -7,4 +7,10 @@
  (name SkiaWrappedBindings)
  (flags -w -9)
  (public_name skia.wrapped.bindings)
- (libraries skia.wrapped.types skia.wrapped.c ctypes.stubs ctypes))
+ (libraries
+    skia.wrapped.types
+    skia.wrapped.c
+    ctypes.stubs
+    ctypes
+    integers
+))

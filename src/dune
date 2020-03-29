@@ -8,4 +8,9 @@
   (public_name skia)
   (library_flags (:include flags.sexp))
   (c_library_flags (:include c_library_flags.sexp))
-  (libraries skia.wrapped))
+  (libraries
+    skia.wrapped
+    skia.wrapped.bindings
+    ctypes
+    integers
+))

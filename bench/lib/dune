@@ -2,5 +2,9 @@
     (name SkiaBench)
     (public_name skia-bench.lib)
     (ocamlopt_flags -linkall)
-    (libraries skia reperf.lib)
-)
+    (libraries
+        skia
+        skia.wrapped
+        skia.wrapped.bindings
+        reperf.lib
+))

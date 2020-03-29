@@ -4,5 +4,7 @@
     (public_names TestApp)
     (libraries
         skia
-	reason-native-crash-utils.asan
-            ))
+        skia.wrapped.bindings
+        skia.wrapped
+        reason-native-crash-utils.asan
+))

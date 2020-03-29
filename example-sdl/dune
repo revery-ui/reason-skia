@@ -6,4 +6,7 @@
         skia
         sdl2
         lwt
+        integers
+        skia.wrapped.bindings
+        skia.wrapped
 ))

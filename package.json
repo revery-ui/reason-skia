@@ -12,7 +12,7 @@
         "dune",
         "build",
         "-p",
-	"skia"
+        "skia"
       ]
     ],
     "install": [
@@ -35,6 +35,7 @@
     "reason-native-crash-utils": "github:onivim/reason-native-crash-utils#ae1fd34"
   },
   "devDependencies": {
+    "@opam/dune": "^2.4.0",
     "ocaml": "~4.7.0"
   },
   "resolutions": {

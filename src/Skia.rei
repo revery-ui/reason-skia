@@ -328,6 +328,7 @@ module Canvas: {
   let drawRect: (t, Rect.t, Paint.t) => unit;
   let drawRectLtwh: (t, float, float, float, float, Paint.t) => unit;
   let drawOval: (t, Rect.t, Paint.t) => unit;
+  let drawCircle: (t, float, float, float, Paint.t) => unit;
   let drawRRect: (t, RRect.t, Paint.t) => unit;
   let drawPath: (t, Path.t, Paint.t) => unit;
   let drawText: (t, string, float, float, Paint.t) => unit;

@@ -163,6 +163,10 @@ let draw = canvas => {
   let fill = Paint.make();
   Paint.setColor(fill, Color.makeArgb(0xFFl, 0xFFl, 0x00l, 0xFFl));
   Canvas.drawRectLtwh(canvas, 50., 75., 100., 200., fill);
+
+  let fill = Paint.make();
+  Paint.setColor(fill, Color.makeArgb(0xFFl, 0xFFl, 0x00l, 0x00l));
+  Canvas.drawCircle(canvas, 320., 240., 30., fill);
 };
 
 let surface = makeSurface(640l, 480l);

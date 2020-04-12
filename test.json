@@ -1,17 +1,13 @@
 {
   "source": "./package.json",
   "scripts": {
-    "run": "esy '@test' x SkiaUnitTestRunner"
+    "run": "esy @test build refmterr dune exec ./test/bin/SkiaUnitTestRunner.exe"
   },
   "override": {
-      "build": ["dune build -p skia,skia-test -j4"],
+      "build": "refmterr dune build ./test/bin/SkiaUnitTestRunner.exe -j4",
       "dependencies": {
-	  "@opam/odoc": "*",
-          "@reason-native/rely": "2.2.0"
-      },
-      "install": [
-          "esy-installer skia.install",
-          "esy-installer skia-test.install"
-      ]
+        "reason-native-crash-utils": "github:onivim/reason-native-crash-utils#ae1fd34",
+        "@reason-native/rely": "^2.2.0"
+      }
   }
 }

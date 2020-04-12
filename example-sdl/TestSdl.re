@@ -11,7 +11,7 @@ let printEnv = env =>
 printEnv("WAYLAND_DISPLAY");
 printEnv("XDG_SESSION_TYPE");
 
-let createSkiaGraphicsContext = (window: Sdl2.Window.t) => {
+let createSkiaGraphicsContext = (_window: Sdl2.Window.t) => {
   print_endline("Creating graphics context");
   let nativeInterface = Skia.Gr.Gl.Interface.makeNative();
   switch (nativeInterface) {
@@ -91,8 +91,8 @@ let run = () => {
   Sdl2.Window.setTitle(primaryWindow, "reason-skia-sdl2 example");
   Sdl2.Window.setWin32ProcessDPIAware(primaryWindow);
 
-  let scale = Sdl2.Window.getWin32ScaleFactor(primaryWindow);
-  let display = Sdl2.Window.getDisplay(primaryWindow);
+  let _scale = Sdl2.Window.getWin32ScaleFactor(primaryWindow);
+  let _display = Sdl2.Window.getDisplay(primaryWindow);
 
   Sdl2.Window.setSize(primaryWindow, 800, 600);
   Sdl2.Window.center(primaryWindow);

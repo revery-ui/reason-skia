@@ -1,14 +1,10 @@
 {
   "source": "./package.json",
   "scripts": {
-      "run": "esy '@bench' x SkiaBench"
+      "run": "esy @bench build refmterr dune exec ./bench/exe/bench.exe"
   },
   "override": {
-      "build": ["dune build -p skia,skia-bench -j4"],
-      "install": [
-          "esy-installer skia.install",
-          "esy-installer skia-bench.install"
-      ],
+    "build": "refmterr dune build ./bench/exe/bench.exe -j4",
     "dependencies": {
       "reperf": "^1.5.0"
     }

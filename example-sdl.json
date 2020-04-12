@@ -1,13 +1,12 @@
 {
   "source": "./package.json",
   "scripts": {
-    "run": "esy '@example-sdl' x TestSdl"
+    "run": "esy @example-sdl build refmterr dune exec ./example-sdl/TestSdl.exe"
   },
   "override": {
-      "build": ["dune build -p skia,skia-example-sdl -j4"],
-      "install": [
-          "esy-installer skia.install",
-          "esy-installer skia-example-sdl.install"
-      ]
+      "build": "refmterr dune build ./example-sdl/TestSdl.exe -j4",
+      "dependencies": {
+        "@opam/lwt": "*"
+      }
   }
 }

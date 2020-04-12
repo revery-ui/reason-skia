@@ -1,8 +1,8 @@
 open Skia;
 open TestFramework;
 
-describe("Color", ({describe, test}) => {
-  describe("float", ({test}) => {
+describe("Color", ({describe, test, _}) => {
+  describe("float", ({test, _}) => {
     test("makeArgb", ({expect}) => {
       let color = Color.Float.makeArgb(0., 0.25099, 0.501961, 1.0);
 

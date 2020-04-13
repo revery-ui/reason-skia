@@ -19,6 +19,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Install esy
         run: npm install -g esy
+      - run: npm install -g windows-build-tools
       - name: Install native dependencies on ubuntu-latest
         if: matrix.os == 'ubuntu-latest'
         run: |

@@ -46,8 +46,8 @@ jobs:
       - name: Build dependencies
         if: steps.deps-cache-win.outputs.cache-hit != 'true' && steps.deps-cache-non-win.outputs.cache-hit != 'true'
         run: esy build-dependencies --release
-#      - name: Build
-#        run: esy build --release
+      - name: Build
+        run: esy build --release
 #      - name: Build test/dev dependencies
 #        if: steps.deps-cache-win.outputs.cache-hit != 'true' && steps.deps-cache-non-win.outputs.cache-hit != 'true'
 #        run: esy build-dependencies

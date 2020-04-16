@@ -67,3 +67,6 @@ typings/
 .merlin
 esy.lock.json
 _esy/
+
+# example-files
+skia-c-example.png

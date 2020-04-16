@@ -228,6 +228,19 @@ module M = (T: TYPE) => {
   };
 
   module Path = {
+    type pathDirection =
+      | Clockwise
+      | CounterClockwise;
+
+    let pathDirection =
+      skiaCEnum(
+        "sk_path_direction_t",
+        [
+          (Clockwise, "CW_SK_PATH_DIRECTION"),
+          (CounterClockwise, "CCW_SK_PATH_DIRECTION"),
+        ],
+      );
+
     type t;
     let t: typ(structure(t)) = structure("sk_path_t");
     let t = typedef(t, "sk_path_t");

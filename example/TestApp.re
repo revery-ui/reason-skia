@@ -34,6 +34,12 @@ let draw = canvas => {
   Path.lineTo(path, 590., 50.);
   Path.cubicTo(path, -490., 50., 1130., 430., 50., 430.);
   Path.lineTo(path, 590., 430.);
+  Path.close(path);
+  Path.addCircle(path, 100., 200., 75., ());
+
+  let roundRect = Rect.makeLtrb(300., 400., 240., 280.);
+  Path.addRoundRect(path, roundRect, 25., 25., ());
+  Path.addCircle(path, 100., 300., ~radius=100., ~direction=Clockwise, ());
   Canvas.drawPath(canvas, path, stroke);
 
   Paint.setColor(fill, Color.makeArgb(0xCCl, 0x00l, 0xFFl, 0x00l));

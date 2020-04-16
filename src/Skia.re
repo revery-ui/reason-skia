@@ -460,6 +460,7 @@ module RRect = {
 
 module Path = {
   type t = SkiaWrapped.Path.t;
+  type pathDirection = SkiaWrapped.Path.pathDirection;
 
   let make = () => {
     let path = SkiaWrapped.Path.allocate();
@@ -467,9 +468,18 @@ module Path = {
     path;
   };
 
+  let addCircle =
+      (path, x, y, ~radius, ~direction: pathDirection=Clockwise, ()) =>
+    SkiaWrapped.Path.addCircle(path, x, y, radius, direction);
+
+  let addRoundRect =
+      (path, rect, rx, ry, ~direction: pathDirection=Clockwise, ()) =>
+    SkiaWrapped.Path.addRoundRect(path, rect, rx, ry, direction);
+
   let moveTo = SkiaWrapped.Path.moveTo;
   let lineTo = SkiaWrapped.Path.lineTo;
   let cubicTo = SkiaWrapped.Path.cubicTo;
+  let close = SkiaWrapped.Path.close;
 };
 
 module ColorSpace = {

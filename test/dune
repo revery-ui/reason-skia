@@ -1,7 +1,12 @@
-(library
+(library 
     (name SkiaTest)
     (public_name skia-test)
     (flags (:standard (-w -39)))
     (ocamlopt_flags -linkall -g)
-    (libraries rely.lib rely.internal skia)
+    (libraries rely.lib rely.internal
+        skia
+        skia.wrapped.bindings
+        skia.wrapped
+        )
+
 )

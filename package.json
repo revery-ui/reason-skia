@@ -36,7 +36,8 @@
   },
   "devDependencies": {
     "@opam/dune": "^2.4.0",
-    "ocaml": "~4.7.0"
+    "ocaml": "~4.7.0",
+    "@opam/ocaml-lsp-server": "ocaml/ocaml-lsp:ocaml-lsp-server.opam#04733ed"
   },
   "resolutions": {
     "esy-cmake": "prometheansacrifice/esy-cmake#2a47392def"

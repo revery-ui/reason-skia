@@ -16,6 +16,25 @@ module M = (T: TYPE) => {
       invalid_arg(Printf.sprintf("Unsupported %s enum: %Ld", name, i))
     );
 
+  module Hinting = {
+    type t =
+      | NoHinting
+      | SlightHinting
+      | NormalHinting
+      | FullHinting;
+
+    let t =
+      skiaCEnum(
+        "sk_paint_hinting_t",
+        [
+          (NoHinting, "NO_HINTING_SK_PAINT_HINTING"),
+          (SlightHinting, "SLIGHT_HINTING_SK_PAINT_HINTING"),
+          (NormalHinting, "NORMAL_HINTING_SK_PAINT_HINTING"),
+          (FullHinting, "FULL_HINTING_SK_PAINT_HINTING"),
+        ],
+      );
+  };
+
   module TextEncoding = {
     type t =
       | Utf8

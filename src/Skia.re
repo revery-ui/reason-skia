@@ -67,6 +67,10 @@ module FontMetrics = {
   let getBottom = SkiaWrapped.FontMetrics.getBottom;
 };
 
+module Hinting = {
+  type t = SkiaWrapped.Hinting.t;
+};
+
 module TextEncoding = {
   type t = SkiaWrapped.TextEncoding.t;
 };
@@ -138,6 +142,12 @@ module Paint = {
 
   let setColor = (paint, color) => _setColor(CI.cptr(paint), color);
   let setAlpha = (paint, alpha) => _setAlphaf(CI.cptr(paint), alpha);
+
+  let setHinting = SkiaWrapped.Paint.setHinting;
+  let getHinting = SkiaWrapped.Paint.getHinting;
+
+  let isAutohinted = SkiaWrapped.Paint.isAutohinted;
+  let setAutohinted = SkiaWrapped.Paint.setAutohinted;
 
   let setAntiAlias = SkiaWrapped.Paint.setAntiAlias;
   let setStyle = SkiaWrapped.Paint.setStyle;

@@ -26,7 +26,7 @@
     "@esy-ocaml/reason": "*",
     "@opam/ctypes": "0.15.1",
     "@opam/dune": "*",
-    "esy-skia": "revery-ui/esy-skia#7893a8a",
+    "esy-skia": "revery-ui/esy-skia#d60e5fe",
     "@opam/lwt": "*",
     "refmterr": "*",
     "esy-freetype2": "^2.9.1007",

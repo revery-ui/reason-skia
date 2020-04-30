@@ -1,5 +1,5 @@
 {
-  "checksum": "76b17b5d01b3d0de9151d8694ae90e19",
+  "checksum": "a2e61fff5ae03e14e1c697355664ceef",
   "root": "reason-skia@link-dev:./package.json",
   "node": {
     "yarn-pkg-config@github:esy-ocaml/yarn-pkg-config#db3a0b63883606dd57c54a7158d560d6cba8cd79@d41d8cd9": {
@@ -51,7 +51,7 @@
       "dependencies": [
         "refmterr@3.3.0@d41d8cd9", "reason-sdl2@2.10.3022@d41d8cd9",
         "reason-native-crash-utils@github:onivim/reason-native-crash-utils#ae1fd34@d41d8cd9",
-        "esy-skia@github:revery-ui/esy-skia#7893a8a@d41d8cd9",
+        "esy-skia@github:revery-ui/esy-skia#d60e5fe@d41d8cd9",
         "esy-sdl2@2.0.10006@d41d8cd9", "esy-freetype2@2.9.1007@d41d8cd9",
         "@reason-native/rely@2.2.0@d41d8cd9",
         "@opam/odoc@opam:1.5.0@35218f5f", "@opam/lwt@opam:5.3.0@6519bffc",
@@ -115,13 +115,13 @@
       "dependencies": [],
       "devDependencies": []
     },
-    "esy-skia@github:revery-ui/esy-skia#7893a8a@d41d8cd9": {
-      "id": "esy-skia@github:revery-ui/esy-skia#7893a8a@d41d8cd9",
+    "esy-skia@github:revery-ui/esy-skia#d60e5fe@d41d8cd9": {
+      "id": "esy-skia@github:revery-ui/esy-skia#d60e5fe@d41d8cd9",
       "name": "esy-skia",
-      "version": "github:revery-ui/esy-skia#7893a8a",
+      "version": "github:revery-ui/esy-skia#d60e5fe",
       "source": {
         "type": "install",
-        "source": [ "github:revery-ui/esy-skia#7893a8a" ]
+        "source": [ "github:revery-ui/esy-skia#d60e5fe" ]
       },
       "overrides": [],
       "dependencies": [

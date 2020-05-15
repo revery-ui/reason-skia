@@ -86,6 +86,14 @@ let draw = canvas => {
     print_endline(
       "-- Bottom: " ++ string_of_float(FontMetrics.getBottom(metrics)),
     );
+    print_endline(
+      "-- Underline position: "
+      ++ string_of_float(FontMetrics.getUnderlinePosition(metrics)),
+    );
+    print_endline(
+      "-- Underline thickness: "
+      ++ string_of_float(FontMetrics.getUnderlineThickness(metrics)),
+    );
     print_endline("-- Ret: " ++ string_of_float(_ret));
 
     print_endline(__LOC__ ++ ": We return.");

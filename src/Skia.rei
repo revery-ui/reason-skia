@@ -44,6 +44,8 @@ module FontMetrics: {
   let getDescent: t => float;
   let getTop: t => float;
   let getBottom: t => float;
+  let getUnderlinePosition: t => float;
+  let getUnderlineThickness: t => float;
 };
 
 module ImageFilter: {

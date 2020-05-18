@@ -65,6 +65,8 @@ module FontMetrics = {
   let getDescent = SkiaWrapped.FontMetrics.getDescent;
   let getTop = SkiaWrapped.FontMetrics.getTop;
   let getBottom = SkiaWrapped.FontMetrics.getBottom;
+  let getUnderlineThickness = SkiaWrapped.FontMetrics.getUnderlineThickness;
+  let getUnderlinePosition = SkiaWrapped.FontMetrics.getUnderlinePosition;
 };
 
 module Hinting = {

@@ -72,6 +72,10 @@ module M = (F: FOREIGN) => {
       getf(!@metrics, SkiaTypes.FontMetrics.descent);
     let getTop = metrics => getf(!@metrics, SkiaTypes.FontMetrics.top);
     let getBottom = metrics => getf(!@metrics, SkiaTypes.FontMetrics.bottom);
+    let getUnderlineThickness = metrics =>
+      getf(!@metrics, SkiaTypes.FontMetrics.underlineThickness);
+    let getUnderlinePosition = metrics =>
+      getf(!@metrics, SkiaTypes.FontMetrics.underlinePosition);
   };
 
   module ImageFilter = {

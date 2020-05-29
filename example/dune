@@ -2,9 +2,15 @@
     (names TestApp)
     (package skia-example)
     (public_names TestApp)
+    (modes native byte)
     (libraries
         skia
         skia.wrapped.bindings
         skia.wrapped
         reason-native-crash-utils.asan
 ))
+
+(install
+ (section bin)
+ (package skia-example)
+ (files TestApp.bc))

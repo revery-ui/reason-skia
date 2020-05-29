@@ -41,8 +41,10 @@ CAMLprim value reason_skia_paint_set_alphaf_byte(value vPaint, value vAlpha) {
   return Val_unit;
 }
 
-CAMLprim value reason_skia_matrix_set_color_byte(value vPaint, value vColor) {
-  return reason_skia_paint_set_color(vPaint, Int_val(vColor));
+CAMLprim value reason_skia_paint_set_color_byte(value vPaint, value vColor) {
+  reason_skia_paint_set_color(vPaint, Int32_val(vColor));
+
+  return Val_unit;
 }
 
 double reason_skia_stub_sk_color_float_get_b(int32_t color) {
@@ -51,7 +53,7 @@ double reason_skia_stub_sk_color_float_get_b(int32_t color) {
 
 CAMLprim value reason_skia_stub_sk_color_float_get_b_byte(value vColor) {
   return caml_copy_double(
-      reason_skia_stub_sk_color_float_get_b(Int_val(vColor)));
+      reason_skia_stub_sk_color_float_get_b(Int32_val(vColor)));
 }
 
 double reason_skia_stub_sk_color_float_get_g(int32_t color) {
@@ -60,7 +62,7 @@ double reason_skia_stub_sk_color_float_get_g(int32_t color) {
 
 CAMLprim value reason_skia_stub_sk_color_float_get_g_byte(value vColor) {
   return caml_copy_double(
-      reason_skia_stub_sk_color_float_get_g(Int_val(vColor)));
+      reason_skia_stub_sk_color_float_get_g(Int32_val(vColor)));
 }
 
 double reason_skia_stub_sk_color_float_get_r(int32_t color) {
@@ -69,7 +71,7 @@ double reason_skia_stub_sk_color_float_get_r(int32_t color) {
 
 CAMLprim value reason_skia_stub_sk_color_float_get_r_byte(value vColor) {
   return caml_copy_double(
-      reason_skia_stub_sk_color_float_get_r(Int_val(vColor)));
+      reason_skia_stub_sk_color_float_get_r(Int32_val(vColor)));
 }
 
 double reason_skia_stub_sk_color_float_get_a(int32_t color) {
@@ -78,7 +80,7 @@ double reason_skia_stub_sk_color_float_get_a(int32_t color) {
 
 CAMLprim value reason_skia_stub_sk_color_float_get_a_byte(value vColor) {
   return caml_copy_double(
-      reason_skia_stub_sk_color_float_get_a(Int_val(vColor)));
+      reason_skia_stub_sk_color_float_get_a(Int32_val(vColor)));
 }
 
 uint32_t reason_skia_color_float_make_argb(double a, double r, double g,
@@ -92,7 +94,7 @@ uint32_t reason_skia_color_float_make_argb(double a, double r, double g,
 
 CAMLprim value reason_skia_color_float_make_argb_byte(value vA, value vR,
                                                       value vG, value vB) {
-  return Val_int(reason_skia_color_float_make_argb(
+  return caml_copy_int32(reason_skia_color_float_make_argb(
       Double_val(vA), Double_val(vR), Double_val(vG), Double_val(vB)));
 }
 
@@ -101,7 +103,7 @@ uint32_t reason_skia_stub_sk_color_get_a(int32_t color) {
 }
 
 CAMLprim value reason_skia_stub_sk_color_get_a_byte(value vColor) {
-  return Val_int(reason_skia_stub_sk_color_get_a(Int_val(vColor)));
+  return caml_copy_int32(reason_skia_stub_sk_color_get_a(Int32_val(vColor)));
 }
 
 uint32_t reason_skia_stub_sk_color_get_r(int32_t color) {
@@ -109,7 +111,7 @@ uint32_t reason_skia_stub_sk_color_get_r(int32_t color) {
 }
 
 CAMLprim value reason_skia_stub_sk_color_get_r_byte(value vColor) {
-  return Val_int(reason_skia_stub_sk_color_get_r(Int_val(vColor)));
+  return caml_copy_int32(reason_skia_stub_sk_color_get_r(Int32_val(vColor)));
 }
 
 uint32_t reason_skia_stub_sk_color_get_g(int32_t color) {
@@ -117,7 +119,7 @@ uint32_t reason_skia_stub_sk_color_get_g(int32_t color) {
 }
 
 CAMLprim value reason_skia_stub_sk_color_get_g_byte(value vColor) {
-  return Val_int(reason_skia_stub_sk_color_get_g(Int_val(vColor)));
+  return caml_copy_int32(reason_skia_stub_sk_color_get_g(Int32_val(vColor)));
 }
 
 uint32_t reason_skia_stub_sk_color_get_b(int32_t color) {
@@ -125,7 +127,7 @@ uint32_t reason_skia_stub_sk_color_get_b(int32_t color) {
 }
 
 CAMLprim value reason_skia_stub_sk_color_get_b_byte(value vColor) {
-  return Val_int(reason_skia_stub_sk_color_get_b(Int_val(vColor)));
+  return caml_copy_int32(reason_skia_stub_sk_color_get_b(Int32_val(vColor)));
 }
 
 uint32_t reason_skia_stub_sk_color_set_argb(int32_t alpha, int32_t red,
@@ -136,8 +138,8 @@ uint32_t reason_skia_stub_sk_color_set_argb(int32_t alpha, int32_t red,
 CAMLprim value reason_skia_stub_sk_color_set_argb_byte(value vAlpha, value vRed,
                                                        value vGreen,
                                                        value vBlue) {
-  return Val_int(reason_skia_stub_sk_color_set_argb(
-      Int_val(vAlpha), Int_val(vRed), Int_val(vGreen), Int_val(vBlue)));
+  return caml_copy_int32(reason_skia_stub_sk_color_set_argb(
+      Int32_val(vAlpha), Int32_val(vRed), Int32_val(vGreen), Int32_val(vBlue)));
 }
 
 double reason_skia_rect_get_bottom(value vRect) {
@@ -187,8 +189,8 @@ CAMLprim value reason_skia_rect_set(value vRect, double left, double top,
   return Val_unit;
 }
 
-CAMLprim value reasion_skia_rect_set_byte(value vRect, value vLeft, value vTop,
-                                          value vRight, value vBottom) {
+CAMLprim value reason_skia_rect_set_byte(value vRect, value vLeft, value vTop,
+                                         value vRight, value vBottom) {
   return reason_skia_rect_set(vRect, Double_val(vLeft), Double_val(vTop),
                               Double_val(vRight), Double_val(vBottom));
 }

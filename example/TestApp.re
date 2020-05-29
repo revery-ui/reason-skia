@@ -35,7 +35,7 @@ let draw = canvas => {
   Path.cubicTo(path, -490., 50., 1130., 430., 50., 430.);
   Path.lineTo(path, 590., 430.);
   Path.close(path);
-  Path.addCircle(path, 100., 200., 75., ());
+  Path.addCircle(path, 100., 200., ~radius=75., ());
 
   let roundRect = Rect.makeLtrb(300., 400., 240., 280.);
   Path.addRoundRect(path, roundRect, 25., 25., ());

@@ -1,12 +1,11 @@
 (executables
-    (names TestSdl)
-    (package skia-example-sdl)
-    (public_names TestSdl)
-    (libraries
-        skia
-        sdl2
-        lwt
-        integers
-        skia.wrapped.bindings
-        skia.wrapped
-))
+ (names TestSdl)
+ (package skia-example-sdl)
+ (public_names TestSdl)
+ (modes native byte)
+ (libraries skia sdl2 lwt integers skia.wrapped.bindings skia.wrapped))
+
+(install
+ (section bin)
+ (package skia-example-sdl)
+ (files TestSdl.bc))

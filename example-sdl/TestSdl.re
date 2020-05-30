@@ -83,7 +83,8 @@ let run = () => {
       attachResult;
     };
 
-  let primaryWindow = Sdl2.Window.create(100, 100, "test");
+  let primaryWindow =
+    Sdl2.Window.create("test", `Undefined, `Undefined, 100, 100);
   let glContext = Sdl2.Gl.setup(primaryWindow);
 
   Sdl2.Gl.setSwapInterval(1);

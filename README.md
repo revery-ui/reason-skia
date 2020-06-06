@@ -1,3 +1,7 @@
+# NOTE: This code has been archived and moved to the Revery repo: https://github.com/revery-ui/revery
+
+---
+
 [![Build Status](https://dev.azure.com/revery-ui/revery/_apis/build/status/revery-ui.reason-skia?branchName=master)](https://dev.azure.com/revery-ui/revery/_build/latest?definitionId=22&branchName=master)
 [![npm version](https://badge.fury.io/js/reason-skia.svg)](https://badge.fury.io/js/reason-skia)
 
